@@ -13,13 +13,12 @@ module.exports = {
         pistachio: '#c9d9d2',
         grassGreen: '#3b6552',
       },
-      // Q&A: isnt the px unit a problem?
       fontSize: {
-        head1: '34px',
-        head2: '28px',
-        head3: '20px',
-        'body-sm': '16px',
-        'body-lg': '18px',
+        head1: '2.37rem',
+        head2: '1.75rem',
+        head3: '1.25rem',
+        'body-lg': '1.12rem',
+        'body-sm': '1rem',
       },
     },
   },
