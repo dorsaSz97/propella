@@ -75,24 +75,38 @@ export default function RootLayout({
           </div>
         </div>
 
+        {/* filters */}
+        <div className="p-8 flex gap-2">
+          <ul className="flex gap-2 items-center">
+            <li className="bg-silverGrey px-4 py-2 rounded-lg">Italy</li>
+            <li className="bg-silverGrey px-4 py-2 rounded-lg">24-28 March</li>
+            <li className="bg-silverGrey px-4 py-2 rounded-lg">
+              1 adult + 2 children
+            </li>
+          </ul>
+          <button className="bg-silverGrey px-4 py-2 rounded-lg ">
+            Clear X
+          </button>
+        </div>
+
         {/* lisings */}
-        <div className="p-8">
-          <ul className="grid grid-cols-5 ">
+        <div className="p-8 pt-0">
+          <ul className="grid grid-cols-4 gap-10">
             <li>
               <div className="relative mb-[1rem]">
                 <Image
                   src="/prop1.jpg"
                   alt="property"
-                  width={150}
-                  height={300}
-                  className="rounded-[15%] object-cover"
+                  width={400}
+                  height={400}
+                  className="rounded-[12%] object-cover w-full h-[320px]"
                 />
-                <button className="absolute h-15 w-15 bg-silverGrey rounded-lg bg-opacity-25 top-5 right-5 z-[10]">
+                <button className="absolute h-[35px] w-[35px] flex justify-center items-center bg-silverGrey rounded-lg bg-opacity-25 top-6 right-6 z-[10]">
                   <AiOutlineHeart />
                 </button>
               </div>
               <header className="flex justify-between items-center font-bold">
-                <h3 className="capitalize">Wooden Apartment</h3>
+                <h3 className="capitalize">The Old Village Cottage</h3>
                 <span>155 $</span>
               </header>
               <p className="capitalize">Rome, Italy</p>
@@ -102,57 +116,57 @@ export default function RootLayout({
                 <Image
                   src="/prop2.jpg"
                   alt="property"
-                  width={150}
-                  height={300}
-                  className="rounded-[15%] object-cover"
+                  width={400}
+                  height={400}
+                  className="rounded-[12%] object-cover w-full h-[320px]"
                 />
-                <button className="absolute h-15 w-15 bg-silverGrey rounded-lg bg-opacity-25 top-5 right-5 z-[10]">
+                <button className="absolute h-[35px] w-[35px] flex justify-center items-center bg-silverGrey rounded-lg bg-opacity-25 top-6 right-6 z-[10]">
                   <AiOutlineHeart />
                 </button>
               </div>
               <header className="flex justify-between items-center font-bold">
-                <h3>The Old Village Cottage</h3>
-                <span>180 $</span>
+                <h3 className="capitalize">Wooden Apartment</h3>
+                <span>320 $</span>
               </header>
-              <p>Dublin, Ireland</p>
+              <p className="capitalize">Dublin, Ireland</p>
             </li>
             <li>
               <div className="relative mb-[1rem]">
                 <Image
                   src="/prop3.jpg"
                   alt="property"
-                  width={150}
-                  height={300}
-                  className="rounded-[15%] object-cover"
+                  width={400}
+                  height={400}
+                  className="rounded-[12%] object-cover w-full h-[320px]"
                 />
-                <button className="absolute h-15 w-15 bg-silverGrey rounded-lg bg-opacity-25 top-5 right-5 z-[10]">
+                <button className="absolute h-[35px] w-[35px] flex justify-center items-center bg-silverGrey rounded-lg bg-opacity-25 top-6 right-6 z-[10]">
                   <AiOutlineHeart />
                 </button>
               </div>
               <header className="flex justify-between items-center font-bold">
-                <h3>Villa Casa Bella</h3>
-                <span>235 $</span>
+                <h3 className="capitalize">Villa Casa Bella</h3>
+                <span>180 $</span>
               </header>
-              <p>Catania, Italy</p>
+              <p className="capitalize">Catania, Italy</p>
             </li>
             <li>
               <div className="relative mb-[1rem]">
                 <Image
                   src="/prop4.jpg"
                   alt="property"
-                  width={150}
-                  height={300}
-                  className="rounded-[15%] object-cover"
+                  width={400}
+                  height={400}
+                  className="rounded-[12%] object-cover w-full h-[320px]"
                 />
-                <button className="absolute h-15 w-15 bg-silverGrey rounded-lg bg-opacity-25 top-5 right-5 z-[10]">
+                <button className="absolute h-[35px] w-[35px] flex justify-center items-center bg-silverGrey rounded-lg bg-opacity-25 top-6 right-6 z-[10]">
                   <AiOutlineHeart />
                 </button>
               </div>
               <header className="flex justify-between items-center font-bold">
-                <h3>Zen Apartment</h3>
+                <h3 className="capitalize">Zen Apartment</h3>
                 <span>320 $</span>
               </header>
-              <p>Tokyo, Japan</p>
+              <p className="capitalize">Tokyo, Japan</p>
             </li>
           </ul>
         </div>
