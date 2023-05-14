@@ -62,3 +62,20 @@ h6 {
 ul {
   list-style: none;
 }
+
+.btn--search {
+  position: relative;
+}
+
+.btn--search::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 93%;
+  width: 10px;
+  height: 35px;
+  border-radius: 7%;
+  background-color: #e6e6e8;
+  transform: translateY(-50%);
+  z-index: -1;
+}
