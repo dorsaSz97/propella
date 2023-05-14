@@ -1,18 +1,27 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    './pages/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-  ],
+  // paths to the files that'll use Tailwind CSS class names
+  content: ['./app/**/*.{js,ts,jsx,tsx}'],
+
   theme: {
     extend: {
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-conic':
-          'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+      fontFamily: {
+        poppins: 'var(--font-poppins)',
+      },
+      colors: {
+        silverGrey: '#e6e6e8',
+        pistachio: '#c9d9d2',
+        grassGreen: '#3b6552',
+      },
+      // Q&A: isnt the px unit a problem?
+      fontSize: {
+        head1: '34px',
+        head2: '28px',
+        head3: '20px',
+        'body-sm': '16px',
+        'body-lg': '18px',
       },
     },
   },
   plugins: [],
-}
+};
