@@ -1,3 +1,5 @@
+'use client';
+
 // apply the styles to every route in our app
 import './globals.css';
 import 'react-date-range/dist/styles.css'; // main style file
@@ -5,11 +7,14 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import { Poppins } from 'next/font/google';
 import Image from 'next/image';
 
+import countries from 'world-countries';
+
 import { RxPerson } from 'react-icons/rx';
 import { RiSearchLine } from 'react-icons/ri';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { BsCalendar2Date } from 'react-icons/bs';
 import { AiOutlineHeart } from 'react-icons/ai';
+import { ChangeEvent, useState } from 'react';
 
 const poppins = Poppins({
   weight: ['400', '600', '700'], // regular, bold, semibold
@@ -18,16 +23,18 @@ const poppins = Poppins({
   variable: '--font-poppins',
 });
 
-export const metadata = {
-  title: 'Propella',
-  description: 'Real Estate Listings',
-};
+// export const metadata = {
+//   title: 'Propella',
+//   description: 'Real Estate Listings',
+// };
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [locationInput, setLocationInput] = useState('');
+
   return (
     <html lang="en" className={`${poppins.variable}`}>
       <body className={`text-text-dark font-poppins px-5 py-3`}>
@@ -47,8 +54,49 @@ export default function RootLayout({
         </header>
 
         {/* searchbox */}
-        <div className="flex justify-center items-center mt-[-2rem]">
-          <div className="flex">
+        <div className=" flex justify-center items-center mt-[-2rem]">
+          <div className="flex relative">
+            {/* location popup */}
+            <div className="absolute top-[110%] left-1/2 translate-x-[-50%] w-[160%] p-2 rounded-3xl bg-whiteLight text-black z-[30]">
+              <div className="flex items-center gap-5 p-3 bg-whiteDark  rounded-3xl">
+                <RiSearchLine color="black" />
+                <input
+                  className="bg-transparent rounded-xl inline-block w-full p-2"
+                  type="text"
+                  placeholder="Enter location"
+                  value={locationInput}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                    setLocationInput(e.target.value)
+                  }
+                />
+              </div>
+
+              <ul className="py-4 px-2 flex flex-col gap-3">
+                {locationInput &&
+                  countries
+                    .filter(country =>
+                      country.name.common
+                        .toLowerCase()
+                        .startsWith(locationInput.toLowerCase())
+                    )
+                    .slice(0, 4)
+                    .map(enteredCountry => {
+                      return (
+                        <li
+                          key={enteredCountry.name.common}
+                          onClick={() =>
+                            setLocationInput(enteredCountry.name.common)
+                          }
+                          className="cursor-pointer flex gap-6 p-2 rounded-3xl hover:bg-whiteDark font-semibold"
+                        >
+                          {enteredCountry.name.common}
+                          <span className="font-normal">3</span>
+                        </li>
+                      );
+                    })}
+              </ul>
+            </div>
+
             <div className="rounded-full h-35 w-35 bg-silverGrey p-2 btn--search">
               <button className="rounded-full h-25 w-25  p-5 text-lg">
                 <HiOutlineLocationMarker />
