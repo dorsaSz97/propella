@@ -79,3 +79,13 @@ ul {
   transform: translateY(-50%);
   z-index: -1;
 }
+
+.rdrDefinedRangesWrapper {
+  background-color: #f3f3f3;
+  display: none;
+  border-radius: 1.5rem;
+}
+.rdrDateDisplayWrapper,
+.rdrDateDisplayItem {
+  background: transparent;
+}

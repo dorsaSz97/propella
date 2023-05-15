@@ -1,13 +1,15 @@
 'use client';
 
-// apply the styles to every route in our app
-import './globals.css';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+// apply the styles to every route in our app
+import './globals.css';
 import { Poppins } from 'next/font/google';
+
 import Image from 'next/image';
 
 import countries from 'world-countries';
+import { DateRangePicker, Range } from 'react-date-range';
 
 import { RxPerson } from 'react-icons/rx';
 import { RiSearchLine } from 'react-icons/ri';
@@ -49,6 +51,13 @@ export default function RootLayout({
       }
     });
   };
+  const [dateRange, setDateRange] = useState<Range[]>([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: 'reservation',
+    },
+  ]);
 
   return (
     <html lang="en" className={`${poppins.variable}`}>
@@ -113,7 +122,7 @@ export default function RootLayout({
             </div> */}
 
             {/* guests popup */}
-            <div className="absolute top-[110%] left-1/2 translate-x-[-50%] w-[110%] p-5 rounded-3xl bg-whiteLight text-black z-[30]">
+            {/* <div className="absolute top-[110%] left-1/2 translate-x-[-50%] w-[110%] p-5 rounded-3xl bg-whiteLight text-black z-[30]">
               <ul className="flex flex-col gap-10 text-sm">
                 <li className="flex justify-between">
                   <label htmlFor="adults" className="font-bold">
@@ -197,6 +206,23 @@ export default function RootLayout({
                   </div>
                 </li>
               </ul>
+            </div> */}
+
+            {/* w-[110%] p-5 rounded-3xl bg-whiteLight text-black  */}
+            {/* calender popup */}
+            <div className="absolute top-[110%] left-1/2 translate-x-[-50%] z-[30] rounded-3xl">
+              <DateRangePicker
+                minDate={new Date()}
+                months={2}
+                ranges={dateRange}
+                onChange={ranges => {
+                  setDateRange([ranges.reservation]);
+                }}
+                direction="horizontal"
+                showPreview={true}
+                rangeColors={['#f3f3f3']}
+                // disabledDates={[]}
+              />
             </div>
 
             <div className="rounded-full h-35 w-35 bg-silverGrey p-2 btn--search">
