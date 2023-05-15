@@ -14,8 +14,10 @@ import { DateRangePicker, Range } from 'react-date-range';
 import { RxPerson } from 'react-icons/rx';
 import { RiSearchLine } from 'react-icons/ri';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
+import { IoMapOutline } from 'react-icons/io5';
 import { BsCalendar2Date } from 'react-icons/bs';
 import { AiOutlineHeart } from 'react-icons/ai';
+import { VscListFlat } from 'react-icons/vsc';
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 
 const poppins = Poppins({
@@ -39,6 +41,7 @@ export default function RootLayout({
   const [adultNumber, setAdultNumber] = useState(0);
   const [petNumber, setPetNumber] = useState(0);
   const [childrenNumber, setChildrenNumber] = useState(0);
+  const [mapView, setIsMapView] = useState(false);
   const increaseNumber = (state: Dispatch<SetStateAction<number>>) => {
     state(prev => prev + 1);
   };
@@ -208,9 +211,8 @@ export default function RootLayout({
               </ul>
             </div> */}
 
-            {/* w-[110%] p-5 rounded-3xl bg-whiteLight text-black  */}
             {/* calender popup */}
-            <div className="absolute top-[110%] left-1/2 translate-x-[-50%] z-[30] rounded-3xl">
+            {/* <div className="absolute top-[110%] left-1/2 translate-x-[-50%] z-[30] rounded-3xl">
               <DateRangePicker
                 minDate={new Date()}
                 months={2}
@@ -223,7 +225,7 @@ export default function RootLayout({
                 rangeColors={['#f3f3f3']}
                 // disabledDates={[]}
               />
-            </div>
+            </div> */}
 
             <div className="rounded-full h-35 w-35 bg-silverGrey p-2 btn--search">
               <button className="rounded-full h-25 w-25  p-5 text-lg">
@@ -266,85 +268,112 @@ export default function RootLayout({
         </div>
 
         {/* lisings */}
-        <div className="p-8 pt-0">
-          <ul className="grid grid-cols-4 gap-10">
-            <li>
-              <div className="relative mb-[1rem]">
-                <Image
-                  src="/prop1.jpg"
-                  alt="property"
-                  width={400}
-                  height={400}
-                  className="rounded-[12%] object-cover w-full h-[320px]"
-                />
-                <button className="absolute h-[35px] w-[35px] flex justify-center items-center bg-silverGrey rounded-lg bg-opacity-25 top-6 right-6 z-[10]">
-                  <AiOutlineHeart />
-                </button>
-              </div>
-              <header className="flex justify-between items-center font-bold">
-                <h3 className="capitalize">The Old Village Cottage</h3>
-                <span>155 $</span>
-              </header>
-              <p className="capitalize">Rome, Italy</p>
-            </li>
-            <li>
-              <div className="relative mb-[1rem]">
-                <Image
-                  src="/prop2.jpg"
-                  alt="property"
-                  width={400}
-                  height={400}
-                  className="rounded-[12%] object-cover w-full h-[320px]"
-                />
-                <button className="absolute h-[35px] w-[35px] flex justify-center items-center bg-silverGrey rounded-lg bg-opacity-25 top-6 right-6 z-[10]">
-                  <AiOutlineHeart />
-                </button>
-              </div>
-              <header className="flex justify-between items-center font-bold">
-                <h3 className="capitalize">Wooden Apartment</h3>
-                <span>320 $</span>
-              </header>
-              <p className="capitalize">Dublin, Ireland</p>
-            </li>
-            <li>
-              <div className="relative mb-[1rem]">
-                <Image
-                  src="/prop3.jpg"
-                  alt="property"
-                  width={400}
-                  height={400}
-                  className="rounded-[12%] object-cover w-full h-[320px]"
-                />
-                <button className="absolute h-[35px] w-[35px] flex justify-center items-center bg-silverGrey rounded-lg bg-opacity-25 top-6 right-6 z-[10]">
-                  <AiOutlineHeart />
-                </button>
-              </div>
-              <header className="flex justify-between items-center font-bold">
-                <h3 className="capitalize">Villa Casa Bella</h3>
-                <span>180 $</span>
-              </header>
-              <p className="capitalize">Catania, Italy</p>
-            </li>
-            <li>
-              <div className="relative mb-[1rem]">
-                <Image
-                  src="/prop4.jpg"
-                  alt="property"
-                  width={400}
-                  height={400}
-                  className="rounded-[12%] object-cover w-full h-[320px]"
-                />
-                <button className="absolute h-[35px] w-[35px] flex justify-center items-center bg-silverGrey rounded-lg bg-opacity-25 top-6 right-6 z-[10]">
-                  <AiOutlineHeart />
-                </button>
-              </div>
-              <header className="flex justify-between items-center font-bold">
-                <h3 className="capitalize">Zen Apartment</h3>
-                <span>320 $</span>
-              </header>
-              <p className="capitalize">Tokyo, Japan</p>
-            </li>
-          </ul>
+        <div className="p-8 pt-0 flex flex-col">
+          <div>
+            <button
+              className="flex items-center justify-center p-3 rounded-2xl my-4 bg-whiteLight"
+              onClick={() => {
+                setIsMapView(prev => !prev);
+              }}
+            >
+              {mapView ? `List View ` : `Map View `}
+              {mapView ? <VscListFlat /> : <IoMapOutline />}
+            </button>
+          </div>
+
+          <div className={mapView ? 'flex' : ''}>
+            <ul
+              className={`grid ${
+                !mapView ? 'grid-cols-4 gap-10' : 'grid-cols-3 gap-7 flex-1'
+              }`}
+            >
+              <li>
+                <div className="relative mb-[1rem]">
+                  <Image
+                    src="/prop1.jpg"
+                    alt="property"
+                    width={400}
+                    height={400}
+                    className={`rounded-[12%] object-cover w-full ${
+                      mapView ? 'h-[200px]' : 'h-[320px]'
+                    } `}
+                  />
+                  <button className="absolute h-[35px] w-[35px] flex justify-center items-center bg-silverGrey rounded-lg bg-opacity-25 top-6 right-6 z-[10]">
+                    <AiOutlineHeart />
+                  </button>
+                </div>
+                <header className="flex justify-between items-center font-bold">
+                  <h3 className="capitalize">The Old Village Cottage</h3>
+                  <span>155 $</span>
+                </header>
+                <p className="capitalize">Rome, Italy</p>
+              </li>
+              <li>
+                <div className="relative mb-[1rem]">
+                  <Image
+                    src="/prop2.jpg"
+                    alt="property"
+                    width={400}
+                    height={400}
+                    className={`rounded-[12%] object-cover w-full ${
+                      mapView ? 'h-[200px]' : 'h-[320px]'
+                    } `}
+                  />
+                  <button className="absolute h-[35px] w-[35px] flex justify-center items-center bg-silverGrey rounded-lg bg-opacity-25 top-6 right-6 z-[10]">
+                    <AiOutlineHeart />
+                  </button>
+                </div>
+                <header className="flex justify-between items-center font-bold">
+                  <h3 className="capitalize">Wooden Apartment</h3>
+                  <span>320 $</span>
+                </header>
+                <p className="capitalize">Dublin, Ireland</p>
+              </li>
+              <li>
+                <div className="relative mb-[1rem]">
+                  <Image
+                    src="/prop3.jpg"
+                    alt="property"
+                    width={400}
+                    height={400}
+                    className={`rounded-[12%] object-cover w-full ${
+                      mapView ? 'h-[200px]' : 'h-[320px]'
+                    } `}
+                  />
+                  <button className="absolute h-[35px] w-[35px] flex justify-center items-center bg-silverGrey rounded-lg bg-opacity-25 top-6 right-6 z-[10]">
+                    <AiOutlineHeart />
+                  </button>
+                </div>
+                <header className="flex justify-between items-center font-bold">
+                  <h3 className="capitalize">Villa Casa Bella</h3>
+                  <span>180 $</span>
+                </header>
+                <p className="capitalize">Catania, Italy</p>
+              </li>
+              <li>
+                <div className="relative mb-[1rem]">
+                  <Image
+                    src="/prop4.jpg"
+                    alt="property"
+                    width={400}
+                    height={400}
+                    className={`rounded-[12%] object-cover w-full ${
+                      mapView ? 'h-[200px]' : 'h-[320px]'
+                    } `}
+                  />
+                  <button className="absolute h-[35px] w-[35px] flex justify-center items-center bg-silverGrey rounded-lg bg-opacity-25 top-6 right-6 z-[10]">
+                    <AiOutlineHeart />
+                  </button>
+                </div>
+                <header className="flex justify-between items-center font-bold">
+                  <h3 className="capitalize">Zen Apartment</h3>
+                  <span>320 $</span>
+                </header>
+                <p className="capitalize">Tokyo, Japan</p>
+              </li>
+            </ul>
+            {mapView && <p className="flex-1">Map</p>}
+          </div>
         </div>
 
         {children}
