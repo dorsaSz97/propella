@@ -80,12 +80,45 @@ ul {
   z-index: -1;
 }
 
+.rdrDateRangePickerWrapper {
+  border-radius: 1.5rem;
+}
+
 .rdrDefinedRangesWrapper {
   background-color: #f3f3f3;
   display: none;
   border-radius: 1.5rem;
 }
-.rdrDateDisplayWrapper,
+
 .rdrDateDisplayItem {
   background: transparent;
+}
+
+.rdrDay:not(.rdrDayPassive) .rdrStartEdge ~ .rdrDayNumber span,
+.rdrDay:not(.rdrDayPassive) .rdrEndEdge ~ .rdrDayNumber span {
+  font-weight: 600;
+  color: black;
+}
+.rdrDayNumber span,
+.rdrDayToday .rdrDayNumber span {
+  font-weight: 600;
+}
+.rdrDayToday .rdrDayNumber span::after {
+  background: #3b6552 !important;
+}
+.rdrWeekDay,
+.rdrMonthName {
+  color: black;
+  font-weight: 600;
+}
+.rdrDateDisplayWrapper,
+.rdrMonthAndYearPickers {
+  display: none;
+}
+
+.rdrCalendarWrapper.rdrDateRangeWrapper {
+  background: #f3f3f354;
+  backdrop-filter: blur(21px);
+  border-radius: 35px;
+  overflow: hidden;
 }
