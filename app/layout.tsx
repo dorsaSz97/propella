@@ -34,7 +34,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${poppins.variable}`}>
-      <body className={`text-text-dark font-poppins px-5 py-3`}>
+      <body className={`text-text-dark font-poppins px-5`}>
         {/* navigation */}
         <header className="flex justify-between items-center px-5 py-3">
           <h1 className="font-bold text-head1 text-grassGreen">
