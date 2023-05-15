@@ -14,7 +14,7 @@ import { RiSearchLine } from 'react-icons/ri';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { BsCalendar2Date } from 'react-icons/bs';
 import { AiOutlineHeart } from 'react-icons/ai';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 
 const poppins = Poppins({
   weight: ['400', '600', '700'], // regular, bold, semibold
@@ -34,6 +34,21 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   const [locationInput, setLocationInput] = useState('');
+  const [adultNumber, setAdultNumber] = useState(0);
+  const [petNumber, setPetNumber] = useState(0);
+  const [childrenNumber, setChildrenNumber] = useState(0);
+  const increaseNumber = (state: Dispatch<SetStateAction<number>>) => {
+    state(prev => prev + 1);
+  };
+  const decreaseNumber = (state: Dispatch<SetStateAction<number>>) => {
+    state(prev => {
+      if (prev !== 0) {
+        return prev - 1;
+      } else {
+        return 0;
+      }
+    });
+  };
 
   return (
     <html lang="en" className={`${poppins.variable}`}>
@@ -57,7 +72,7 @@ export default function RootLayout({
         <div className=" flex justify-center items-center mt-[-2rem]">
           <div className="flex relative">
             {/* location popup */}
-            <div className="absolute top-[110%] left-1/2 translate-x-[-50%] w-[160%] p-2 rounded-3xl bg-whiteLight text-black z-[30]">
+            {/* <div className="absolute top-[110%] left-1/2 translate-x-[-50%] w-[160%] p-2 rounded-3xl bg-whiteLight text-black z-[30]">
               <div className="flex items-center gap-5 p-3 bg-whiteDark  rounded-3xl">
                 <RiSearchLine color="black" />
                 <input
@@ -94,6 +109,93 @@ export default function RootLayout({
                         </li>
                       );
                     })}
+              </ul>
+            </div> */}
+
+            {/* guests popup */}
+            <div className="absolute top-[110%] left-1/2 translate-x-[-50%] w-[110%] p-5 rounded-3xl bg-whiteLight text-black z-[30]">
+              <ul className="flex flex-col gap-10 text-sm">
+                <li className="flex justify-between">
+                  <label htmlFor="adults" className="font-bold">
+                    Adults
+                  </label>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
+                      onClick={() => decreaseNumber(setAdultNumber)}
+                    >
+                      -
+                    </button>
+                    <input
+                      type="text"
+                      id="adults"
+                      className="w-[30px] text-center font-bold bg-transparent  inline-block"
+                      value={adultNumber}
+                      readOnly
+                    />
+                    <button
+                      onClick={() => increaseNumber(setAdultNumber)}
+                      className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
+                    >
+                      +
+                    </button>
+                  </div>
+                </li>
+                <li className="flex justify-between">
+                  <label htmlFor="children" className="font-bold">
+                    Children
+                  </label>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => decreaseNumber(setChildrenNumber)}
+                      className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
+                    >
+                      -
+                    </button>
+                    <input
+                      type="text"
+                      id="children"
+                      value={childrenNumber}
+                      className="w-[30px] text-center font-bold bg-transparent  inline-block"
+                      readOnly
+                    />
+                    <button
+                      onClick={() => increaseNumber(setChildrenNumber)}
+                      className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
+                    >
+                      +
+                    </button>
+                  </div>
+                </li>
+                <li className="flex justify-between">
+                  <label htmlFor="pets" className="font-bold">
+                    Pets
+                  </label>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => decreaseNumber(setPetNumber)}
+                      className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
+                    >
+                      -
+                    </button>
+                    <input
+                      type="text"
+                      id="pets"
+                      value={petNumber}
+                      readOnly
+                      className="w-[30px] text-center font-bold bg-transparent  inline-block"
+                    />
+                    <button
+                      onClick={() => increaseNumber(setPetNumber)}
+                      className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
+                    >
+                      +
+                    </button>
+                  </div>
+                </li>
               </ul>
             </div>
 
