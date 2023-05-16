@@ -5,8 +5,9 @@ import { IoGlobeOutline, IoFastFoodOutline } from 'react-icons/io5';
 import { FaSwimmingPool } from 'react-icons/fa';
 import { TbBeach } from 'react-icons/tb';
 import { CgCoffee } from 'react-icons/cg';
+import { GrHomeRounded } from 'react-icons/gr';
+import { BsAirplane } from 'react-icons/bs';
 import { IconType } from 'react-icons';
-import { useState, useEffect } from 'react';
 
 interface Category {
   name: string;
@@ -65,7 +66,7 @@ export default function PropertyPage() {
           <p>Catania, Italy</p>
         </div>
       </section>
-      <nav className={`top-0 py-10 sticky bg-white`}>
+      <nav className={`top-0 py-10 sticky bg-white height-[80px]`}>
         <ul className="flex gap-8 text-body-lg">
           <li className="">
             <a href="#photo">Photo</a>
@@ -131,9 +132,44 @@ export default function PropertyPage() {
               </li>
             </ul>
           </section>
-        
         </div>
-        <div className="flex-[40%]">right</div>
+        <div className="flex-[40%] pb-7 sticky top-[17%] h-fit">
+          <div className="bg-silverGrey rounded-2xl py-20 px-8 flex flex-col gap-6">
+            <div className="flex gap-5">
+              <div className="bg-whiteLight rounded-2xl p-3 flex flex-col justify-between gap-4 flex-1">
+                <GrHomeRounded size={30} />
+                <p className="font-semibold text-body-lg">Arrival</p>
+                <p className="text-body-sm">2023 March 19</p>
+              </div>
+              <div className="bg-whiteLight rounded-2xl p-3 flex flex-col justify-between gap-4 flex-1">
+                <BsAirplane size={30} />
+                <p className="font-semibold text-body-lg">Departure</p>
+                <p className="text-body-sm">2023 March 22</p>
+              </div>
+            </div>
+            <div className="bg-whiteLight rounded-2xl flex justify-between items-center p-3">
+              <p className="font-semibold">Guests</p>
+              <span>3</span>
+            </div>
+            <button className="bg-grassGreen text-white flex items-center justify-center px-16 py-3 font-semibold rounded-3xl">
+              Book apartment
+            </button>
+            <ul className="bg-whiteLight rounded-2xl flex flex-col gap-3 p-3">
+              <li className="flex items-center justify-between">
+                <p className="font-semibold">Per night</p>
+                <span>227$</span>
+              </li>
+              <li className="flex items-center justify-between">
+                <p className="font-semibold">Discount</p>
+                <span>-10%</span>
+              </li>
+              <li className="flex items-center justify-between">
+                <p className="font-semibold">in total</p>
+                <span>2227$</span>
+              </li>
+            </ul>
+          </div>
+        </div>
       </div>
     </main>
   );
