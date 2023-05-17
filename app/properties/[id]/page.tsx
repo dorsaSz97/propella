@@ -1,5 +1,5 @@
 'use client';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 import { AiOutlineHeart, AiOutlineCar } from 'react-icons/ai';
 import { IoGlobeOutline, IoFastFoodOutline } from 'react-icons/io5';
 import { FaSwimmingPool } from 'react-icons/fa';
@@ -7,7 +7,24 @@ import { TbBeach } from 'react-icons/tb';
 import { CgCoffee } from 'react-icons/cg';
 import { GrHomeRounded } from 'react-icons/gr';
 import { BsAirplane } from 'react-icons/bs';
+import { SlArrowRight } from 'react-icons/sl';
 import { IconType } from 'react-icons';
+
+// import KitchenImg from '../../../public/kitchen.jpg';
+// import BathroomImg from '../../../public/bathroom.jpg';
+// import BedroomImg from '../../../public/bedroom.jpg';
+import { useEffect, useState } from 'react';
+
+// interface ImgOption {
+//   name: string;
+//   src: StaticImageData;
+// }
+
+// const rooms: ImgOption[] = [
+//   { name: 'bathroom', src: BathroomImg },
+//   { name: 'kitchen', src: KitchenImg },
+//   { name: 'bedroom', src: BedroomImg },
+// ];
 
 interface Category {
   name: string;
@@ -19,7 +36,34 @@ const categories: Category[] = [
   { name: 'Pool', icon: FaSwimmingPool },
 ];
 
+enum Gallery {
+  Kitchen,
+  Bathroom,
+  Bedroom,
+  Outside,
+}
 export default function PropertyPage() {
+  const [galleryOption, setGalleryOption] = useState<Gallery>(Gallery.Outside);
+  // const [bgUrl, setBgUrl] = useState('/prop1.jpg');
+
+  // useEffect(() => {
+  //   switch (galleryOption) {
+  //     case Gallery.Bathroom:
+  //       setBgUrl('/bathroom.jpg');
+  //       break;
+  //     case Gallery.Bedroom:
+  //       setBgUrl('/bedroom.jpg');
+  //       break;
+  //     case Gallery.Kitchen:
+  //       setBgUrl('/kitchen.jpg');
+  //       break;
+  //     case Gallery.Outside:
+  //       setBgUrl('/prop1.jpg');
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // }, [galleryOption]);
   return (
     <main className="px-16 py-14">
       {/* photos */}
@@ -131,6 +175,63 @@ export default function PropertyPage() {
                 <p className="font-semibold capitalize">Coffee machine</p>
               </li>
             </ul>
+          </section>
+
+          {/* gallery */}
+          <section className="rounded-2xl">
+            {/* bg */}
+            <div className={`h-[400px] flex flex-col justify-between p-8`}>
+              <div className="flex justify-between">
+                <div>
+                  <h3 className="text-head3 mb-3 mt-6 font-bold text-white">
+                    Virtual tour
+                  </h3>
+                  <p className="text-white">
+                    Tap on objects to see the details
+                  </p>
+                </div>
+                <div className="flex items-center gap-2">
+                  <p className="rotate-90 text-white">Kitchen</p>
+                  <button>
+                    <SlArrowRight />
+                  </button>
+                </div>
+              </div>
+              <ul className="flex gap-3 self-end">
+                <li className="rounded-2xl p-4 bg-silverGrey text-white hover:text-black hover:bg-white">
+                  <button
+                    className="w-full h-full flex items-center justify-center"
+                    onClick={() => setGalleryOption(Gallery.Outside)}
+                  >
+                    Outside
+                  </button>
+                </li>
+                <li className="rounded-2xl p-5 bg-silverGrey text-white hover:text-black hover:bg-white">
+                  <button
+                    className="w-full h-full flex items-center justify-center"
+                    onClick={() => setGalleryOption(Gallery.Bathroom)}
+                  >
+                    Bathroom
+                  </button>
+                </li>
+                <li className="rounded-2xl p-5 bg-silverGrey text-white hover:text-black hover:bg-white">
+                  <button
+                    className="w-full h-full flex items-center justify-center"
+                    onClick={() => setGalleryOption(Gallery.Bedroom)}
+                  >
+                    Bedroom
+                  </button>
+                </li>
+                <li className="rounded-2xl p-5 bg-silverGrey text-white hover:text-black hover:bg-white">
+                  <button
+                    className="w-full h-full flex items-center justify-center"
+                    onClick={() => setGalleryOption(Gallery.Kitchen)}
+                  >
+                    Kitchen
+                  </button>
+                </li>
+              </ul>
+            </div>
           </section>
         </div>
         <div className="flex-[40%] pb-7 sticky top-[17%] h-fit">
