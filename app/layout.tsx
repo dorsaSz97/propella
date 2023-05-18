@@ -16,7 +16,7 @@ import { VscListFlat } from 'react-icons/vsc';
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 
 const poppins = Poppins({
-  weight: ['400', '600', '700'], // regular, bold, semibold
+  weight: ['400', '600', '700', '800'], // regular, bold, semibold
   style: 'normal',
   subsets: ['latin'],
   variable: '--font-poppins',
@@ -34,9 +34,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${poppins.variable}`}>
-      <body className={`text-text-dark font-poppins px-5`}>
+      <body className={`text-text-dark font-poppins `}>
         {/* navigation */}
-        <header className="flex justify-between items-center px-5 py-3">
+        {/* <header className="flex justify-between items-center px-5 py-3">
           <h1 className="font-bold text-head1 text-grassGreen">
             <a href="/">Propella</a>
           </h1>
@@ -48,7 +48,7 @@ export default function RootLayout({
               Register
             </button>
           </div>
-        </header>
+        </header> */}
 
         {children}
       </body>

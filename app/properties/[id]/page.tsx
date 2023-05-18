@@ -9,11 +9,14 @@ import { GrHomeRounded } from 'react-icons/gr';
 import { BsAirplane } from 'react-icons/bs';
 import { SlArrowRight } from 'react-icons/sl';
 import { IconType } from 'react-icons';
-
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+import { addDays } from 'date-fns';
 // import KitchenImg from '../../../public/kitchen.jpg';
 // import BathroomImg from '../../../public/bathroom.jpg';
 // import BedroomImg from '../../../public/bedroom.jpg';
 import { useEffect, useState } from 'react';
+import { DateRangePicker } from 'react-date-range';
 
 interface ImgOption {
   name: string;
@@ -43,8 +46,29 @@ enum Gallery {
   Outside,
 }
 export default function PropertyPage() {
+  const [state, setState] = useState({
+    selection1: {
+      startDate: addDays(new Date(), 1),
+      endDate: addDays(new Date(), 7),
+      key: 'selection1',
+      color: '#3b6552',
+    },
+    selection2: {
+      startDate: addDays(new Date(), 15),
+      endDate: addDays(new Date(), 23),
+      key: 'selection2',
+      color: '#3b6552',
+    },
+  });
   const [galleryOption, setGalleryOption] = useState<Gallery>(Gallery.Outside);
   const [bgUrl, setBgUrl] = useState('/prop1.jpg');
+  // const [dateRange, setDateRange] = useState<Range[]>([
+  //   {
+  //     startDate: new Date(),
+  //     endDate: new Date(),
+  //     key: 'reservation',
+  //   },
+  // ]);
 
   useEffect(() => {
     switch (galleryOption) {
@@ -238,6 +262,28 @@ export default function PropertyPage() {
                   </button>
                 </li>
               </ul>
+            </div>
+          </section>
+          {/* available dates */}
+          <section>
+            <h3 className="text-head3 mb-3 mt-6 font-bold">Available dates</h3>
+            <div className="absolute top-[110%] left-1/2 translate-x-[-50%] z-[30] rounded-3xl">
+              <DateRangePicker
+                months={2}
+                ranges={[state.selection1, state.selection2]}
+                direction="horizontal"
+                minDate={new Date()}
+                maxDate={addDays(new Date(), -1)}
+                // focusedRange={}
+                // rangeColors={}
+
+                // onChange={ranges => {
+                //   setDateRange([ranges.reservation]);
+                // }}
+                // showPreview={true}
+                // rangeColors={['#f3f3f3']}
+                // disabledDates={[]}
+              />
             </div>
           </section>
         </div>

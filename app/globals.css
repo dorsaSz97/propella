@@ -71,10 +71,10 @@ ul {
   content: '';
   position: absolute;
   top: 50%;
-  left: 93%;
-  width: 10px;
-  height: 35px;
-  border-radius: 7%;
+  left: 63%;
+  width: 56.6px;
+  height: 48px;
+  border-radius: 38%;
   background-color: #e6e6e8;
   transform: translateY(-50%);
   z-index: -1;
@@ -121,4 +121,7 @@ ul {
   backdrop-filter: blur(21px);
   border-radius: 35px;
   overflow: hidden;
+}
+.rdrDayDisabled {
+  background-color: transparent;
 }
