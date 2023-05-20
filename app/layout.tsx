@@ -16,7 +16,7 @@ import { VscListFlat } from 'react-icons/vsc';
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 
 const poppins = Poppins({
-  weight: ['400', '600', '700', '800'], // regular, bold, semibold
+  weight: ['400', '600', '700', '800', '900'], // regular, bold, semibold
   style: 'normal',
   subsets: ['latin'],
   variable: '--font-poppins',

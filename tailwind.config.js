@@ -9,8 +9,9 @@ module.exports = {
         poppins: 'var(--font-poppins)',
       },
       colors: {
-        whiteLight: '#F2F2F2',
+        whiteLight: '#FbFbFb',
         whiteDark: '#F5F5F5',
+        whiteDarker: '#F0F0F0',
         silverGrey: '#e6e6e8',
         pistachio: '#c9d9d2',
         grassGreen: '#3b6552',

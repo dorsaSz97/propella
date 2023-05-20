@@ -1,17 +1,16 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import axios from 'axios';
-import { useForm, SubmitHandler } from 'react-hook-form';
-import { ISignupInputs } from '@/app/types';
+import { FieldValues, useForm } from 'react-hook-form';
+import Input from './Input';
 
 const RegisterForm = () => {
   const router = useRouter();
+
   const {
     register,
-    handleSubmit,
     formState: { errors },
-  } = useForm<ISignupInputs>({
+  } = useForm<FieldValues>({
     defaultValues: {
       email: '',
       password: '',
@@ -19,60 +18,45 @@ const RegisterForm = () => {
     },
   });
 
-  // const formSubmitHandler: SubmitHandler<ISignupInputs> = values => {
-  //   axios
-  //     .post('/api/signup', values)
-  //     .then(() => {
-  //       router.push('/getting-started?type=login');
-  //     })
-  //     .catch(error => {
-  //       alert(error);
-  //     });
-  // };
-
   return (
     <>
       <form className="flex flex-col gap-3">
-        <input
+        <Input
+          registerFn={register}
+          fieldName="name"
           placeholder="full name"
-          {...register('name')}
-          className="bg-silverGrey p-2 text-body-lg rounded-[1000px] placeholder:capitalize"
+          errors={errors}
+          errorMsg="name is required"
         />
-        <input
-          {...register('email', { required: true })}
+        <Input
+          registerFn={register}
+          fieldName="email"
           type="email"
           placeholder="email"
-          className="bg-silverGrey p-2 text-body-lg rounded-[1000px] placeholder:capitalize"
+          errors={errors}
+          errorMsg="email is required"
         />
-        {errors.email && <span>Email is required</span>}
-        <input
-          {...register('password', { required: true })}
+        <Input
+          registerFn={register}
+          fieldName="password"
           type="password"
           placeholder="password"
-          className="bg-silverGrey p-2 text-body-lg rounded-[1000px] placeholder:capitalize"
+          errors={errors}
+          errorMsg="password is required"
         />
-        {errors.password && <span>Pass is required</span>}
         <button
           type="submit"
-          className="bg-grassGreen p-2 rounded-[1000px] text-white"
+          className="px-2 py-4 mt-2 rounded-[1000px] bg-grassGreen text-white"
         >
           Start
         </button>
       </form>
-      <button onClick={() => router.push('/get-started?type=login')}>
+      <button
+        onClick={() => router.push('/getting-started?type=login')}
+        className="block mt-3 mx-auto font-semibold"
+      >
         Already have an account?
       </button>
-      {/* <form onSubmit={handleSubmit(formSubmitHandler)}>
-        <input {...register('name')} />
-        <input {...register('email', { required: true })} type="email" />
-        {errors.email && <span>Email is required</span>}
-        <input {...register('password', { required: true })} type="password" />
-        {errors.password && <span>Pass is required</span>}
-        <button type="submit">Start</button>
-      </form>
-      <button onClick={() => router.push('/get-started?type=login')}>
-        Already have an account?
-      </button> */}
     </>
   );
 };

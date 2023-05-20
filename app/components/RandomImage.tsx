@@ -30,6 +30,7 @@ const RandomImage = () => {
       fill={true} // setting the position to relative. no need to set the w and h
       priority={true}
       alt="Random image of an appartment"
+      className="object-cover"
     />
   );
 };
