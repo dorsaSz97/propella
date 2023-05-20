@@ -19,11 +19,11 @@ export default async function GettingStartedPage({
     <main className="h-screen w-screen py-6 px-12">
       <section className="flex h-full w-full rounded-2xl overflow-hidden">
         {/* left side: form */}
-        <div className="flex-1 flex flex-col items-center justify-between">
-          <h1 className="mb-8 font-bold text-grassGreen text-[20px]">
+        <div className="flex-1 flex flex-col p-4">
+          <h1 className="mb-8 font-bold text-grassGreen text-[20px] text-center">
             Propella
           </h1>
-          <p className="mb-20 font-extrabold text-[35px]">
+          <p className="mb-20 font-extrabold text-[35px] text-center">
             Choose your <br /> perfect place
           </p>
           <div className=" flex justify-center items-center">
@@ -48,8 +48,8 @@ export default async function GettingStartedPage({
             </div>
           </div>
 
-          <span className="my-6">or</span>
-          <div>{formContent}</div>
+          <span className="my-6 text-center">or</span>
+          <div className="w-[60%] mx-auto">{formContent}</div>
         </div>
 
         {/* right side: image */}

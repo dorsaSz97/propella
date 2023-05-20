@@ -41,14 +41,30 @@ const LoginForm = () => {
       <button onClick={() => router.push('/getting-started?type=register')}>
         Wanna create an account?
       </button> */}
-      <form>
-        <input {...register('email', { required: true })} type="email" />
+      <form className="flex flex-col gap-3">
+        <input
+          {...register('email', { required: true })}
+          type="email"
+          className="bg-silverGrey p-2 text-body-lg rounded-[1000px] placeholder:capitalize"
+        />
         {errors.email && <span>Email is required</span>}
-        <input {...register('password', { required: true })} type="password" />
+        <input
+          {...register('password', { required: true })}
+          type="password"
+          className="bg-silverGrey p-2 text-body-lg rounded-[1000px] placeholder:capitalize"
+        />
         {errors.password && <span>Pass is required</span>}
-        <button type="submit">Start</button>
+        <button
+          type="submit"
+          className="bg-grassGreen p-2 rounded-[1000px] text-white"
+        >
+          Start
+        </button>
       </form>
-      <button onClick={() => router.push('/get-started?type=register')}>
+      <button
+        onClick={() => router.push('/get-started?type=register')}
+        className="mt-3 mx-auto block"
+      >
         Wanna create an account?
       </button>
     </>
