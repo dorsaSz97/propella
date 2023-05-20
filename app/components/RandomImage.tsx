@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 const RandomImage = () => {
@@ -25,13 +25,21 @@ const RandomImage = () => {
   }, []);
 
   return (
-    <Image
-      src={imageUrl}
-      fill={true} // setting the position to relative. no need to set the w and h
-      priority={true}
-      alt="Random image of an appartment"
-      className="object-cover"
-    />
+    <>
+      {imageUrl ? (
+        <Image
+          priority={true}
+          fill={true} // setting the position to absolute. no need to set the w and h, its 100% of the parent's.
+          src={imageUrl}
+          alt="Random image of an appartment"
+          className="object-cover"
+          // placeholder='blur'
+          // blurDataURL=''
+        />
+      ) : (
+        <div className="w-full h-full bg-silverGrey bg-opacity-40 animate-pulse" />
+      )}
+    </>
   );
 };
 
