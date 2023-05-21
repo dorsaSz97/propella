@@ -13,8 +13,8 @@ const RandomImage = () => {
         const response: { data: { urls: { regular: string } } } =
           await axios.get('https://api.unsplash.com/photos/random', {
             params: {
-              client_id: 'PLRhf3GZuX4rsXKj2Lgf_lc656eRnjDoM8Ak1N3fKVk',
-              query: 'appartment',
+              client_id: process.env.NEXT_PUBLIC_UNSPLASH_KEY,
+              query: 'apartment',
             },
           });
         setImageUrl(response.data.urls.regular);
