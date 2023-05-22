@@ -1,5 +1,5 @@
 'use client';
-
+import { signOut } from 'next-auth/react';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import Image from 'next/image';
@@ -9,7 +9,7 @@ import { RxPerson } from 'react-icons/rx';
 import { RiSearchLine } from 'react-icons/ri';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
 import { IoMapOutline } from 'react-icons/io5';
-import { BsCalendar2Date } from 'react-icons/bs';
+import { BsCalendar2Date } from 'react-icons/bs'; 
 import { AiOutlineHeart } from 'react-icons/ai';
 import { VscListFlat } from 'react-icons/vsc';
 import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
@@ -214,7 +214,7 @@ export default function PropertiesPage() {
           </div>
         </div>
       </div>
-
+<button onClick={() => signOut()}>out</button>
       {/* filters */}
       <div className="p-8 flex gap-2">
         <ul className="flex gap-2 items-center">

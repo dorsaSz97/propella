@@ -1,11 +1,14 @@
+import { formTypes } from '@/app/types';
 import { AiOutlineGithub, AiOutlineGoogle } from 'react-icons/ai';
 import { BsFacebook } from 'react-icons/bs';
 import LoginForm from '@/app/components/Forms/LoginForm';
 import RegisterForm from '@/app/components/Forms/RegisterForm';
+import ProviderButton from '@/app/components/Forms/ProviderButton';
 import RandomImage from '@/app/components/RandomImage';
 
-type formTypes = {
-  type: 'login' | 'register';
+export const metadata = {
+  title: 'Get Started',
+  description: 'Real Estate Listings Login/Register',
 };
 export default async function GettingStartedPage({
   searchParams,
@@ -14,6 +17,7 @@ export default async function GettingStartedPage({
 }) {
   const formContent =
     searchParams.type === 'login' ? <LoginForm /> : <RegisterForm />;
+
   return (
     <main className="flex items-center justify-center h-screen w-screen bg-whiteDark">
       <section className="flex h-[90%] w-[80%] p-4 bg-whiteLight rounded-2xl shadow-xl shadow-silverGrey">
@@ -28,17 +32,18 @@ export default async function GettingStartedPage({
           </p>
 
           <div className="flex justify-center items-center relative">
-            <button className="flex justify-center items-center h-[75px] w-[75px] rounded-full  bg-silverGrey btn--search">
-              <AiOutlineGoogle size={20} />
-            </button>
-
-            <button className="flex justify-center items-center h-[75px] w-[75px] rounded-full  bg-silverGrey btn--search">
-              <BsFacebook size={20} />
-            </button>
-
-            <button className="flex justify-center items-center h-[75px] w-[75px] rounded-full  bg-silverGrey btn--search">
-              <AiOutlineGithub size={20} />
-            </button>
+            <ProviderButton
+              providerName="facebook"
+              btnIcon={<BsFacebook size={20} />}
+            />
+            <ProviderButton
+              providerName="github"
+              btnIcon={<AiOutlineGithub size={20} />}
+            />
+            <ProviderButton
+              providerName="google"
+              btnIcon={<AiOutlineGoogle size={20} />}
+            />
           </div>
 
           <span className="my-2 text-center">or</span>
