@@ -5,6 +5,7 @@ import LoginForm from '@/app/components/Forms/LoginForm';
 import RegisterForm from '@/app/components/Forms/RegisterForm';
 import ProviderButton from '@/app/components/Forms/ProviderButton';
 import RandomImage from '@/app/components/RandomImage';
+import getCurrentUser from '../libs/getCurrentUser';
 
 export const metadata = {
   title: 'Get Started',
@@ -15,6 +16,8 @@ export default async function GettingStartedPage({
 }: {
   searchParams: formTypes;
 }) {
+  const currentUser = await getCurrentUser();
+  console.log(currentUser);
   const formContent =
     searchParams.type === 'login' ? <LoginForm /> : <RegisterForm />;
 
