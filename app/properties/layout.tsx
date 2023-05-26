@@ -1,3 +1,6 @@
+import { authOptions } from '@/pages/api/auth/[...nextauth]';
+import { getServerSession } from 'next-auth';
+
 export const metadata = {
   title: 'Propella',
   description: 'Real Estate Listings',
@@ -8,6 +11,8 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(authOptions);
+  console.log(session);
   return (
     <>
       <header className="flex justify-between items-center px-5 py-3">

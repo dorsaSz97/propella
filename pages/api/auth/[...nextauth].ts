@@ -25,7 +25,7 @@ export const authOptions: AuthOptions = {
   pages: {
     signIn: '/getting-started?type=login',
   },
-  debug: process.env.NODE_ENV === 'development',
+  // debug: process.env.NODE_ENV === 'development',
   session: {
     strategy: 'jwt',
   },
