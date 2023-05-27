@@ -1,10 +1,6 @@
 'use client';
-import { signOut, useSession } from 'next-auth/react';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+
 import Image from 'next/image';
-import countries from 'world-countries';
-import { DateRangePicker, Range } from 'react-date-range';
 import { RxPerson } from 'react-icons/rx';
 import { RiSearchLine } from 'react-icons/ri';
 import { HiOutlineLocationMarker } from 'react-icons/hi';
@@ -12,197 +8,72 @@ import { IoMapOutline } from 'react-icons/io5';
 import { BsCalendar2Date } from 'react-icons/bs';
 import { AiOutlineHeart } from 'react-icons/ai';
 import { VscListFlat } from 'react-icons/vsc';
-import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
+import { ReactElement, useEffect, useState } from 'react';
+import Locations from '../components/SearchBar/Popups/Locations';
+import Calender from '../components/SearchBar/Popups/Calender';
+import Guests from '../components/SearchBar/Popups/Guests';
+import { FiltersType } from '../types';
+import Filters from '../components/Filters';
 
 export default function PropertiesPage() {
-  const [locationInput, setLocationInput] = useState('');
-  const [adultNumber, setAdultNumber] = useState(0);
-  const [petNumber, setPetNumber] = useState(0);
-  const [childrenNumber, setChildrenNumber] = useState(0);
   const [mapView, setIsMapView] = useState(false);
-  const increaseNumber = (state: Dispatch<SetStateAction<number>>) => {
-    state(prev => prev + 1);
-  };
-  const decreaseNumber = (state: Dispatch<SetStateAction<number>>) => {
-    state(prev => {
-      if (prev !== 0) {
-        return prev - 1;
-      } else {
-        return 0;
-      }
-    });
-  };
-  const [dateRange, setDateRange] = useState<Range[]>([
-    {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: 'reservation',
-    },
-  ]);
+  const [filters, setFilters] = useState<FiltersType>({
+    location: '',
+    guests: { children: 0, adults: 0, pets: 0 },
+    calender: { startDate: undefined, endDate: undefined },
+  });
+  const [popup, setPopup] = useState('');
+  const [popupEl, setPopupEl] = useState<null | ReactElement>(null);
+
+  useEffect(() => {
+    switch (popup) {
+      case 'location':
+        setPopupEl(<Locations setFilters={setFilters} />);
+        break;
+      case 'calender':
+        setPopupEl(<Calender setFilters={setFilters} />);
+        break;
+      case 'guests':
+        setPopupEl(<Guests setFilters={setFilters} />);
+        break;
+      default:
+        setPopupEl(null);
+        break;
+    }
+  }, [popup]);
 
   return (
     <main>
       {/* searchbox */}
       <div className=" flex justify-center items-center mt-[-2rem]">
         <div className="flex relative">
-          {/* location popup */}
-          {/* <div className="absolute top-[110%] left-1/2 translate-x-[-50%] w-[160%] p-2 rounded-3xl bg-whiteLight text-black z-[30]">
-              <div className="flex items-center gap-5 p-3 bg-whiteDark  rounded-3xl">
-                <RiSearchLine color="black" />
-                <input
-                  className="bg-transparent rounded-xl inline-block w-full p-2"
-                  type="text"
-                  placeholder="Enter location"
-                  value={locationInput}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setLocationInput(e.target.value)
-                  }
-                />
-              </div>
-
-              <ul className="py-4 px-2 flex flex-col gap-3">
-                {locationInput &&
-                  countries
-                    .filter(country =>
-                      country.name.common
-                        .toLowerCase()
-                        .startsWith(locationInput.toLowerCase())
-                    )
-                    .slice(0, 4)
-                    .map(enteredCountry => {
-                      return (
-                        <li
-                          key={enteredCountry.name.common}
-                          onClick={() =>
-                            setLocationInput(enteredCountry.name.common)
-                          }
-                          className="cursor-pointer flex gap-6 p-2 rounded-3xl hover:bg-whiteDark font-semibold"
-                        >
-                          {enteredCountry.name.common}
-                          <span className="font-normal">3</span>
-                        </li>
-                      );
-                    })}
-              </ul>
-            </div> */}
-
-          {/* guests popup */}
-          {/* <div className="absolute top-[110%] left-1/2 translate-x-[-50%] w-[110%] p-5 rounded-3xl bg-whiteLight text-black z-[30]">
-              <ul className="flex flex-col gap-10 text-sm">
-                <li className="flex justify-between">
-                  <label htmlFor="adults" className="font-bold">
-                    Adults
-                  </label>
-
-                  <div className="flex items-center gap-2">
-                    <button
-                      className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
-                      onClick={() => decreaseNumber(setAdultNumber)}
-                    >
-                      -
-                    </button>
-                    <input
-                      type="text"
-                      id="adults"
-                      className="w-[30px] text-center font-bold bg-transparent  inline-block"
-                      value={adultNumber}
-                      readOnly
-                    />
-                    <button
-                      onClick={() => increaseNumber(setAdultNumber)}
-                      className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
-                    >
-                      +
-                    </button>
-                  </div>
-                </li>
-                <li className="flex justify-between">
-                  <label htmlFor="children" className="font-bold">
-                    Children
-                  </label>
-
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => decreaseNumber(setChildrenNumber)}
-                      className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
-                    >
-                      -
-                    </button>
-                    <input
-                      type="text"
-                      id="children"
-                      value={childrenNumber}
-                      className="w-[30px] text-center font-bold bg-transparent  inline-block"
-                      readOnly
-                    />
-                    <button
-                      onClick={() => increaseNumber(setChildrenNumber)}
-                      className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
-                    >
-                      +
-                    </button>
-                  </div>
-                </li>
-                <li className="flex justify-between">
-                  <label htmlFor="pets" className="font-bold">
-                    Pets
-                  </label>
-
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => decreaseNumber(setPetNumber)}
-                      className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
-                    >
-                      -
-                    </button>
-                    <input
-                      type="text"
-                      id="pets"
-                      value={petNumber}
-                      readOnly
-                      className="w-[30px] text-center font-bold bg-transparent  inline-block"
-                    />
-                    <button
-                      onClick={() => increaseNumber(setPetNumber)}
-                      className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
-                    >
-                      +
-                    </button>
-                  </div>
-                </li>
-              </ul>
-            </div> */}
-
-          {/* calender popup */}
-          {/* <div className="absolute top-[110%] left-1/2 translate-x-[-50%] z-[30] rounded-3xl">
-              <DateRangePicker
-                minDate={new Date()}
-                months={2}
-                ranges={dateRange}
-                onChange={ranges => {
-                  setDateRange([ranges.reservation]);
-                }}
-                direction="horizontal"
-                showPreview={true}
-                rangeColors={['#f3f3f3']}
-                // disabledDates={[]}
-              />
-            </div> */}
+          <div className="absolute top-[110%] left-1/2 translate-x-[-50%] w-[110%] p-5 rounded-3xl bg-whiteLight text-black z-[30]">
+            {popupEl}
+          </div>
 
           <div className="rounded-full h-35 w-35 bg-silverGrey p-2 btn--search">
-            <button className="rounded-full h-25 w-25  p-5 text-lg">
+            <button
+              className="rounded-full h-25 w-25  p-5 text-lg"
+              onClick={() => setPopup('location')}
+            >
               <HiOutlineLocationMarker />
             </button>
           </div>
 
           <div className="rounded-full h-35 w-35 bg-silverGrey p-2 btn--search">
-            <button className="rounded-full h-25 w-25  p-5 text-lg">
+            <button
+              className="rounded-full h-25 w-25  p-5 text-lg"
+              onClick={() => setPopup('calender')}
+            >
               <BsCalendar2Date />
             </button>
           </div>
 
           <div className="rounded-full h-35 w-35 bg-silverGrey p-2 btn--search">
-            <button className="rounded-full h-25 w-25  p-5 text-lg">
+            <button
+              className="rounded-full h-25 w-25  p-5 text-lg"
+              onClick={() => setPopup('guests')}
+            >
               <RxPerson />
             </button>
           </div>
@@ -214,19 +85,9 @@ export default function PropertiesPage() {
           </div>
         </div>
       </div>
-      <button onClick={() => signOut()}>out</button>
-      {/* filters */}
-      <div className="p-8 flex gap-2">
-        <ul className="flex gap-2 items-center">
-          <li className="bg-silverGrey px-4 py-2 rounded-lg">Italy</li>
-          <li className="bg-silverGrey px-4 py-2 rounded-lg">24-28 March</li>
-          <li className="bg-silverGrey px-4 py-2 rounded-lg">
-            1 adult + 2 children
-          </li>
-        </ul>
-        <button className="bg-silverGrey px-4 py-2 rounded-lg ">Clear X</button>
-      </div>
 
+      {/* filters */}
+      <Filters filters={filters} setFilters={setFilters} />
       {/* lisings */}
       <div className="p-8 pt-0 flex flex-col">
         <div>

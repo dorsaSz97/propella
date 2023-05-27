@@ -1,3 +1,4 @@
+import Provider from './components/Provider';
 import './globals.css';
 import { Poppins } from 'next/font/google';
 
@@ -20,7 +21,9 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en" className={`${poppins.variable}`}>
-      <body className={`text-text-dark font-poppins `}>{children}</body>
+      <Provider>
+        <body className={`text-text-dark font-poppins `}>{children}</body>
+      </Provider>
     </html>
   );
 }
