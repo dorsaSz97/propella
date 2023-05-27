@@ -12,8 +12,9 @@ import { ReactElement, useEffect, useState } from 'react';
 import Locations from '../components/SearchBar/Popups/Locations';
 import Calender from '../components/SearchBar/Popups/Calender';
 import Guests from '../components/SearchBar/Popups/Guests';
-import { FiltersType } from '../types';
+import { FiltersType, Steps } from '../types';
 import Filters from '../components/Filters';
+import Popups from '../components/SearchBar/Popups/Popups';
 
 export default function PropertiesPage() {
   const [mapView, setIsMapView] = useState(false);
@@ -22,39 +23,39 @@ export default function PropertiesPage() {
     guests: { children: 0, adults: 0, pets: 0 },
     calender: { startDate: undefined, endDate: undefined },
   });
-  const [popup, setPopup] = useState('');
+  const [finalFilters, setFinalFilters] = useState<FiltersType | null>(null);
+
   const [popupEl, setPopupEl] = useState<null | ReactElement>(null);
+  const [step, setStep] = useState<Steps | null>(null);
 
   useEffect(() => {
-    switch (popup) {
-      case 'location':
-        setPopupEl(<Locations setFilters={setFilters} />);
+    switch (step) {
+      case Steps.Location:
+        setPopupEl(<Locations setFilters={setFilters} setStep={setStep} />);
         break;
-      case 'calender':
-        setPopupEl(<Calender setFilters={setFilters} />);
+      case Steps.Duration:
+        setPopupEl(<Calender setFilters={setFilters} setStep={setStep} />);
         break;
-      case 'guests':
-        setPopupEl(<Guests setFilters={setFilters} />);
+      case Steps.Guests:
+        setPopupEl(<Guests setFilters={setFilters} setStep={setStep} />);
         break;
       default:
         setPopupEl(null);
         break;
     }
-  }, [popup]);
+  }, [step]);
 
   return (
     <main>
       {/* searchbox */}
       <div className=" flex justify-center items-center mt-[-2rem]">
         <div className="flex relative">
-          <div className="absolute top-[110%] left-1/2 translate-x-[-50%] w-[110%] p-5 rounded-3xl bg-whiteLight text-black z-[30]">
-            {popupEl}
-          </div>
+          <Popups>{popupEl || <></>}</Popups>
 
           <div className="rounded-full h-35 w-35 bg-silverGrey p-2 btn--search">
             <button
               className="rounded-full h-25 w-25  p-5 text-lg"
-              onClick={() => setPopup('location')}
+              onClick={() => setStep(Steps.Location)}
             >
               <HiOutlineLocationMarker />
             </button>
@@ -63,7 +64,7 @@ export default function PropertiesPage() {
           <div className="rounded-full h-35 w-35 bg-silverGrey p-2 btn--search">
             <button
               className="rounded-full h-25 w-25  p-5 text-lg"
-              onClick={() => setPopup('calender')}
+              onClick={() => setStep(Steps.Duration)}
             >
               <BsCalendar2Date />
             </button>
@@ -72,14 +73,20 @@ export default function PropertiesPage() {
           <div className="rounded-full h-35 w-35 bg-silverGrey p-2 btn--search">
             <button
               className="rounded-full h-25 w-25  p-5 text-lg"
-              onClick={() => setPopup('guests')}
+              onClick={() => setStep(Steps.Guests)}
             >
               <RxPerson />
             </button>
           </div>
 
           <div className="rounded-full h-35 w-35 bg-silverGrey p-2">
-            <button className="rounded-full h-25 w-25 bg-grassGreen p-5 text-lg">
+            <button
+              className="rounded-full h-25 w-25 bg-grassGreen p-5 text-lg"
+              onClick={() => {
+                setStep(null);
+                setFinalFilters(filters);
+              }}
+            >
               <RiSearchLine color="white" />
             </button>
           </div>
@@ -87,7 +94,9 @@ export default function PropertiesPage() {
       </div>
 
       {/* filters */}
-      <Filters filters={filters} setFilters={setFilters} />
+      {finalFilters && (
+        <Filters filters={finalFilters} setFilters={setFinalFilters} />
+      )}
       {/* lisings */}
       <div className="p-8 pt-0 flex flex-col">
         <div>

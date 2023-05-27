@@ -9,4 +9,13 @@ export type FiltersType = {
   calender: { startDate: Date | undefined; endDate: Date | undefined };
 };
 
-export type PopupProps = { setFilters: Dispatch<SetStateAction<FiltersType>> };
+export type PopupProps = {
+  setFilters: Dispatch<SetStateAction<FiltersType>>;
+  setStep: Dispatch<SetStateAction<Steps | null>>;
+};
+
+export enum Steps {
+  Location = 1,
+  Duration,
+  Guests,
+}

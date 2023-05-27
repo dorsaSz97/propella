@@ -2,15 +2,16 @@
 import countries from 'world-countries';
 import { RiSearchLine } from 'react-icons/ri';
 import { ChangeEvent, useEffect, useState } from 'react';
-import { PopupProps } from '@/app/types';
+import { PopupProps, Steps } from '@/app/types';
 
-const Locations = ({ setFilters }: PopupProps) => {
+const Locations = ({ setFilters, setStep }: PopupProps) => {
   const [locationInput, setLocationInput] = useState('');
+  const [enteredLocationInput, setEnteredLocationInput] = useState('');
   useEffect(() => {
     setFilters(prev => {
-      return { ...prev, location: locationInput };
+      return { ...prev, location: enteredLocationInput };
     });
-  }, [locationInput]);
+  }, [enteredLocationInput]);
 
   return (
     <>
@@ -40,7 +41,10 @@ const Locations = ({ setFilters }: PopupProps) => {
               return (
                 <li
                   key={enteredCountry.name.common}
-                  onClick={() => setLocationInput(enteredCountry.name.common)}
+                  onClick={() => {
+                    setEnteredLocationInput(enteredCountry.name.common);
+                    setStep(Steps.Duration);
+                  }}
                   className="cursor-pointer flex gap-6 p-2 rounded-3xl hover:bg-whiteDark font-semibold"
                 >
                   {enteredCountry.name.common}

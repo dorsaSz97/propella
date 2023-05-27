@@ -1,8 +1,8 @@
 'use client';
-import { PopupProps } from '@/app/types';
+import { PopupProps, Steps } from '@/app/types';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-const Guests = ({ setFilters }: PopupProps) => {
+const Guests = ({ setFilters, setStep }: PopupProps) => {
   const [adultNumber, setAdultNumber] = useState(0);
   const [petNumber, setPetNumber] = useState(0);
   const [childrenNumber, setChildrenNumber] = useState(0);
@@ -117,6 +117,7 @@ const Guests = ({ setFilters }: PopupProps) => {
           </div>
         </li>
       </ul>
+      <button onClick={() => setStep(null)}>Set</button>
     </>
   );
 };
