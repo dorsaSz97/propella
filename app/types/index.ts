@@ -19,3 +19,9 @@ export enum Steps {
   Duration,
   Guests,
 }
+
+export interface ISignupInputs {
+  email: string;
+  password: string;
+  name: string | null;
+}

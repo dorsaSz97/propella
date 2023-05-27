@@ -1,14 +1,16 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useForm, FieldValues } from 'react-hook-form';
+import { useForm, FieldValues, SubmitHandler } from 'react-hook-form';
 import Input from './Input';
+import { signIn } from 'next-auth/react';
 
 const LoginForm = () => {
   const router = useRouter();
 
   const {
     register,
+    handleSubmit,
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
@@ -17,9 +19,21 @@ const LoginForm = () => {
     },
   });
 
+  const formSubmitHandler: SubmitHandler<FieldValues> = values => {
+    signIn('credentials', {
+      ...values,
+      // redirect: false,
+    }).catch(error => {
+      alert(error);
+    });
+  };
+
   return (
     <>
-      <form className="flex flex-col gap-3">
+      <form
+        className="flex flex-col gap-3"
+        onSubmit={handleSubmit(formSubmitHandler)}
+      >
         <Input
           registerFn={register}
           fieldName="email"

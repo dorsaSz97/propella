@@ -1,14 +1,17 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { FieldValues, useForm } from 'react-hook-form';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import Input from './Input';
+import { ISignupInputs } from '@/app/types';
+import axios from 'axios';
 
 const RegisterForm = () => {
   const router = useRouter();
 
   const {
     register,
+    handleSubmit,
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
@@ -18,9 +21,23 @@ const RegisterForm = () => {
     },
   });
 
+  const formSubmitHandler: SubmitHandler<FieldValues> = values => {
+    axios
+      .post('/api/signup', values)
+      .then(() => {
+        router.push('/getting-started?type=login');
+      })
+      .catch(error => {
+        alert(error);
+      });
+  };
+
   return (
     <>
-      <form className="flex flex-col gap-3">
+      <form
+        className="flex flex-col gap-3"
+        onSubmit={handleSubmit(formSubmitHandler)}
+      >
         <Input
           registerFn={register}
           fieldName="name"
