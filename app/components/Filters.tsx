@@ -12,25 +12,25 @@ const Filters = ({
     <div className="p-8 flex gap-2">
       <ul className="flex gap-2 items-center">
         {filters.location && (
-          <li className="bg-silverGrey px-4 py-2 rounded-lg">
+          <li className="bg-whiteLight px-4 py-2 rounded-xl">
             {filters.location}
           </li>
         )}
         {filters.calender.startDate && filters.calender.endDate && (
-          <li className="bg-silverGrey px-4 py-2 rounded-lg">
+          <li className="bg-whiteLight px-4 py-2 rounded-xl">
             {filters.calender.startDate.getDate()} -
             {filters.calender.endDate.getDate()}
           </li>
         )}
         {filters.guests.adults !== 0 &&
           (filters.guests.children || filters.guests.pets) && (
-            <li className="bg-silverGrey px-4 py-2 rounded-lg">
+            <li className="bg-whiteLight px-4 py-2 rounded-xl">
               {filters.guests.adults} adult + {filters.guests.children} children
             </li>
           )}
       </ul>
       <button
-        className="bg-silverGrey px-4 py-2 rounded-lg"
+        className="bg-whiteLight px-4 py-2 rounded-xl"
         onClick={() => setFilters(null)}
       >
         Clear

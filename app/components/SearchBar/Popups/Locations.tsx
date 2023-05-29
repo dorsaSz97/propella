@@ -15,7 +15,7 @@ const Locations = ({ setFilters, setStep }: PopupProps) => {
 
   return (
     <>
-      <div className="flex items-center gap-5 p-3 bg-whiteDark  rounded-3xl">
+      <div className="flex items-center gap-5 p-3 bg-whiteDark rounded-3xl">
         <RiSearchLine color="black" />
         <input
           className="bg-transparent rounded-xl inline-block w-full p-2"

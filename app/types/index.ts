@@ -1,8 +1,5 @@
 import { Dispatch, SetStateAction } from 'react';
 
-export type formTypes = {
-  type: 'login' | 'register';
-};
 export type FiltersType = {
   location: string;
   guests: { adults: number; children: number; pets: number };
@@ -20,8 +17,14 @@ export enum Steps {
   Guests,
 }
 
-export interface ISignupInputs {
-  email: string;
-  password: string;
-  name: string | null;
+export interface ICreatePropInputs {
+  title: string;
+  description: string;
+  price: number | null;
+  country: string;
+  address: string;
+  allowedGuests: number;
+  availableDates: Date[];
+  options: string[];
+  images: string[];
 }

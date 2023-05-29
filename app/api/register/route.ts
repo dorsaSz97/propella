@@ -1,16 +1,16 @@
 import { NextResponse } from 'next/server';
-import bcrypt from 'bcrypt';
 import prisma from '@/app/libs/client';
+import bcrypt from 'bcrypt';
 
 export async function POST(req: Request) {
   try {
-    const body = await req.json();
-    const { name, email, password } = body;
+    const { name, email, password } = await req.json();
+    if (!name || !email || !password)
+      throw new Error('Couldnt get the data properly');
 
     // changing up the original password for security reasons
     const hashedPassword = await bcrypt.hash(password, 12);
 
-    // creating a new user in the DB
     const newUser = await prisma.user.create({
       data: {
         name,
@@ -18,8 +18,10 @@ export async function POST(req: Request) {
         hashedPassword,
       },
     });
+
     return NextResponse.json({ user: newUser });
   } catch (error: any) {
+    console.log('error is:' + error);
     return NextResponse.error();
   }
 }

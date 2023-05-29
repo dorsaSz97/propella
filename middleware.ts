@@ -1,10 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { authOptions } from './pages/api/auth/[...nextauth]';
-import { getServerSession } from 'next-auth';
-import prisma from '@/app/libs/client';
 import { getToken } from 'next-auth/jwt';
 
-export async function middleware(request: NextRequest, response: NextResponse) {
+export async function middleware(request: NextRequest) {
+  // there will be a token if we are already signed in, otherwise its null
   const token = await getToken({ req: request });
 
   if (token) {

@@ -1,23 +1,19 @@
-import { formTypes } from '@/app/types';
-import { AiOutlineGithub, AiOutlineGoogle } from 'react-icons/ai';
-import { BsFacebook } from 'react-icons/bs';
 import LoginForm from '@/app/components/Forms/LoginForm';
 import RegisterForm from '@/app/components/Forms/RegisterForm';
 import ProviderButton from '@/app/components/Forms/ProviderButton';
 import RandomImage from '@/app/components/RandomImage';
-import getCurrentUser from '../libs/getCurrentUser';
+import { BsFacebook } from 'react-icons/bs';
+import { AiOutlineGithub, AiOutlineGoogle } from 'react-icons/ai';
 
 export const metadata = {
-  title: 'Get Started',
-  description: 'Real Estate Listings Login/Register',
+  title: 'Get Started | Login & Register',
+  description: 'Real Estate Listings Login/Register Page',
 };
 export default async function GettingStartedPage({
   searchParams,
 }: {
-  searchParams: formTypes;
+  searchParams: { type: 'login' | 'register' };
 }) {
-  const currentUser = await getCurrentUser();
-  console.log(currentUser);
   const formContent =
     searchParams.type === 'login' ? <LoginForm /> : <RegisterForm />;
 

@@ -1,5 +1,10 @@
-// This is your Prisma schema file,
+// This is the Prisma schema file,
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// the User, Account, Session and VerificationToken model should look exactly the same for the adapter to be able to create the models according to a specific provider
+
+// each model should have an id which is a string but a specific combination(objectId) and should be mapped to _id for it to work in mongodb. by default should be created automatically
+// if we wanted two models to have a relation, we should use @relation. then we choose a field from the current model and a reference field from the other one so the value from it can be stored in the field of the current model
 
 generator client {
   provider = "prisma-client-js"
@@ -10,49 +15,84 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+model User {
+  id                String @db.ObjectId @id @map("_id") @default(auto())
+  name              String?
+  email             String? @unique
+  emailVerified     DateTime?
+  hashedPassword    String?
+  image             String?
+  favoriteIds       String[] @db.ObjectId
+  properties        Property[]
+  reservations      Reservation[]
+  accounts          Account[]
+  // sessions          Session[]
+}
+
+model Reservation {
+  id                String @db.ObjectId @id @map("_id") @default(auto())
+  guestId           String @db.ObjectId
+  propertyId        String @db.ObjectId  
+  startDate         DateTime
+  endDate           DateTime
+  totalPrice        Int
+  peopleStaying     Int
+  reservedAt        DateTime @default(now())
+
+  guest             User @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  property          Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+}
+
+model Property {
+  id                String @db.ObjectId @id @map("_id") @default(auto()) 
+  hostId            String @db.ObjectId
+  title             String
+  description       String
+  price             Int
+  country           String
+  address           String
+  allowedGuests     Int
+  availableDates    DateTime[]
+  options           String[]
+  images            String[]
+  reservations      Reservation[]
+
+  host              User @relation(fields: [hostId], references: [id], onDelete: Cascade)
+}
+
 model Account {
-  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId             String   @db.ObjectId
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?  @db.String
-  access_token       String?  @db.String
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?  @db.String
-  session_state      String?
-  refresh_token_expires_in Int?
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                        String @db.ObjectId @id @map("_id") @default(auto())
+  userId                    String @db.ObjectId
+  type                      String
+  provider                  String
+  providerAccountId         String
+  refresh_token             String? @db.String
+  access_token              String? @db.String
+  expires_at                Int?
+  token_type                String?
+  scope                     String?
+  id_token                  String? @db.String
+  session_state             String?
+  refresh_token_expires_in  Int?
+
+  user                      User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
+// model Session {
+//   id                String @db.ObjectId @id @map("_id") @default(auto())
+//   sessionToken      String @unique
+//   userId            String @db.ObjectId
+//   expires           DateTime
 
-model Session {
-  id  String  @id @default(auto()) @map("_id") @db.ObjectId
-  sessionToken String   @unique
-  userId            String   @db.ObjectId
-  expires      DateTime
-  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
+//   user              User @relation(fields: [userId], references: [id], onDelete: Cascade)
+// }
 
-model User {
-  id            String  @id @default(auto()) @map("_id") @db.ObjectId
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  hashedPassword String?
-  accounts      Account[]
-  sessions      Session[]
-}
+// model VerificationToken {
+//   identifier        String @db.ObjectId @id @map("_id") @default(auto())
+//   token             String @unique
+//   expires           DateTime
 
-model VerificationToken {
-  identifier String  @id @default(auto()) @map("_id") @db.ObjectId
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-}
+//   @@unique([identifier, token])
+// }

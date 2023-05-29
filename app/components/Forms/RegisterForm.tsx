@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation';
 import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 import Input from './Input';
-import { ISignupInputs } from '@/app/types';
 import axios from 'axios';
 
 const RegisterForm = () => {
@@ -23,7 +22,7 @@ const RegisterForm = () => {
 
   const formSubmitHandler: SubmitHandler<FieldValues> = values => {
     axios
-      .post('/api/signup', values)
+      .post('/api/register', values)
       .then(() => {
         router.push('/getting-started?type=login');
       })
