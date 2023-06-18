@@ -9,7 +9,7 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcrypt';
 
 export const authOptions: AuthOptions = {
-  // the connection tool between our app and the database services (ex. mongoDB)
+  // the connection tool between our app and a database service (ex. mongoDB)
   adapter: PrismaAdapter(prisma),
   providers: [
     GithubProvider({
@@ -28,17 +28,18 @@ export const authOptions: AuthOptions = {
 
     // handles signing in with arbitrary credentials
     // if the credentials are valid, returns => an object representing a user
-    // if the credentials are invalid returns => false|null
+    // if the credentials are invalid, returns => false|null
     CredentialsProvider({
-      name: 'Credentials', // this name is the one we write when we call the signIn fn (in there, should be all lowercased)
+      name: 'Credentials', // this name is the one we write when we call the signIn fn (in there though it should be lowercased)
       credentials: {
         // the blueprint of the credentials object that later on should be submitted for authorizing
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
 
-      // this callback fn is for when we want to authorize the user and gets executed when we call this: (signIn('credentials'), {credentials})
-      // takes the submitted credentials (with the same properties and more but the assigned values are string|null)
+      // callback fn for when we want to authorize the user
+      // gets executed when: (signIn('credentials'), {credentials})
+      // takes the submitted credentials (with the same properties thats been defined in the credentials object above and more. the assigned values type is: string|undefined)
       async authorize(credentials) {
         const enteredEmail = credentials?.email;
         const enteredPass = credentials?.password;
@@ -76,11 +77,13 @@ export const authOptions: AuthOptions = {
   // pages: {
   //   signIn: '/getting-started?type=login', // url of the login page
   // },
-  // debug: process.env.NODE_ENV === 'development',
 
+  debug: process.env.NODE_ENV === 'development',
+
+  // how to save the user session
   session: {
-    strategy: 'jwt', // session information will be stored and transmitted as a JWT
-    // by default having an adapter makes it to be 'database' but it was giving deleteSession error
+    strategy: 'jwt', // session information will be stored and transmitted as a JWT, stored in a session cookie (making the getToken fn available)
+    // by default its jwt but having an adapter makes the default to be 'database' and that was giving deleteSession error => jwt it is
   },
 
   // an important security measure to protect user authentication and session-related information

@@ -19,9 +19,9 @@ const CreatePropModal = () => {
   const { close, isOpen } = useCreateProperty(state => state);
   const [imgUrls, setImgUrls] = useState<{
     main: string;
-    bathroom?: string;
-    bedroom?: string;
-    kitchen?: string;
+    bathroom: string;
+    bedroom: string;
+    kitchen: string;
   } | null>(null);
   const [imageStep, setImageStep] = useState<Image | null>(Image.Main);
   const [latLng, setLatlng] = useState<[number, number]>([0, 0]);
@@ -49,9 +49,9 @@ const CreatePropModal = () => {
     const newData: ICreatePropInputs = {
       images: [
         imgUrls!.main,
-        imgUrls!.bathroom ?? '',
-        imgUrls!.kitchen ?? '',
-        imgUrls!.bedroom ?? '',
+        imgUrls!.kitchen,
+        imgUrls!.bathroom,
+        imgUrls!.bedroom,
       ],
       title: values.title,
       description: values.description,
@@ -66,6 +66,7 @@ const CreatePropModal = () => {
     console.log(newData);
     axios.post('/api/homes', newData).then((res: any) => {
       close();
+      console.log(res);
       router.push(`/properties/${res.home.id}`);
     });
   };
@@ -133,8 +134,47 @@ const CreatePropModal = () => {
                 }}
                 onUpload={(res: any) => {
                   setImgUrls(prev => {
+                    setImageStep(Image.Kitchen);
+                    return {
+                      ...prev,
+                      main: res.info.secure_url,
+                      bedroom: '',
+                      bathroom: '',
+                      kitchen: '',
+                    };
+                  });
+                }}
+              >
+                {({ open }) => {
+                  function handleOnClick(e: any) {
+                    e.preventDefault();
+                    open();
+                  }
+                  return (
+                    <button onClick={handleOnClick}>Upload an Image</button>
+                  );
+                }}
+              </CldUploadWidget>
+            </>
+          )}
+          {imageStep === Image.Kitchen && (
+            <>
+              <p>kitchen</p>
+              <CldUploadWidget
+                uploadPreset="t7vnf4dl"
+                options={{
+                  sources: ['local'],
+                }}
+                onUpload={(res: any) => {
+                  setImgUrls(prev => {
                     setImageStep(Image.Bathroom);
-                    return { ...prev, main: res.info.secure_url };
+                    return {
+                      ...prev,
+                      kitchen: res.info.secure_url,
+                      main: prev!.main,
+                      bedroom: '',
+                      bathroom: '',
+                    };
                   });
                 }}
               >
@@ -160,11 +200,46 @@ const CreatePropModal = () => {
                 }}
                 onUpload={(res: any) => {
                   setImgUrls(prev => {
-                    setImageStep(null);
+                    setImageStep(Image.Bedroom);
                     return {
                       ...prev,
                       bathroom: res.info.secure_url,
                       main: prev!.main,
+                      kitchen: prev!.kitchen,
+                      bedroom: '',
+                    };
+                  });
+                }}
+              >
+                {({ open }) => {
+                  function handleOnClick(e: any) {
+                    e.preventDefault();
+                    open();
+                  }
+                  return (
+                    <button onClick={handleOnClick}>Upload an Image</button>
+                  );
+                }}
+              </CldUploadWidget>
+            </>
+          )}
+          {imageStep === Image.Bedroom && (
+            <>
+              <p>bedroom</p>
+              <CldUploadWidget
+                uploadPreset="t7vnf4dl"
+                options={{
+                  sources: ['local'],
+                }}
+                onUpload={(res: any) => {
+                  setImgUrls(prev => {
+                    setImageStep(null);
+                    return {
+                      ...prev,
+                      main: prev!.main,
+                      kitchen: prev!.kitchen,
+                      bathroom: prev!.bathroom,
+                      bedroom: res.info.secure_url,
                     };
                   });
                 }}

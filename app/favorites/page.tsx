@@ -1,22 +1,23 @@
-import { getCurrentUser, getFavorites } from '@/app/lib';
+import { getCurrentUser, getFavorites } from '@/app/libs';
 import PropertyCard from '@/app/components/PropertyCard';
 
 export default async function FavoritesPage() {
   const currentUser = await getCurrentUser();
-
-  if (!currentUser) return null;
+  if (!currentUser) throw new Error('No user found');
 
   const favorites = await getFavorites(currentUser);
-
-  // TODO: add error.js file
-  if (!favorites) return null;
+  if (!favorites) throw new Error('Error getting favorites of the user');
 
   return (
     <div>
       <p>All your favorites:</p>
-      {favorites.map(fav => {
-        return <PropertyCard key={fav.id} property={fav} />;
-      })}
+      {favorites.length !== 0 ? (
+        favorites.map(fav => {
+          return <PropertyCard property={fav} />;
+        })
+      ) : (
+        <p>No Favorites yet</p>
+      )}
     </div>
   );
 }

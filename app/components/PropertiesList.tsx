@@ -1,8 +1,6 @@
-import { getProperties } from '../libs';
-import Image from 'next/image';
-import { AiOutlineHeart } from 'react-icons/ai';
-import FavButton from './FavButton';
 import { Property } from '@prisma/client';
+import PropertyCard from './PropertyCard';
+import axios from 'axios';
 
 const PropertiesList = ({
   mapView,
@@ -20,24 +18,8 @@ const PropertiesList = ({
     >
       {properties.map(prop => {
         return (
-          <li>
-            <div className="relative mb-[1rem]">
-              <Image
-                src={prop.images[0]}
-                alt="property"
-                width={400}
-                height={400}
-                className={`rounded-[12%] object-cover w-full ${
-                  mapView ? 'h-[200px]' : 'h-[320px]'
-                } `}
-              />
-              <FavButton id={prop.id} />
-            </div>
-            <header className="flex justify-between items-center font-bold">
-              <h3 className="capitalize">{prop.title}</h3>
-              <span>{prop.price} $</span>
-            </header>
-            <p className="capitalize">{prop.country}</p>
+          <li key={prop.id}>
+            <PropertyCard property={prop} />
           </li>
         );
       })}

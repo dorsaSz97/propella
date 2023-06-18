@@ -1,9 +1,15 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
+import {
+  ErrorOption,
+  FieldValues,
+  SubmitHandler,
+  useForm,
+} from 'react-hook-form';
 import Input from './Input';
 import axios from 'axios';
+import Error from 'next/error';
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -21,14 +27,13 @@ const RegisterForm = () => {
   });
 
   const formSubmitHandler: SubmitHandler<FieldValues> = values => {
-    axios
-      .post('/api/register', values)
-      .then(() => {
+    axios.post('/api/register', values).then(res => {
+      if (res.data.user) {
         router.push('/getting-started?type=login');
-      })
-      .catch(error => {
-        alert(error);
-      });
+      } else {
+        alert(res.data.error);
+      }
+    });
   };
 
   return (

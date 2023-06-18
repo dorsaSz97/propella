@@ -1,27 +1,29 @@
-import { getCurrentUser, getReservations } from '@/app/lib';
-import Reservation from '@/app/components/Reservation';
+import { getCurrentUser, getReservations } from '@/app/libs';
 
 export default async function ReservationsPage() {
   const currentUser = await getCurrentUser();
-
-  if (!currentUser) return null;
+  if (!currentUser) throw new Error('No user found');
 
   const reservations = await getReservations(currentUser);
-
-  // TODO: add error.js file
-  if (!reservations) return null;
+  if (!reservations) throw new Error('Error getting reservations of the user');
 
   return (
     <div>
       <p>Your reservations: </p>
-      {reservations.map(res => {
-        // there are problems with server components rendering async server components
-        {
-          /* @ts-expect-error Async Server Component */
-        }
-        // TODO: we could NOT have a separate entity for reservation and have only listing
-        return <Reservation key={res.id} res={res} />;
-      })}
+      {reservations.length !== 0 ? (
+        <ul>
+          {reservations.map(res => {
+            return (
+              <li key={res.id}>
+                {res.peopleStaying} {res.totalPrice}{' '}
+                {res.startDate.toISOString()} {res.endDate.toISOString()}
+              </li>
+            );
+          })}
+        </ul>
+      ) : (
+        <p>No reservations yet</p>
+      )}
     </div>
   );
 }

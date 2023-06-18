@@ -6,7 +6,7 @@ import { BsFacebook } from 'react-icons/bs';
 import { AiOutlineGithub, AiOutlineGoogle } from 'react-icons/ai';
 
 export const metadata = {
-  title: 'Get Started | Login & Register',
+  title: 'Getting Started | Login & Register',
   description: 'Real Estate Listings Login/Register Page',
 };
 export default async function GettingStartedPage({

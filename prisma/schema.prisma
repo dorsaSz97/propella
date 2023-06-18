@@ -3,8 +3,9 @@
 
 // the User, Account, Session and VerificationToken model should look exactly the same for the adapter to be able to create the models according to a specific provider
 
-// each model should have an id which is a string but a specific combination(objectId) and should be mapped to _id for it to work in mongodb. by default should be created automatically
+// each model should have an id which is a string but a specific combination(objectId) and should be mapped to _id for it to work in mongodb (also starting the name of model's properties shouldnt be with _). by default should be created automatically
 // if we wanted two models to have a relation, we should use @relation. then we choose a field from the current model and a reference field from the other one so the value from it can be stored in the field of the current model
+// putting all fields that make up the unique constraint using @@unique([])
 
 generator client {
   provider = "prisma-client-js"
@@ -27,6 +28,26 @@ model User {
   reservations      Reservation[]
   accounts          Account[]
   // sessions          Session[]
+}
+
+model Account {
+  id                        String @db.ObjectId @id @map("_id") @default(auto())
+  userId                    String @db.ObjectId
+  type                      String
+  provider                  String
+  providerAccountId         String
+  refresh_token             String? @db.String
+  access_token              String? @db.String
+  expires_at                Int?
+  token_type                String?
+  scope                     String?
+  id_token                  String? @db.String
+  session_state             String?
+  refresh_token_expires_in  Int?
+
+  user                      User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
 }
 
 model Reservation {
@@ -58,26 +79,6 @@ model Property {
   reservations      Reservation[]
 
   host              User @relation(fields: [hostId], references: [id], onDelete: Cascade)
-}
-
-model Account {
-  id                        String @db.ObjectId @id @map("_id") @default(auto())
-  userId                    String @db.ObjectId
-  type                      String
-  provider                  String
-  providerAccountId         String
-  refresh_token             String? @db.String
-  access_token              String? @db.String
-  expires_at                Int?
-  token_type                String?
-  scope                     String?
-  id_token                  String? @db.String
-  session_state             String?
-  refresh_token_expires_in  Int?
-
-  user                      User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId])
 }
 
 // model Session {

@@ -144,3 +144,43 @@ ul {
   animation-duration: 1.5s;
   animation-iteration-count: infinite;
 }
+
+.available-dates__calender .rdrMonthAndYearPickers {
+  display: none;
+}
+.available-dates__calender .rdrMonthAndYearWrapper {
+  justify-content: flex-end;
+  gap: 1rem;
+}
+.available-dates__calender .rdrNextPrevButton.rdrPprevButton,
+.available-dates__calender .rdrNextPrevButton.rdrNextButton {
+  border-radius: 1rem;
+  background-color: #f5f5f5;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rdrMonth {
+  padding: 0;
+}
+
+.available-dates__calender .rdrPprevButton i {
+  border-color: transparent white transparent transparent;
+}
+.available-dates__calender .rdrNextButton i {
+  border-color: transparent transparent transparent white;
+}
+.available-dates__calender .rdrCalendarWrapper.rdrDateRangeWrapper {
+  background: none;
+}
+
+.available-dates__calender .rdrWeekDays {
+  display: none;
+}
+.available-dates__calender .rdrDay {
+  background: none;
+}

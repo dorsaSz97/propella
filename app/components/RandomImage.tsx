@@ -17,6 +17,7 @@ const RandomImage = () => {
               query: 'apartment',
             },
           });
+
         setImageUrl(response.data.urls.regular);
       } catch (error) {
         console.log(error);
@@ -28,10 +29,10 @@ const RandomImage = () => {
     <>
       {imageUrl ? (
         <Image
-          priority={true}
+          priority={true} // setting the lazy loading to false
           fill={true} // setting the position to absolute. no need to set the w and h, its 100% of the parent's.
           src={imageUrl}
-          alt="Random image of an appartment"
+          alt="Random image of an apartment"
           className="object-cover"
           // placeholder='blur'
           // blurDataURL=''

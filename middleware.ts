@@ -6,9 +6,19 @@ export async function middleware(request: NextRequest) {
   const token = await getToken({ req: request });
 
   if (token) {
-    return NextResponse.redirect(new URL('/properties', request.url));
+    if (request.nextUrl.pathname !== '/getting-started') {
+      return NextResponse.next();
+    } else {
+      return NextResponse.redirect(new URL('/properties', request.url));
+    }
   } else {
-    return NextResponse.next();
+    if (request.nextUrl.pathname !== '/getting-started') {
+      return NextResponse.redirect(
+        new URL('/getting-started?type=login', request.url)
+      );
+    } else {
+      return NextResponse.next();
+    }
   }
 }
 

@@ -1,6 +1,6 @@
 import Provider from './components/Provider';
-import './globals.css';
 import { Poppins } from 'next/font/google';
+import './globals.css';
 
 const poppins = Poppins({
   weight: ['400', '600', '700', '800', '900'], // regular, bold, semibold
@@ -20,9 +20,9 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`${poppins.variable}`}>
+    <html lang="en" className={`${poppins.variable} scroll-smooth`}>
       <Provider>
-        <body className={`text-text-dark font-poppins `}>{children}</body>
+        <body className={`font-poppins scroll-smooth`}>{children}</body>
       </Provider>
     </html>
   );

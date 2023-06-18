@@ -1,22 +1,23 @@
-import { getCurrentUser, getYourHomes } from '@/app/lib';
+import { getCurrentUser, getYourHomes } from '@/app/libs';
 import PropertyCard from '@/app/components/PropertyCard';
 
 export default async function YourHomesPage() {
   const currentUser = await getCurrentUser();
-
-  if (!currentUser) return null;
+  if (!currentUser) throw new Error('No user found');
 
   const yourHomes = await getYourHomes(currentUser);
-
-  // TODO: add error.js file
-  if (!yourHomes) return null;
+  if (!yourHomes) throw new Error('Error getting homes of the user');
 
   return (
     <div>
       <p>All properties you added:</p>
-      {yourHomes.map(home => {
-        return <PropertyCard property={home} />;
-      })}
+      {yourHomes.length !== 0 ? (
+        yourHomes.map(home => {
+          return <PropertyCard property={home} />;
+        })
+      ) : (
+        <p>No homes yet</p>
+      )}
     </div>
   );
 }
