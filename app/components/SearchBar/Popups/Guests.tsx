@@ -1,15 +1,69 @@
 "use client";
-import { PopupProps, Steps } from "@/app/types";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
+import { PopupProps } from "./Popup";
 
 const Guests = ({ setFilters, setStep }: PopupProps) => {
-  const [adultNumber, setAdultNumber] = useState(0);
-  const [petNumber, setPetNumber] = useState(0);
+  const [adultsNumber, setAdultsNumber] = useState(0);
   const [childrenNumber, setChildrenNumber] = useState(0);
-  const increaseNumber = (state: Dispatch<SetStateAction<number>>) => {
+  const [petsNumber, setPetsNumber] = useState(0);
+
+  return (
+    <div className="flex flex-col gap-6">
+      <ul className="flex flex-col gap-8 text-body-sm">
+        <GuestsInput
+          label={"adults"}
+          setFn={setAdultsNumber}
+          inputValue={adultsNumber}
+        />
+        <GuestsInput
+          label={"children"}
+          setFn={setChildrenNumber}
+          inputValue={childrenNumber}
+        />
+        <GuestsInput
+          label={"pets"}
+          setFn={setPetsNumber}
+          inputValue={petsNumber}
+        />
+      </ul>
+
+      <button
+        className="self-center p-2 underline text-grassGreen text-sm font-bold"
+        onClick={() => {
+          setFilters((prev) => {
+            return {
+              ...prev,
+              guests: {
+                adults: adultsNumber,
+                children: childrenNumber,
+                pets: petsNumber,
+              },
+            };
+          });
+          setStep(null);
+        }}
+      >
+        Set
+      </button>
+    </div>
+  );
+};
+
+export default Guests;
+
+const GuestsInput = ({
+  setFn,
+  label,
+  inputValue,
+}: {
+  setFn: Dispatch<SetStateAction<number>>;
+  label: string;
+  inputValue: number;
+}) => {
+  const increase = (state: Dispatch<SetStateAction<number>>) => {
     state((prev) => prev + 1);
   };
-  const decreaseNumber = (state: Dispatch<SetStateAction<number>>) => {
+  const decrease = (state: Dispatch<SetStateAction<number>>) => {
     state((prev) => {
       if (prev !== 0) {
         return prev - 1;
@@ -19,112 +73,32 @@ const Guests = ({ setFilters, setStep }: PopupProps) => {
     });
   };
 
-  useEffect(() => {
-    setFilters((prev) => {
-      return {
-        ...prev,
-        guests: {
-          children: childrenNumber,
-          pets: petNumber,
-          adults: adultNumber,
-        },
-      };
-    });
-  }, [adultNumber, petNumber, childrenNumber]);
-
   return (
-    <div className="p-6 pb-2 flex flex-col gap-6">
-      <ul className="flex flex-col gap-10 text-sm">
-        <li className="flex justify-between">
-          <label htmlFor="adults" className="font-bold">
-            Adults
-          </label>
-
-          <div className="flex items-center gap-2">
-            <button
-              className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
-              onClick={() => decreaseNumber(setAdultNumber)}
-            >
-              -
-            </button>
-            <input
-              type="text"
-              id="adults"
-              className="w-[30px] text-center font-bold bg-transparent  inline-block"
-              value={adultNumber}
-              readOnly
-            />
-            <button
-              onClick={() => increaseNumber(setAdultNumber)}
-              className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
-            >
-              +
-            </button>
-          </div>
-        </li>
-        <li className="flex justify-between">
-          <label htmlFor="children" className="font-bold">
-            Children
-          </label>
-
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => decreaseNumber(setChildrenNumber)}
-              className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
-            >
-              -
-            </button>
-            <input
-              type="text"
-              id="children"
-              value={childrenNumber}
-              className="w-[30px] text-center font-bold bg-transparent  inline-block"
-              readOnly
-            />
-            <button
-              onClick={() => increaseNumber(setChildrenNumber)}
-              className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
-            >
-              +
-            </button>
-          </div>
-        </li>
-        <li className="flex justify-between">
-          <label htmlFor="pets" className="font-bold">
-            Pets
-          </label>
-
-          <div className="flex items-center gap-2">
-            <button
-              onClick={() => decreaseNumber(setPetNumber)}
-              className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
-            >
-              -
-            </button>
-            <input
-              type="text"
-              id="pets"
-              value={petNumber}
-              readOnly
-              className="w-[30px] text-center font-bold bg-transparent  inline-block"
-            />
-            <button
-              onClick={() => increaseNumber(setPetNumber)}
-              className="w-[30px] h-[30px] rounded-lg p-3 flex justify-center items-center bg-whiteDark"
-            >
-              +
-            </button>
-          </div>
-        </li>
-      </ul>
-      <button
-        className="self-end font-semibold text-white bg-grassGreen p-1 text-sm rounded-md"
-        onClick={() => setStep(null)}
-      >
-        Set
-      </button>
-    </div>
+    <li className="flex justify-between items-center">
+      <label htmlFor={label} className="capitalize font-bold">
+        {label}
+      </label>
+      <div className="flex items-center gap-2">
+        <button
+          className="flex justify-center items-center w-[40px] h-[40px] p-3 rounded-2xl bg-whiteDarker hover:bg-opacity-80"
+          onClick={() => decrease(setFn)}
+        >
+          -
+        </button>
+        <input
+          type="text"
+          id={label}
+          className="inline-block w-[30px] text-center font-bold bg-transparent"
+          value={inputValue}
+          readOnly
+        />
+        <button
+          className="flex justify-center items-center w-[40px] h-[40px] p-3 rounded-2xl bg-whiteDarker hover:bg-opacity-80"
+          onClick={() => increase(setFn)}
+        >
+          -
+        </button>
+      </div>
+    </li>
   );
 };
-
-export default Guests;

@@ -81,72 +81,43 @@ ul {
   z-index: 1;
 }
 
-.rdrDateRangePickerWrapper {
-  border-radius: 1.5rem;
-}
-
 .rdrDefinedRangesWrapper {
-  background-color: #f3f3f3;
   display: none;
-  border-radius: 1.5rem;
 }
-
-.rdrDateDisplayItem {
+/* .rdrDateDisplayItem {
   background: transparent;
-}
+} */
 
-.rdrDay:not(.rdrDayPassive) .rdrStartEdge ~ .rdrDayNumber span,
-.rdrDay:not(.rdrDayPassive) .rdrEndEdge ~ .rdrDayNumber span {
-  font-weight: 600;
-  color: black;
-}
 .rdrDayNumber span,
 .rdrDayToday .rdrDayNumber span {
-  font-weight: 600;
+  font-weight: 700;
+  /* color: #1d2429 !important; */
 }
-.rdrDayToday .rdrDayNumber span::after {
-  background: #3b6552 !important;
-}
-.rdrWeekDay,
-.rdrMonthName {
-  color: black;
-  font-weight: 600;
+.rdrCalendarWrapper.rdrDateRangeWrapper {
+  background: #f3f3f354;
+  backdrop-filter: blur(21px);
+  border-radius: 25px;
+  overflow: hidden;
 }
 .rdrDateDisplayWrapper,
 .rdrMonthAndYearPickers {
   display: none;
 }
-
-.rdrCalendarWrapper.rdrDateRangeWrapper {
-  background: #f3f3f354;
-  backdrop-filter: blur(21px);
-  border-radius: 35px;
-  overflow: hidden;
-}
-.rdrDayDisabled {
-  background-color: transparent;
-}
-.popup-el .rdrDay.rdrDayPassive .rdrDayNumber > span {
-  color: rgba(0, 0, 0, 0.493) !important;
-}
-.popup-el .rdrCalendarWrapper.rdrDateRangeWrapper {
-  background: none;
-  backdrop-filter: none;
-}
-.popup-el .rdrStartEdge,
-.popup-el .rdrEndEdge {
-  color: #3b6552;
-}
-.popup-el .rdrDay.rdrDayDisabled {
-  background: none;
-}
-.popup-el .rdrDay.rdrDayDisabled .rdrDayNumber > span {
-  color: rgba(0, 0, 0, 0.493) !important;
+.rdrDayToday .rdrDayNumber span::after {
+  background: #3b6552 !important;
 }
 
-.popup-el {
-  background: #f3f3f354;
-  backdrop-filter: blur(21px);
+.popup--calender .rdrMonthName {
+  color: #262c30;
+}
+.popup--calender .rdrWeekDay {
+  color: #262c30;
+}
+.popup--calender .rdrDay.rdrDayDisabled,
+.popup--calender .rdrDay.rdrDayDisabled .rdrDayNumber > span,
+.popup--calender .rdrDay.rdrDayPassive .rdrDayNumber > span {
+  background: none;
+  color: rgba(0, 0, 0, 0.493) !important;
 }
 
 @keyframes pulse {

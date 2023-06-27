@@ -1,19 +1,12 @@
 "use client";
 import countries from "world-countries";
 import { RiSearchLine } from "react-icons/ri";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { Steps } from "@/app/types";
 import { PopupProps } from "./Popup";
 
-const Locations = ({ setFilters, setStep }: PopupProps) => {
+const Location = ({ setFilters, setStep }: PopupProps) => {
   const [locationValue, setLocationValue] = useState("");
-  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
-
-  useEffect(() => {
-    setFilters((prev) => {
-      return { ...prev, location: selectedLocation ?? "" };
-    });
-  }, [selectedLocation]);
 
   return (
     <div className="flex flex-col gap-4 text-body-sm">
@@ -42,10 +35,12 @@ const Locations = ({ setFilters, setStep }: PopupProps) => {
             .map((country) => {
               return (
                 <li
-                  className="flex gap-3 py-2 px-4 rounded-xl cursor-pointer font-semibold capitalize hover:bg-white"
+                  className="flex gap-3 py-2 px-4 rounded-xl cursor-pointer font-semibold capitalize hover:bg-whiteDarker hover:bg-opacity-30"
                   key={country.name.common}
                   onClick={() => {
-                    setSelectedLocation(country.name.common);
+                    setFilters((prev) => {
+                      return { ...prev, location: country.name.common ?? "" };
+                    });
                     setStep(Steps.Duration);
                   }}
                 >
@@ -60,4 +55,4 @@ const Locations = ({ setFilters, setStep }: PopupProps) => {
   );
 };
 
-export default Locations;
+export default Location;

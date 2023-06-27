@@ -1,7 +1,4 @@
 "use client";
-
-import { useCreateProperty } from "@/app/store/useStore";
-import { Filters, Steps } from "@/app/types";
 import React, {
   Dispatch,
   ReactElement,
@@ -9,13 +6,15 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import Locations from "./Popups/Locations";
+import { useCreateProperty } from "@/app/store/useStore";
+import { Filters, Steps } from "@/app/types";
+import Popups from "./Popups/Popup";
+import Location from "./Popups/Location";
 import Calender from "./Popups/Calender";
 import Guests from "./Popups/Guests";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { BsCalendar2Date } from "react-icons/bs";
 import { RxPerson } from "react-icons/rx";
-import Popups from "./Popups/Popup";
 import { RiSearchLine } from "react-icons/ri";
 
 const SearchBox = ({
@@ -26,7 +25,7 @@ const SearchBox = ({
   const [filters, setFilters] = useState<Filters>({
     location: "",
     guests: { children: 0, adults: 0, pets: 0 },
-    calender: { startDate: undefined, endDate: undefined },
+    duration: { startDate: undefined, endDate: undefined },
   });
 
   const [popupEl, setPopupEl] = useState<null | ReactElement>(null);
@@ -37,7 +36,7 @@ const SearchBox = ({
   useEffect(() => {
     switch (step) {
       case Steps.Location:
-        setPopupEl(<Locations setFilters={setFilters} setStep={setStep} />);
+        setPopupEl(<Location setFilters={setFilters} setStep={setStep} />);
         break;
       case Steps.Duration:
         setPopupEl(<Calender setFilters={setFilters} setStep={setStep} />);
