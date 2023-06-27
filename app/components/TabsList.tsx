@@ -16,10 +16,10 @@ const TabsList = ({
             {filters.location}
           </li>
         )}
-        {filters.calender.startDate && filters.calender.endDate && (
+        {filters.duration.startDate && filters.duration.endDate && (
           <li className="bg-whiteDark px-4 py-2 rounded-xl">
-            {filters.calender.startDate.getDate()} -
-            {filters.calender.endDate.getDate()}
+            {filters.duration.startDate.getDate()} -
+            {filters.duration.endDate.getDate()}
           </li>
         )}
         {filters.guests.adults !== 0 &&

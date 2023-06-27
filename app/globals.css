@@ -63,12 +63,12 @@ ul {
   list-style: none;
 }
 
-.btn--search {
+.btn--filter {
   position: relative;
   z-index: 2;
 }
 
-.btn--search:not(:last-child)::after {
+.btn--filter:not(:last-child)::after {
   content: "";
   position: absolute;
   top: 50%;
@@ -78,7 +78,7 @@ ul {
   height: 70%;
   border-radius: 20%;
   background-color: #f0f0f0;
-  z-index: 1;
+  z-index: -1;
 }
 
 .rdrDefinedRangesWrapper {

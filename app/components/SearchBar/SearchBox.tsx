@@ -1,17 +1,17 @@
 "use client";
-import React, {
+import {
   Dispatch,
   ReactElement,
   SetStateAction,
   useEffect,
   useState,
 } from "react";
-import { useCreateProperty } from "@/app/store/useStore";
 import { Filters, Steps } from "@/app/types";
 import Popups from "./Popups/Popup";
 import Location from "./Popups/Location";
 import Calender from "./Popups/Calender";
 import Guests from "./Popups/Guests";
+import BoxBtn from "./BoxBtn";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import { BsCalendar2Date } from "react-icons/bs";
 import { RxPerson } from "react-icons/rx";
@@ -27,11 +27,8 @@ const SearchBox = ({
     guests: { children: 0, adults: 0, pets: 0 },
     duration: { startDate: undefined, endDate: undefined },
   });
-
   const [popupEl, setPopupEl] = useState<null | ReactElement>(null);
   const [step, setStep] = useState<Steps | null>(null);
-
-  const { isOpen } = useCreateProperty((state) => state);
 
   useEffect(() => {
     switch (step) {
@@ -54,40 +51,31 @@ const SearchBox = ({
     <div className="flex justify-center items-center mb-12 -mt-5">
       <div className="flex relative">
         {popupEl && <Popups>{popupEl}</Popups>}
+        <BoxBtn
+          setStep={setStep}
+          step={step}
+          btnStep={Steps.Location}
+          icon={<HiOutlineLocationMarker size={18} />}
+        />
+        <BoxBtn
+          setStep={setStep}
+          step={step}
+          btnStep={Steps.Duration}
+          icon={<BsCalendar2Date size={18} />}
+        />
+        <BoxBtn
+          setStep={setStep}
+          step={step}
+          btnStep={Steps.Guests}
+          icon={<RxPerson size={18} />}
+        />
 
-        <div className="flex justify-center items-center h-[4.5rem] w-[4.5rem] rounded-full bg-whiteDarker btn--search">
+        <div className="h-[4.5rem] w-[4.5rem] p-2 rounded-full bg-whiteDarker">
           <button
-            className="flex justify-center items-center h-[80%] w-[80%] rounded-full bg-whiteLight btn--search"
-            onClick={() => setStep(Steps.Location)}
-          >
-            <HiOutlineLocationMarker size={18} />
-          </button>
-        </div>
-
-        <div className="rounded-full h-[4.5rem] w-[4.5rem] bg-whiteDarker p-2 btn--search">
-          <button
-            className="flex justify-center items-center h-[95%] w-[95%] rounded-full  bg-whiteLight btn--search"
-            onClick={() => setStep(Steps.Duration)}
-          >
-            <BsCalendar2Date size={18} />
-          </button>
-        </div>
-
-        <div className="rounded-full h-[4.5rem] w-[4.5rem] bg-whiteDarker p-2 btn--search">
-          <button
-            className="flex justify-center items-center h-[95%] w-[95%] rounded-full  bg-whiteLight btn--search"
-            onClick={() => setStep(Steps.Guests)}
-          >
-            <RxPerson size={18} />
-          </button>
-        </div>
-
-        <div className="rounded-full h-[4.5rem] w-[4.5rem] bg-whiteDarker p-2">
-          <button
-            className="flex justify-center items-center h-[95%] w-[95%] rounded-full bg-grassGreen p-5 text-lg btn--search"
+            className="flex justify-center items-center h-[95%] w-[95%] rounded-full p-5 text-lg bg-grassGreen btn--filter"
             onClick={() => {
-              setStep(null);
               setChosenFilters(filters);
+              setStep(null);
             }}
           >
             <RiSearchLine color="white" size={18} />
