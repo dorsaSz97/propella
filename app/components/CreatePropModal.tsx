@@ -1,30 +1,19 @@
-import React, { ChangeEvent, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
-import { ICreatePropInputs } from '../types';
-import axios from 'axios';
-import { IoMdClose } from 'react-icons/io';
-import { useCreateProperty } from '../store/useStore';
-import { CldUploadWidget } from 'next-cloudinary';
-import countries from 'world-countries';
-import { useRouter } from 'next/navigation';
+"use client";
+import React, { ChangeEvent, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { ICreatePropInputs, ImageGallery } from "../types";
+import axios from "axios";
+import { IoMdClose } from "react-icons/io";
+import { useCreateProperty } from "../store/useStore";
+import countries from "world-countries";
+import { useRouter } from "next/navigation";
+import ImageUploader, { ImageStep } from "./ImageUploader";
 
-enum Image {
-  Main,
-  Bedroom,
-  Bathroom,
-  Kitchen,
-}
 const CreatePropModal = () => {
   const router = useRouter();
-  const { close, isOpen } = useCreateProperty(state => state);
-  const [imgUrls, setImgUrls] = useState<{
-    main: string;
-    bathroom: string;
-    bedroom: string;
-    kitchen: string;
-  } | null>(null);
-  const [imageStep, setImageStep] = useState<Image | null>(Image.Main);
-  const [latLng, setLatlng] = useState<[number, number]>([0, 0]);
+  const { close, isOpen } = useCreateProperty((state) => state);
+  const [imgUrls, setImgUrls] = useState<ImageGallery | null>(null);
+  const [imgStep, setImgStep] = useState<ImageStep | null>(ImageStep.Main);
 
   const {
     register,
@@ -33,19 +22,19 @@ const CreatePropModal = () => {
     formState: { errors },
   } = useForm<ICreatePropInputs>({
     defaultValues: {
-      country: '',
+      title: "",
+      description: "",
+      country: "",
       images: [],
       options: [],
-      address: '',
+      address: "",
       availableDates: [],
       allowedGuests: 1,
       price: null,
-      title: '',
-      description: '',
     },
   });
 
-  const formSubmitHandler: SubmitHandler<ICreatePropInputs> = values => {
+  const formSubmitHandler: SubmitHandler<ICreatePropInputs> = (values) => {
     const newData: ICreatePropInputs = {
       images: [
         imgUrls!.main,
@@ -56,17 +45,15 @@ const CreatePropModal = () => {
       title: values.title,
       description: values.description,
       allowedGuests: +values.allowedGuests,
-      price: values.price ? +values.price : null,
+      price: +values.price!,
       options: values.options.slice(),
       country: values.country,
       address: values.address,
       availableDates: [],
     };
 
-    console.log(newData);
-    axios.post('/api/homes', newData).then((res: any) => {
+    axios.post("/api/homes", newData).then((res: any) => {
       close();
-      console.log(res);
       router.push(`/properties/${res.home.id}`);
     });
   };
@@ -74,220 +61,161 @@ const CreatePropModal = () => {
   if (!isOpen) return null;
 
   return (
-    <div className="absolute z-100 h-[90%] w-[80%] p-4 bg-whiteLight rounded-2xl shadow-xl shadow-silverGrey">
-      <button onClick={close}>
-        <IoMdClose />
-      </button>
-      <div>
-        <form onSubmit={handleSubmit(formSubmitHandler)}>
-          <input {...register('title')} />
+    <div className="absolute flex items-center justify-center w-full h-full p-4 z-[100] bg-whiteLight bg-opacity-80">
+      <div className="flex flex-col gap-5 w-[80%] h-[90%] p-6 rounded-2xl shadow-xl shadow-silverGrey bg-whiteDark">
+        <button onClick={close} className="w-fit">
+          <IoMdClose size={20} />
+        </button>
 
-          <input {...register('description')} />
+        <div>
+          <h2 className="mb-5 font-bold text-head2 capitalize">
+            Airbnb your house
+          </h2>
 
-          <label htmlFor="wifi">wifi</label>
-          <input
-            type="checkbox"
-            id="wifi"
-            value="wifi"
-            {...register('options')}
-          />
-
-          <label htmlFor="breakfast">breakfast</label>
-          <input
-            type="checkbox"
-            id="breakfast"
-            value="breakfast"
-            {...register('options')}
-          />
-
-          <label htmlFor="beach">beach</label>
-          <input
-            type="checkbox"
-            id="beach"
-            value="beach"
-            {...register('options')}
-          />
-
-          <label htmlFor="pool">pool</label>
-          <input
-            type="checkbox"
-            id="pool"
-            value="pool"
-            {...register('options')}
-          />
-
-          <label htmlFor="parking">parking</label>
-          <input
-            type="checkbox"
-            id="parking"
-            value="parking"
-            {...register('options')}
-          />
-
-          {imageStep === Image.Main && (
-            <>
-              <p>main</p>
-              <CldUploadWidget
-                uploadPreset="t7vnf4dl"
-                options={{
-                  sources: ['local'],
-                }}
-                onUpload={(res: any) => {
-                  setImgUrls(prev => {
-                    setImageStep(Image.Kitchen);
-                    return {
-                      ...prev,
-                      main: res.info.secure_url,
-                      bedroom: '',
-                      bathroom: '',
-                      kitchen: '',
-                    };
-                  });
-                }}
-              >
-                {({ open }) => {
-                  function handleOnClick(e: any) {
-                    e.preventDefault();
-                    open();
-                  }
-                  return (
-                    <button onClick={handleOnClick}>Upload an Image</button>
-                  );
-                }}
-              </CldUploadWidget>
-            </>
-          )}
-          {imageStep === Image.Kitchen && (
-            <>
-              <p>kitchen</p>
-              <CldUploadWidget
-                uploadPreset="t7vnf4dl"
-                options={{
-                  sources: ['local'],
-                }}
-                onUpload={(res: any) => {
-                  setImgUrls(prev => {
-                    setImageStep(Image.Bathroom);
-                    return {
-                      ...prev,
-                      kitchen: res.info.secure_url,
-                      main: prev!.main,
-                      bedroom: '',
-                      bathroom: '',
-                    };
-                  });
-                }}
-              >
-                {({ open }) => {
-                  function handleOnClick(e: any) {
-                    e.preventDefault();
-                    open();
-                  }
-                  return (
-                    <button onClick={handleOnClick}>Upload an Image</button>
-                  );
-                }}
-              </CldUploadWidget>
-            </>
-          )}
-          {imageStep === Image.Bathroom && (
-            <>
-              <p>bathroom</p>
-              <CldUploadWidget
-                uploadPreset="t7vnf4dl"
-                options={{
-                  sources: ['local'],
-                }}
-                onUpload={(res: any) => {
-                  setImgUrls(prev => {
-                    setImageStep(Image.Bedroom);
-                    return {
-                      ...prev,
-                      bathroom: res.info.secure_url,
-                      main: prev!.main,
-                      kitchen: prev!.kitchen,
-                      bedroom: '',
-                    };
-                  });
-                }}
-              >
-                {({ open }) => {
-                  function handleOnClick(e: any) {
-                    e.preventDefault();
-                    open();
-                  }
-                  return (
-                    <button onClick={handleOnClick}>Upload an Image</button>
-                  );
-                }}
-              </CldUploadWidget>
-            </>
-          )}
-          {imageStep === Image.Bedroom && (
-            <>
-              <p>bedroom</p>
-              <CldUploadWidget
-                uploadPreset="t7vnf4dl"
-                options={{
-                  sources: ['local'],
-                }}
-                onUpload={(res: any) => {
-                  setImgUrls(prev => {
-                    setImageStep(null);
-                    return {
-                      ...prev,
-                      main: prev!.main,
-                      kitchen: prev!.kitchen,
-                      bathroom: prev!.bathroom,
-                      bedroom: res.info.secure_url,
-                    };
-                  });
-                }}
-              >
-                {({ open }) => {
-                  function handleOnClick(e: any) {
-                    e.preventDefault();
-                    open();
-                  }
-                  return (
-                    <button onClick={handleOnClick}>Upload an Image</button>
-                  );
-                }}
-              </CldUploadWidget>
-            </>
-          )}
-
-          <label>price</label>
-          <input {...register('price')} />
-
-          <label>guests</label>
-          <input {...register('allowedGuests')} />
-
-          <select
-            {...register('country')}
-            name="country"
-            id=""
-            onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-              setValue('country', e.target.value);
-            }}
+          <form
+            className="flex flex-col gap-5"
+            onSubmit={handleSubmit(formSubmitHandler)}
           >
-            {countries.map(country => {
-              return (
-                <option value={country.name.common} key={country.cca2}>
-                  {country.name.common}
-                </option>
-              );
-            })}
-          </select>
+            <div className="flex items-center gap-3">
+              <label htmlFor="title">Title:</label>
+              <input
+                {...register("title")}
+                id="title"
+                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
+              />
+            </div>
 
-          <label htmlFor="">address</label>
-          <input {...register('address')} />
+            <div className="flex items-center gap-3">
+              <label htmlFor="description">Description:</label>
+              <input
+                {...register("description")}
+                id="description"
+                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
+              />
+            </div>
 
-          {/* getting the latlng by the address or clicking on the map*/}
-          {/* <Map center={latLng} setLatlng={setLatlng} /> */}
+            <div className="w-1/2">
+              <h3 className="mb-2 font-semibold text-body-lg">
+                Choose the available amenities:
+              </h3>
+              <ul className="grid grid-cols-3">
+                <li className="flex items-center gap-1 capitalize">
+                  <label htmlFor="wifi">wifi</label>
+                  <input
+                    type="checkbox"
+                    id="wifi"
+                    value="wifi"
+                    {...register("options")}
+                  />
+                </li>
+                <li className="flex items-center gap-1 capitalize">
+                  <label htmlFor="breakfast">breakfast</label>
+                  <input
+                    type="checkbox"
+                    id="breakfast"
+                    value="breakfast"
+                    {...register("options")}
+                  />
+                </li>
+                <li className="flex items-center gap-1 capitalize">
+                  <label htmlFor="beach">beach</label>
+                  <input
+                    type="checkbox"
+                    id="beach"
+                    value="beach"
+                    {...register("options")}
+                  />
+                </li>
+                <li className="flex items-center gap-1 capitalize">
+                  <label htmlFor="pool">pool</label>
+                  <input
+                    type="checkbox"
+                    id="pool"
+                    value="pool"
+                    {...register("options")}
+                  />
+                </li>
+                <li className="flex items-center gap-1 capitalize">
+                  <label htmlFor="parking">parking</label>
+                  <input
+                    type="checkbox"
+                    id="parking"
+                    value="parking"
+                    {...register("options")}
+                  />
+                </li>
+              </ul>
+            </div>
 
-          <button type="submit">Submit</button>
-        </form>
+            <ImageUploader
+              type={imgStep}
+              setImgUrls={setImgUrls}
+              setImgStep={setImgStep}
+            />
+
+            <div className="flex items-center gap-3">
+              <label htmlFor="price">Price:</label>
+              <input
+                required
+                id="price"
+                {...register("price")}
+                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
+              />
+              <span> euros/night</span>
+            </div>
+
+            <div className="flex items-center gap-3">
+              <label htmlFor="allowedGuests">Allowed Guests:</label>
+              <input
+                id="allowedGuests"
+                {...register("allowedGuests")}
+                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
+              />
+            </div>
+
+            <div className="flex items-center gap-3">
+              <label htmlFor="address">Address:</label>
+              <input
+                id="address"
+                {...register("address")}
+                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
+              />
+            </div>
+
+            <div className="flex items-center gap-3">
+              <h3 className="mb-2 font-semibold text-body-lgù">
+                Where is it located?
+              </h3>
+
+              <select
+                {...register("country")}
+                name="country"
+                id="country"
+                onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                  setValue("country", e.target.value);
+                }}
+                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
+              >
+                {countries.map((country) => {
+                  return (
+                    <option value={country.name.common} key={country.cca2}>
+                      {country.name.common}
+                    </option>
+                  );
+                })}
+              </select>
+            </div>
+
+            {/* getting the latlng by the address or clicking on the map*/}
+            {/* <Map center={latLng} setLatlng={setLatlng} /> */}
+            <button
+              className="bg-grassGreen text-white p-3 rounded-md self-end"
+              type="submit"
+            >
+              Submit
+            </button>
+          </form>
+        </div>
       </div>
     </div>
   );

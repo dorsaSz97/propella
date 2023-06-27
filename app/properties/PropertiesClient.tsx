@@ -17,11 +17,12 @@ const PropertiesClient = ({ properties }: PropertiesClientProps) => {
 
   return (
     <main>
-      <CreatePropModal />
-
       <section className="flex flex-col gap-5">
         {/* Search filters box */}
-        <SearchBox setChosenFilters={setChosenFilters} chosenFilters={chosenFilters}/>
+        <SearchBox
+          setChosenFilters={setChosenFilters}
+          chosenFilters={chosenFilters}
+        />
 
         {/* Filters list */}
         {chosenFilters && (

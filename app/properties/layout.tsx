@@ -1,3 +1,4 @@
+import CreatePropModal from "../components/CreatePropModal";
 import Navbar from "../components/Navbar";
 import { getProperties } from "../libs";
 import PropertiesClient from "./PropertiesClient";

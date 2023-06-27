@@ -28,3 +28,10 @@ export interface IRegisterInputs {
   email: string;
   password: string;
 }
+
+export type ImageGallery = {
+  main: string;
+  kitchen: string;
+  bathroom: string;
+  bedroom: string;
+};

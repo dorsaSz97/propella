@@ -53,6 +53,7 @@ const SearchBox = ({
         break;
     }
   }, [step]);
+
   useEffect(() => {
     setFilters({
       location: "",
