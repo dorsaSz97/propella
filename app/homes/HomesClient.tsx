@@ -3,27 +3,27 @@ import { Property, User } from "@prisma/client";
 import PropertiesList from "@/app/components/PropertiesList";
 import { Page } from "../types";
 
-type FavoritesClientProps = {
-  favorites: Property[];
+type HomesClientProps = {
+  yourHomes: Property[];
   currentUser: User;
 };
 
-const FavoritesClient = ({ favorites, currentUser }: FavoritesClientProps) => {
+const HomesClient = ({ yourHomes, currentUser }: HomesClientProps) => {
   return (
     <main className="mt-12 flex flex-col gap-5">
-      <h2 className="text-head3 font-semibold">All your favorites:</h2>
+      <h2 className="text-head3 font-semibold">All your Homes:</h2>
       {/* Properties list */}
-      {favorites.length !== 0 ? (
+      {yourHomes.length !== 0 ? (
         <PropertiesList
-          properties={favorites}
-          page={Page.Favorites}
+          properties={yourHomes}
+          page={Page.Home}
           currentUser={currentUser}
         />
       ) : (
-        <p>No Favorites yet</p>
+        <p>No Homes yet</p>
       )}
     </main>
   );
 };
 
-export default FavoritesClient;
+export default HomesClient;

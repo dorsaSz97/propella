@@ -1,13 +1,18 @@
-import { Property } from "@prisma/client";
+import { Property, User } from "@prisma/client";
 import PropertyCard from "./PropertyCard";
 import axios from "axios";
 import { getCurrentUser } from "../libs";
+import { Page } from "../types";
 
 const PropertiesList = ({
   mapView,
   properties,
+  currentUser,
+  page,
 }: {
   mapView?: boolean;
+  page?: Page;
+  currentUser: User;
   properties: null | Property[];
 }) => {
   if (!properties) return null;
@@ -20,7 +25,11 @@ const PropertiesList = ({
       {properties.map((prop) => {
         return (
           <li key={prop.id}>
-            <PropertyCard property={prop} />
+            <PropertyCard
+              property={prop}
+              page={page}
+              currentUser={currentUser}
+            />
           </li>
         );
       })}

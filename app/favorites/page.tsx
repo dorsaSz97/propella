@@ -8,5 +8,5 @@ export default async function FavoritesPage() {
   const favorites = await getFavorites(currentUser);
   if (!favorites) throw new Error("Error getting favorites of the user");
 
-  return <FavoritesClient favorites={favorites} />;
+  return <FavoritesClient favorites={favorites} currentUser={currentUser} />;
 }

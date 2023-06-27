@@ -35,3 +35,10 @@ export type ImageGallery = {
   bathroom: string;
   bedroom: string;
 };
+
+export enum Page {
+  Home,
+  Reservations,
+  Favorites,
+  Properties,
+}
