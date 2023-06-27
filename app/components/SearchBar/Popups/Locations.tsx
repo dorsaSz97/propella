@@ -1,59 +1,62 @@
-'use client';
-import countries from 'world-countries';
-import { RiSearchLine } from 'react-icons/ri';
-import { ChangeEvent, useEffect, useState } from 'react';
-import { PopupProps, Steps } from '@/app/types';
+"use client";
+import countries from "world-countries";
+import { RiSearchLine } from "react-icons/ri";
+import { ChangeEvent, useEffect, useState } from "react";
+import { Steps } from "@/app/types";
+import { PopupProps } from "./Popup";
 
 const Locations = ({ setFilters, setStep }: PopupProps) => {
-  const [locationInput, setLocationInput] = useState('');
-  const [enteredLocationInput, setEnteredLocationInput] = useState('');
+  const [locationValue, setLocationValue] = useState("");
+  const [selectedLocation, setSelectedLocation] = useState<string | null>(null);
+
   useEffect(() => {
-    setFilters(prev => {
-      return { ...prev, location: enteredLocationInput };
+    setFilters((prev) => {
+      return { ...prev, location: selectedLocation ?? "" };
     });
-  }, [enteredLocationInput]);
+  }, [selectedLocation]);
 
   return (
-    <>
-      <div className="flex items-center gap-5 p-3 bg-whiteDark rounded-3xl">
-        <RiSearchLine color="black" />
+    <div className="flex flex-col gap-4 text-body-sm">
+      <div className="flex items-center gap-1 px-4 py-1 rounded-3xl bg-whiteDarker">
+        <RiSearchLine color="#222" size={18} />
         <input
-          className="bg-transparent rounded-xl inline-block w-full p-2"
+          className="w-full p-2 outline-none bg-transparent"
           type="text"
           placeholder="Enter location"
-          value={locationInput}
+          value={locationValue}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
-            setLocationInput(e.target.value)
+            setLocationValue(e.target.value)
           }
         />
       </div>
 
-      <ul className="py-4 px-2 flex flex-col gap-3">
-        {locationInput &&
-          countries
-            .filter(country =>
+      {locationValue && (
+        <ul className="flex flex-col gap-1 px-1">
+          {countries
+            .filter((country) =>
               country.name.common
                 .toLowerCase()
-                .startsWith(locationInput.toLowerCase())
+                .startsWith(locationValue.toLowerCase())
             )
             .slice(0, 4)
-            .map(enteredCountry => {
+            .map((country) => {
               return (
                 <li
-                  key={enteredCountry.name.common}
+                  className="flex gap-3 py-2 px-4 rounded-xl cursor-pointer font-semibold capitalize hover:bg-white"
+                  key={country.name.common}
                   onClick={() => {
-                    setEnteredLocationInput(enteredCountry.name.common);
+                    setSelectedLocation(country.name.common);
                     setStep(Steps.Duration);
                   }}
-                  className="cursor-pointer flex gap-6 p-2 rounded-3xl hover:bg-whiteDark font-semibold"
                 >
-                  {enteredCountry.name.common}
+                  {country.name.common}
                   <span className="font-normal">3</span>
                 </li>
               );
             })}
-      </ul>
-    </>
+        </ul>
+      )}
+    </div>
   );
 };
 

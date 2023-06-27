@@ -1,16 +1,16 @@
-'use client';
-import { PopupProps, Steps } from '@/app/types';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+"use client";
+import { PopupProps, Steps } from "@/app/types";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 const Guests = ({ setFilters, setStep }: PopupProps) => {
   const [adultNumber, setAdultNumber] = useState(0);
   const [petNumber, setPetNumber] = useState(0);
   const [childrenNumber, setChildrenNumber] = useState(0);
   const increaseNumber = (state: Dispatch<SetStateAction<number>>) => {
-    state(prev => prev + 1);
+    state((prev) => prev + 1);
   };
   const decreaseNumber = (state: Dispatch<SetStateAction<number>>) => {
-    state(prev => {
+    state((prev) => {
       if (prev !== 0) {
         return prev - 1;
       } else {
@@ -20,7 +20,7 @@ const Guests = ({ setFilters, setStep }: PopupProps) => {
   };
 
   useEffect(() => {
-    setFilters(prev => {
+    setFilters((prev) => {
       return {
         ...prev,
         guests: {
@@ -33,7 +33,7 @@ const Guests = ({ setFilters, setStep }: PopupProps) => {
   }, [adultNumber, petNumber, childrenNumber]);
 
   return (
-    <>
+    <div className="p-6 pb-2 flex flex-col gap-6">
       <ul className="flex flex-col gap-10 text-sm">
         <li className="flex justify-between">
           <label htmlFor="adults" className="font-bold">
@@ -117,8 +117,13 @@ const Guests = ({ setFilters, setStep }: PopupProps) => {
           </div>
         </li>
       </ul>
-      <button onClick={() => setStep(null)}>Set</button>
-    </>
+      <button
+        className="self-end font-semibold text-white bg-grassGreen p-1 text-sm rounded-md"
+        onClick={() => setStep(null)}
+      >
+        Set
+      </button>
+    </div>
   );
 };
 

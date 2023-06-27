@@ -22,7 +22,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${poppins.variable} scroll-smooth`}>
       <Provider>
-        <body className={`font-poppins scroll-smooth`}>{children}</body>
+        <body className={`font-poppins p-8 bg-whiteDark relative`}>{children}</body>
       </Provider>
     </html>
   );
