@@ -21,7 +21,7 @@ const PropertiesClient = ({ properties }: PropertiesClientProps) => {
 
       <section className="flex flex-col gap-5">
         {/* Search filters box */}
-        <SearchBox setChosenFilters={setChosenFilters} />
+        <SearchBox setChosenFilters={setChosenFilters} chosenFilters={chosenFilters}/>
 
         {/* Filters list */}
         {chosenFilters && (

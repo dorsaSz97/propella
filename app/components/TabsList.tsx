@@ -1,5 +1,6 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { Filters } from "../types";
+"use client";
+import { Dispatch, SetStateAction } from "react";
+import { Filters } from "@/app/types";
 
 const TabsList = ({
   filters,
@@ -9,29 +10,33 @@ const TabsList = ({
   setChosenFilters: Dispatch<SetStateAction<Filters | null>>;
 }) => {
   return (
-    <div className="flex gap-2">
-      <ul className="flex gap-2 items-center">
+    <div className="flex items-center gap-2">
+      <ul className="flex items-center gap-2">
         {filters.location && (
-          <li className="bg-whiteDark px-4 py-2 rounded-xl">
+          <li className="px-4 py-2 rounded-xl bg-whiteDark">
             {filters.location}
           </li>
         )}
         {filters.duration.startDate && filters.duration.endDate && (
-          <li className="bg-whiteDark px-4 py-2 rounded-xl">
-            {filters.duration.startDate.getDate()} -
+          <li className="px-4 py-2 rounded-xl bg-whiteDark">
+            {filters.duration.startDate.getDate()} -{" "}
             {filters.duration.endDate.getDate()}
           </li>
         )}
-        {filters.guests.adults !== 0 &&
-          (filters.guests.children || filters.guests.pets) && (
-            <li className="bg-whiteDark px-4 py-2 rounded-xl">
-              {filters.guests.adults} adult + {filters.guests.children} children
-            </li>
-          )}
+        {filters.guests.adults !== 0 && (
+          <li className="px-4 py-2 rounded-xl bg-whiteDark">
+            {filters.guests.adults} adult{filters.guests.adults > 1 && "s"} +{" "}
+            {filters.guests.children}{" "}
+            {filters.guests.children > 1 ? "children" : "child"} +{" "}
+            {filters.guests.pets} pet{filters.guests.pets > 1 && "s"}
+          </li>
+        )}
       </ul>
       <button
-        className="bg-whiteLight px-4 py-2 rounded-xl"
-        onClick={() => setChosenFilters(null)}
+        className="px-4 py-2 rounded-xl underline"
+        onClick={() => {
+          setChosenFilters(null);
+        }}
       >
         Clear
       </button>

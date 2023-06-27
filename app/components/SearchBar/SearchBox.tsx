@@ -19,14 +19,21 @@ import { RiSearchLine } from "react-icons/ri";
 
 const SearchBox = ({
   setChosenFilters,
+  chosenFilters,
 }: {
+  chosenFilters: Filters | null;
   setChosenFilters: Dispatch<SetStateAction<Filters | null>>;
 }) => {
-  const [filters, setFilters] = useState<Filters>({
-    location: "",
-    guests: { children: 0, adults: 0, pets: 0 },
-    duration: { startDate: undefined, endDate: undefined },
-  });
+  console.log(chosenFilters);
+  const [filters, setFilters] = useState<Filters>(
+    chosenFilters === null
+      ? {
+          location: "",
+          guests: { children: 0, adults: 0, pets: 0 },
+          duration: { startDate: undefined, endDate: undefined },
+        }
+      : chosenFilters
+  );
   const [popupEl, setPopupEl] = useState<null | ReactElement>(null);
   const [step, setStep] = useState<Steps | null>(null);
 
@@ -46,6 +53,13 @@ const SearchBox = ({
         break;
     }
   }, [step]);
+  useEffect(() => {
+    setFilters({
+      location: "",
+      guests: { children: 0, adults: 0, pets: 0 },
+      duration: { startDate: undefined, endDate: undefined },
+    });
+  }, [chosenFilters]);
 
   return (
     <div className="flex justify-center items-center mb-12 -mt-5">

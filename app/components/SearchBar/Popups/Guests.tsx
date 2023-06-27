@@ -40,6 +40,7 @@ const Guests = ({ setFilters, setStep }: PopupProps) => {
               },
             };
           });
+
           setStep(null);
         }}
       >
@@ -96,7 +97,7 @@ const GuestsInput = ({
           className="flex justify-center items-center w-[40px] h-[40px] p-3 rounded-2xl bg-whiteDarker hover:bg-opacity-80"
           onClick={() => increase(setFn)}
         >
-          -
+          +
         </button>
       </div>
     </li>
