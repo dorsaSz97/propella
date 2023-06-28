@@ -1,27 +1,30 @@
-// "use client";
-// import { Property, User } from "@prisma/client";
-// import PropertiesList from "@/app/components/PropertiesList";
+"use client";
+import { Reservation, User } from "@prisma/client";
+import PropertiesList from "@/app/components/PropertiesList";
+import ReservationItem from "../components/ReservationItem";
 
-// type ReservationsClientProps = {
-//   reservations: Reservation[];
-//   currentUser: User;
-// };
+type ReservationsClientProps = {
+  reservations: Reservation[];
+};
 
-// const ReservationsClient = ({
-//   reservations,
-//   currentUser,
-// }: ReservationsClientProps) => {
-//   return (
-//     <main className="mt-12 flex flex-col gap-5">
-//       <h2 className="text-head3 font-semibold">All your reservations:</h2>
-//       {/* Properties list */}
-//       {reservations.length !== 0 ? (
-//         <PropertiesList properties={reservations} currentUser={currentUser} />
-//       ) : (
-//         <p>No Reservations yet</p>
-//       )}
-//     </main>
-//   );
-// };
+const ReservationsClient = ({ reservations }: ReservationsClientProps) => {
+  return (
+    <main className="mt-12 flex flex-col gap-5">
+      <h2 className="text-head3 font-semibold">All your reservations:</h2>
+      {/* Properties list */}
+      {reservations.length !== 0 ? (
+        <div>
+          <ul>
+            {reservations.map((res) => {
+              return <ReservationItem key={res.id} reservationProp={res} />;
+            })}
+          </ul>
+        </div>
+      ) : (
+        <p>No Reservations yet</p>
+      )}
+    </main>
+  );
+};
 
-// export default ReservationsClient;
+export default ReservationsClient;

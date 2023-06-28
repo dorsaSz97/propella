@@ -1,20 +1,20 @@
-'use client';
-import Image from 'next/image';
-import { AiOutlineHeart, AiOutlineCar } from 'react-icons/ai';
-import { IoGlobeOutline, IoFastFoodOutline } from 'react-icons/io5';
-import { FaSwimmingPool } from 'react-icons/fa';
-import { TbBeach } from 'react-icons/tb';
-import { CgCoffee } from 'react-icons/cg';
-import { GrHomeRounded } from 'react-icons/gr';
-import { BsAirplane } from 'react-icons/bs';
-import { IconType } from 'react-icons';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
-import { addDays } from 'date-fns';
-import { ReactNode, useEffect, useState } from 'react';
-import { DateRangePicker, Range } from 'react-date-range';
-import { Property, User } from '@prisma/client';
-import axios from 'axios';
+"use client";
+import Image from "next/image";
+import { AiOutlineHeart, AiOutlineCar } from "react-icons/ai";
+import { IoGlobeOutline, IoFastFoodOutline } from "react-icons/io5";
+import { FaSwimmingPool } from "react-icons/fa";
+import { TbBeach } from "react-icons/tb";
+import { CgCoffee } from "react-icons/cg";
+import { GrHomeRounded } from "react-icons/gr";
+import { BsAirplane } from "react-icons/bs";
+import { IconType } from "react-icons";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
+import { addDays } from "date-fns";
+import { ReactNode, useEffect, useState } from "react";
+import { DateRangePicker, Range } from "react-date-range";
+import { Property, User } from "@prisma/client";
+import axios from "axios";
 
 interface Amenity {
   name: string;
@@ -22,11 +22,11 @@ interface Amenity {
   text: string;
 }
 const amenities: Amenity[] = [
-  { name: 'wifi', icon: IoGlobeOutline, text: 'fast wifi' },
-  { name: 'breakfast', icon: CgCoffee, text: 'Breakfast included' },
-  { name: 'beach', icon: TbBeach, text: 'calm beaches nearby' },
-  { name: 'pool', icon: FaSwimmingPool, text: ' Private outdoor pool' },
-  { name: 'parking', icon: AiOutlineCar, text: 'Parking' },
+  { name: "wifi", icon: IoGlobeOutline, text: "fast wifi" },
+  { name: "breakfast", icon: CgCoffee, text: "Breakfast included" },
+  { name: "beach", icon: TbBeach, text: "calm beaches nearby" },
+  { name: "pool", icon: FaSwimmingPool, text: " Private outdoor pool" },
+  { name: "parking", icon: AiOutlineCar, text: "Parking" },
 ];
 
 enum Gallery {
@@ -46,32 +46,34 @@ const PropertyDetails = ({
   const [isFavorited, setIsFavorited] = useState(
     currentUser?.favoriteIds.includes(selectedProperty.id)
   );
-  const [guests, setGuests] = useState(1);
-
-  const [state, setState] = useState({
-    selection1: {
-      startDate: addDays(new Date(), 1),
-      endDate: addDays(new Date(), 7),
-      key: 'selection1',
-      color: '#3b6552',
-    },
-    selection2: {
-      startDate: addDays(new Date(), 15),
-      endDate: addDays(new Date(), 23),
-      key: 'selection2',
-      color: '#3b6552',
-    },
-  });
-
-  const [galleryOption, setGalleryOption] = useState<Gallery>(Gallery.Outside);
-  const [bgUrl, setBgUrl] = useState(selectedProperty.images[0]);
+  const [guests, setGuests] = useState(0);
+  console.log(guests);
   const [dateRange, setDateRange] = useState<Range[]>([
     {
       startDate: new Date(),
       endDate: new Date(),
-      key: 'reservation',
+      key: "selectedRange",
+      color: "#3b6552",
     },
   ]);
+
+  // const [state, setState] = useState({
+  //   selection1: {
+  //     startDate: addDays(new Date(), 1),
+  //     endDate: addDays(new Date(), 7),
+  //     key: "selection1",
+  //     color: "#3b6552",
+  //   },
+  //   selection2: {
+  //     startDate: addDays(new Date(), 15),
+  //     endDate: addDays(new Date(), 23),
+  //     key: "selection2",
+  //     color: "#3b6552",
+  //   },
+  // });
+
+  const [galleryOption, setGalleryOption] = useState<Gallery>(Gallery.Outside);
+  const [bgUrl, setBgUrl] = useState(selectedProperty.images[0]);
 
   useEffect(() => {
     switch (galleryOption) {
@@ -138,9 +140,11 @@ const PropertyDetails = ({
           <button
             className="flex justify-center items-center h-[35px] w-[35px] rounded-xl bg-opacity-20 bg-whiteDark"
             onClick={() => {
-              axios.post(`/api/favorites/${selectedProperty.id}`).then(res => {
-                setIsFavorited(true);
-              });
+              axios
+                .post(`/api/favorites/${selectedProperty.id}`)
+                .then((res) => {
+                  setIsFavorited(true);
+                });
             }}
           >
             {isFavorited ? <AiOutlineHeart fill="red" /> : <AiOutlineHeart />}
@@ -178,31 +182,30 @@ const PropertyDetails = ({
           <section className="my-12">
             <p>{selectedProperty.description}</p>
           </section>
-
           {/* Amenities */}
           <section id="amenities" className="my-12">
             <h3 className="mb-6 text-head3 font-semibold">Amenities</h3>
 
             <ul className="grid grid-cols-2 gap-6">
-              {selectedProperty.options.map(op => {
+              {selectedProperty.options.map((op) => {
                 return (
                   <li className="flex gap-4 items-center">
-                    {op === 'wifi' && (
+                    {op === "wifi" && (
                       <>
                         <IoGlobeOutline size={18} />
                         <p className="font-semibold capitalize">Fast wifi</p>
                       </>
                     )}
-                    {op === 'beach' && (
+                    {op === "beach" && (
                       <>
-                        {' '}
+                        {" "}
                         <TbBeach size={18} />
                         <p className="font-semibold capitalize">
                           Calm beaches nearby
                         </p>
                       </>
                     )}
-                    {op === 'breakfast' && (
+                    {op === "breakfast" && (
                       <>
                         <IoFastFoodOutline size={18} />
                         <p className="font-semibold capitalize">
@@ -210,16 +213,16 @@ const PropertyDetails = ({
                         </p>
                       </>
                     )}
-                    {op === 'parking' && (
+                    {op === "parking" && (
                       <>
-                        {' '}
+                        {" "}
                         <AiOutlineCar size={18} />
                         <p className="font-semibold capitalize">
                           Free parking on premises
                         </p>
                       </>
                     )}
-                    {op === 'pool' && (
+                    {op === "pool" && (
                       <>
                         <FaSwimmingPool size={18} />
                         <p className="font-semibold capitalize">
@@ -232,7 +235,6 @@ const PropertyDetails = ({
               })}
             </ul>
           </section>
-
           {/* Virtual tour */}
           <section
             id="tour"
@@ -242,10 +244,12 @@ const PropertyDetails = ({
               src={bgUrl}
               alt="apartment room"
               fill={true}
-              className="absolute top-0 right-0 z-[-1] brightness-[65%]"
+              className="absolute top-0 right-0 z-[1] brightness-[65%]"
             />
 
-            <div className={`flex flex-col justify-between h-full p-4`}>
+            <div
+              className={`relative z-[2] flex flex-col justify-between h-full p-4`}
+            >
               <h3 className="text-head3 mb-2 font-semibold text-white">
                 Virtual tour
               </h3>
@@ -286,24 +290,21 @@ const PropertyDetails = ({
               </ul>
             </div>
           </section>
-
-          {/* Available Dates
+          Available Dates
           <section id="dates" className="my-12">
             <h3 className="mb-6 text-head3 font-semibold">Available dates</h3>
             <div className="available-dates__calender">
               <DateRangePicker
-                months={2}
-                // ranges={[state.selection1, state.selection2]}
-                direction="horizontal"
                 minDate={new Date()}
-                // focusedRange={}
-                onChange={ranges => {
-                  setDateRange([ranges.selection]);
+                months={2}
+                direction="horizontal"
+                ranges={dateRange}
+                onChange={(ranges) => {
+                  setDateRange([ranges.selectedRange]);
                 }}
-                // disabledDates={[]} bayad har baar yeki rezerv mikone oon roozaro az roozaye momken hazf konim
               />
             </div>
-          </section> */}
+          </section>
         </div>
 
         <div className="flex-[40%] sticky top-[72px] h-fit">
@@ -333,17 +334,19 @@ const PropertyDetails = ({
               <p className="font-semibold">Guests</p>
               <div className="flex items-center justify-center gap-4">
                 <button
-                  onClick={() => setGuests(prev => (prev >= 2 ? prev-- : prev))}
+                  onClick={() =>
+                    //  guests >= 2 && setGuests(guests-1)
+                    setGuests((prev) => (prev >= 2 ? prev - 1 : prev))
+                  }
                 >
                   -
                 </button>
                 <span>{guests}</span>
                 <button
-                  onClick={() =>
-                    setGuests(prev =>
-                      prev <= selectedProperty.allowedGuests ? prev++ : prev
-                    )
-                  }
+                  onClick={() => {
+                    guests <= selectedProperty.allowedGuests &&
+                      setGuests(guests + 1);
+                  }}
                 >
                   +
                 </button>
@@ -351,14 +354,20 @@ const PropertyDetails = ({
             </div>
             <button
               className="bg-grassGreen text-white flex items-center justify-center px-16 py-[1rem] font-semibold rounded-3xl my-[1rem]"
-              // onClick={() => {
-              //   axios.post('/api/reservations', {
-              //     peopleStaying: guests,
-              //     endDate: dateRange[0]?.endDate?,
-              //     startDate: dateRange[0]?.startDate?,
-              //     propertyId: selectedProperty.id,
-              //   });
-              // }}
+              onClick={() => {
+                console.log({
+                  peopleStaying: guests,
+                  endDate: dateRange[0]?.endDate,
+                  startDate: dateRange[0]?.startDate,
+                  propertyId: selectedProperty.id,
+                });
+                axios.post("/api/reservations", {
+                  peopleStaying: guests,
+                  endDate: dateRange[0]?.endDate,
+                  startDate: dateRange[0]?.startDate,
+                  propertyId: selectedProperty.id,
+                });
+              }}
             >
               Book apartment
             </button>

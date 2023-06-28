@@ -22,7 +22,7 @@ const PropertyCard = ({
   currentUser: User;
 }) => {
   const [isFavorited, setIsFavorited] = useState(
-    currentUser.favoriteIds.includes(property.id)
+    currentUser?.favoriteIds.includes(property.id)
   );
   const router = useRouter();
   return (
