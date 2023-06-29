@@ -5,6 +5,9 @@ module.exports = {
 
   theme: {
     extend: {
+      gridTemplateColumns: {
+        resList: "20% 10% 15% 15% 8% 8%",
+      },
       fontFamily: {
         poppins: "var(--font-poppins)",
       },
