@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 const ClientComponent = ({ children }: { children: React.ReactNode }) => {
   return <>{children}</>;
