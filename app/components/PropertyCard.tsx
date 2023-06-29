@@ -19,7 +19,7 @@ const PropertyCard = ({
 }: {
   page?: Page;
   property: Property;
-  currentUser: User;
+  currentUser: User | null;
 }) => {
   const [isFavorited, setIsFavorited] = useState(
     currentUser?.favoriteIds.includes(property.id)

@@ -12,7 +12,7 @@ const PropertiesList = ({
 }: {
   mapView?: boolean;
   page?: Page;
-  currentUser: User;
+  currentUser: User | null;
   properties: null | Property[];
 }) => {
   if (!properties) return null;

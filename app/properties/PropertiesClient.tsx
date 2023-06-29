@@ -1,19 +1,40 @@
 "use client";
 
-import { useState } from "react";
-import { Property } from "@prisma/client";
+import { useEffect, useState } from "react";
+import { Property, User } from "@prisma/client";
 import { Filters } from "@/app/types";
 import TabsList from "../components/TabsList";
 import CreatePropModal from "@/app/components/CreatePropModal";
 import PropertiesList from "@/app/components/PropertiesList";
 import SearchBox from "../components/SearchBar/SearchBox";
+import { getCurrentUser } from "../libs";
 
 type PropertiesClientProps = {
+  currentUser: User | null;
   properties: Property[] | null;
 };
 
-const PropertiesClient = ({ properties }: PropertiesClientProps) => {
+const PropertiesClient = ({
+  properties,
+  currentUser,
+}: PropertiesClientProps) => {
   const [chosenFilters, setChosenFilters] = useState<Filters | null>(null);
+  const [filteredProperties, setFilteredProperties] = useState<
+    Property[] | null
+  >(properties);
+
+  useEffect(() => {
+    // changing the properties
+    const filteredProps = properties?.filter((prop) => {
+      if (
+        chosenFilters?.location === prop.country ||
+        chosenFilters?.guests?.adults === prop.allowedGuests
+      ) {
+        return prop;
+      }
+    });
+    setFilteredProperties(filteredProps ?? null);
+  }, [chosenFilters]);
 
   return (
     <main>
@@ -32,7 +53,10 @@ const PropertiesClient = ({ properties }: PropertiesClientProps) => {
           />
         )}
         {/* Properties list */}
-        <PropertiesList properties={properties} />
+        <PropertiesList
+          properties={chosenFilters ? filteredProperties : properties}
+          currentUser={currentUser}
+        />
       </section>
     </main>
   );
