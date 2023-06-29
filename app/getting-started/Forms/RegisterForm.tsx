@@ -1,15 +1,9 @@
-'use client';
+"use client";
 
-import { useRouter } from 'next/navigation';
-import {
-  ErrorOption,
-  FieldValues,
-  SubmitHandler,
-  useForm,
-} from 'react-hook-form';
-import Input from './Input';
-import axios from 'axios';
-import Error from 'next/error';
+import { useRouter } from "next/navigation";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import Input from "./Input";
+import axios from "axios";
 
 const RegisterForm = () => {
   const router = useRouter();
@@ -20,16 +14,16 @@ const RegisterForm = () => {
     formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      email: '',
-      password: '',
-      name: '',
+      email: "",
+      password: "",
+      name: "",
     },
   });
 
-  const formSubmitHandler: SubmitHandler<FieldValues> = values => {
-    axios.post('/api/register', values).then(res => {
+  const formSubmitHandler: SubmitHandler<FieldValues> = (values) => {
+    axios.post("/api/register", values).then((res) => {
       if (res.data.user) {
-        router.push('/getting-started?type=login');
+        router.push("/getting-started?type=login");
       } else {
         alert(res.data.error);
       }
@@ -73,7 +67,7 @@ const RegisterForm = () => {
         </button>
       </form>
       <button
-        onClick={() => router.push('/getting-started?type=login')}
+        onClick={() => router.push("/getting-started?type=login")}
         className="block mt-3 mx-auto font-semibold"
       >
         Already have an account?

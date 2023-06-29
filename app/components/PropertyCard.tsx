@@ -14,6 +14,7 @@ const PropertyCard = ({
   currentUser: User;
 }) => {
   const router = useRouter();
+
   const [isFavorited, setIsFavorited] = useState(
     currentUser.favoriteIds.includes(property.id)
   );

@@ -15,19 +15,7 @@ import { ReactNode, useEffect, useState } from "react";
 import { DateRangePicker, Range } from "react-date-range";
 import { Property, User } from "@prisma/client";
 import axios from "axios";
-
-interface Amenity {
-  name: string;
-  icon: IconType;
-  text: string;
-}
-const amenities: Amenity[] = [
-  { name: "wifi", icon: IoGlobeOutline, text: "fast wifi" },
-  { name: "breakfast", icon: CgCoffee, text: "Breakfast included" },
-  { name: "beach", icon: TbBeach, text: "calm beaches nearby" },
-  { name: "pool", icon: FaSwimmingPool, text: " Private outdoor pool" },
-  { name: "parking", icon: AiOutlineCar, text: "Parking" },
-];
+import FavButton from "./FavButton";
 
 enum Gallery {
   Kitchen,
@@ -44,10 +32,9 @@ const PropertyDetails = ({
   currentUser: User | null;
 }) => {
   const [isFavorited, setIsFavorited] = useState(
-    currentUser?.favoriteIds.includes(selectedProperty.id)
+    currentUser?.favoriteIds.includes(selectedProperty.id) ?? false
   );
-  const [guests, setGuests] = useState(0);
-  console.log(guests);
+  const [guests, setGuests] = useState(1);
   const [dateRange, setDateRange] = useState<Range[]>([
     {
       startDate: new Date(),
@@ -56,21 +43,6 @@ const PropertyDetails = ({
       color: "#3b6552",
     },
   ]);
-
-  // const [state, setState] = useState({
-  //   selection1: {
-  //     startDate: addDays(new Date(), 1),
-  //     endDate: addDays(new Date(), 7),
-  //     key: "selection1",
-  //     color: "#3b6552",
-  //   },
-  //   selection2: {
-  //     startDate: addDays(new Date(), 15),
-  //     endDate: addDays(new Date(), 23),
-  //     key: "selection2",
-  //     color: "#3b6552",
-  //   },
-  // });
 
   const [galleryOption, setGalleryOption] = useState<Gallery>(Gallery.Outside);
   const [bgUrl, setBgUrl] = useState(selectedProperty.images[0]);
@@ -136,15 +108,14 @@ const PropertyDetails = ({
           <h2 className="text-head2 font-bold">{selectedProperty.title}</h2>
           <p>{selectedProperty.country}</p>
         </div>
-        {currentUser && (
+        {currentUser && selectedProperty.hostId !== currentUser.id && (
           <button
             className="flex justify-center items-center h-[35px] w-[35px] rounded-xl bg-opacity-20 bg-whiteDark"
             onClick={() => {
+              setIsFavorited(true);
               axios
                 .post(`/api/favorites/${selectedProperty.id}`)
-                .then((res) => {
-                  setIsFavorited(true);
-                });
+                .then(() => {});
             }}
           >
             {isFavorited ? <AiOutlineHeart fill="red" /> : <AiOutlineHeart />}
@@ -153,7 +124,9 @@ const PropertyDetails = ({
       </section>
 
       {/* Navigation */}
-      <nav className={`sticky top-0 py-4 height-[72px] bg-white`}>
+      <nav
+        className={`sticky top-[-2rem] py-4 height-[72px] z-40 bg-whiteLight`}
+      >
         <ul className="flex gap-8 text-body-lg">
           <li className="hover:text-grassGreen transition-all">
             <a href="#gallery">Gallery</a>
@@ -167,12 +140,6 @@ const PropertyDetails = ({
           <li className="hover:text-grassGreen transition-all">
             <a href="#dates">Available dates</a>
           </li>
-          <li className="hover:text-grassGreen transition-all">
-            <a href="#location">Location</a>
-          </li>
-          {/* <li>
-              <a href="#reviews">Reviews</a>
-            </li> */}
         </ul>
       </nav>
 
@@ -290,9 +257,9 @@ const PropertyDetails = ({
               </ul>
             </div>
           </section>
-          Available Dates
+          {/* Available Datess */}
           <section id="dates" className="my-12">
-            <h3 className="mb-6 text-head3 font-semibold">Available dates</h3>
+            <h3 className="mb-6 text-head3 font-semibold">Choose Your Dates</h3>
             <div className="available-dates__calender">
               <DateRangePicker
                 minDate={new Date()}
@@ -307,7 +274,7 @@ const PropertyDetails = ({
           </section>
         </div>
 
-        <div className="flex-[40%] sticky top-[72px] h-fit">
+        <div className="flex-[40%] sticky top-[2rem] h-fit z-50">
           {/* Reservation Modal */}
           <div className="flex flex-col py-32 px-12 rounded-[2rem] bg-whiteDark">
             <div className="flex gap-[1.3rem] mb-[0.5rem]">
@@ -361,12 +328,14 @@ const PropertyDetails = ({
                   startDate: dateRange[0]?.startDate,
                   propertyId: selectedProperty.id,
                 });
-                axios.post("/api/reservations", {
-                  peopleStaying: guests,
-                  endDate: dateRange[0]?.endDate,
-                  startDate: dateRange[0]?.startDate,
-                  propertyId: selectedProperty.id,
-                });
+
+                if (dateRange[0]?.endDate && dateRange[0]?.startDate)
+                  axios.post("/api/reservations", {
+                    peopleStaying: guests,
+                    endDate: dateRange[0].endDate,
+                    startDate: dateRange[0].startDate,
+                    propertyId: selectedProperty.id,
+                  });
               }}
             >
               Book apartment
@@ -386,7 +355,8 @@ const PropertyDetails = ({
                   <span>
                     $
                     {(dateRange[0].endDate.getDate() -
-                      dateRange[0].startDate.getDate()) *
+                      dateRange[0].startDate.getDate() +
+                      1) *
                       selectedProperty.price}
                   </span>
                 )}

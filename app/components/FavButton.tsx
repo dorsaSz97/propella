@@ -17,6 +17,8 @@ const FavButton = ({
   const router = useRouter();
   const pathname = usePathname();
 
+  if (pathname === "/homes") return null;
+
   return (
     <button
       className="absolute flex justify-center items-center h-[35px] w-[35px] rounded-lg top-6 right-6 z-[10] bg-silverGrey bg-opacity-75"

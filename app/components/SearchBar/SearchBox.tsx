@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Dispatch,
   ReactElement,
@@ -24,12 +25,11 @@ const SearchBox = ({
   chosenFilters: Filters | null;
   setChosenFilters: Dispatch<SetStateAction<Filters | null>>;
 }) => {
-  console.log(chosenFilters);
   const [filters, setFilters] = useState<Filters>(
     chosenFilters === null
       ? {
           location: "",
-          guests: { children: 0, adults: 0, pets: 0 },
+          guests: { children: 0, adults: 0 },
           duration: { startDate: undefined, endDate: undefined },
         }
       : chosenFilters
@@ -57,7 +57,7 @@ const SearchBox = ({
   useEffect(() => {
     setFilters({
       location: "",
-      guests: { children: 0, adults: 0, pets: 0 },
+      guests: { children: 0, adults: 0 },
       duration: { startDate: undefined, endDate: undefined },
     });
   }, [chosenFilters]);

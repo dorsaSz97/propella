@@ -1,4 +1,3 @@
-"use client";
 import { Dispatch, SetStateAction } from "react";
 import { Filters } from "@/app/types";
 
@@ -25,10 +24,17 @@ const TabsList = ({
         )}
         {filters.guests.adults !== 0 && (
           <li className="px-4 py-2 rounded-xl bg-whiteDark">
-            {filters.guests.adults} adult{filters.guests.adults > 1 && "s"} +{" "}
-            {filters.guests.children}{" "}
-            {filters.guests.children > 1 ? "children" : "child"} +{" "}
-            {filters.guests.pets} pet{filters.guests.pets > 1 && "s"}
+            {filters.guests.adults !== 0
+              ? `${filters.guests.adults} adult${
+                  filters.guests.adults > 1 ? "s" : ""
+                }`
+              : null}{" "}
+            +
+            {filters.guests.children !== 0
+              ? `${filters.guests.children} ${
+                  filters.guests.children > 1 ? "children" : "child"
+                }`
+              : null}{" "}
           </li>
         )}
       </ul>

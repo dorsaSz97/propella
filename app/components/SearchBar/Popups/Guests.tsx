@@ -36,7 +36,6 @@ const Guests = ({ setFilters, setStep }: PopupProps) => {
               guests: {
                 adults: adultsNumber,
                 children: childrenNumber,
-                pets: petsNumber,
               },
             };
           });

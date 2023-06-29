@@ -1,5 +1,5 @@
-import PropertyDetails from '@/app/components/PropertyDetails';
-import { getCurrentUser, getSelectedProperty } from '@/app/libs';
+import { getCurrentUser, getSelectedProperty } from "@/app/libs";
+import PropertyDetails from "@/app/components/PropertyDetails";
 
 export default async function PropertyPage({
   params,
@@ -11,9 +11,8 @@ export default async function PropertyPage({
   const currentUser = await getCurrentUser();
 
   const selectedProperty = await getSelectedProperty(propertyID);
-
   if (!selectedProperty)
-    return <p>Something went wrong. No property to show</p>;
+    throw new Error("Something went wrong. No property to show");
 
   return (
     <PropertyDetails

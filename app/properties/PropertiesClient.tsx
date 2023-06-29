@@ -10,8 +10,8 @@ import SearchBox from "../components/SearchBar/SearchBox";
 import { getCurrentUser } from "../libs";
 
 type PropertiesClientProps = {
-  currentUser: User | null;
-  properties: Property[] | null;
+  currentUser: User;
+  properties: Property[];
 };
 
 const PropertiesClient = ({
@@ -19,9 +19,8 @@ const PropertiesClient = ({
   currentUser,
 }: PropertiesClientProps) => {
   const [chosenFilters, setChosenFilters] = useState<Filters | null>(null);
-  const [filteredProperties, setFilteredProperties] = useState<
-    Property[] | null
-  >(properties);
+  const [filteredProperties, setFilteredProperties] =
+    useState<Property[]>(properties);
 
   useEffect(() => {
     // changing the properties
@@ -52,6 +51,7 @@ const PropertiesClient = ({
             setChosenFilters={setChosenFilters}
           />
         )}
+
         {/* Properties list */}
         <PropertiesList
           properties={chosenFilters ? filteredProperties : properties}

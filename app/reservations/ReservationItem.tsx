@@ -19,7 +19,11 @@ const ReservationItem = async ({ item }: { item: Reservation }) => {
       <p>{item.peopleStaying}</p>
       <p>{item.startDate.toDateString()}</p>
       <p>{item.endDate.toDateString()}</p>
-      <span>${item.totalPrice}</span>
+      <span>
+        $
+        {item.totalPrice *
+          (item.endDate.getDate() - item.startDate.getDate() + 1)}
+      </span>
       <RemoveButton reservation={item} />
     </li>
   );

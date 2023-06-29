@@ -1,21 +1,21 @@
-import LoginForm from '@/app/components/Forms/LoginForm';
-import RegisterForm from '@/app/components/Forms/RegisterForm';
-import ProviderButton from '@/app/components/Forms/ProviderButton';
-import RandomImage from '@/app/components/RandomImage';
-import { BsFacebook } from 'react-icons/bs';
-import { AiOutlineGithub, AiOutlineGoogle } from 'react-icons/ai';
+import LoginForm from "@/app/getting-started/Forms/LoginForm";
+import RegisterForm from "@/app/getting-started/Forms/RegisterForm";
+import ProviderButton from "@/app/getting-started/Forms/ProviderButton";
+import RandomImage from "@/app/getting-started/RandomImage";
+import { BsFacebook } from "react-icons/bs";
+import { AiOutlineGithub, AiOutlineGoogle } from "react-icons/ai";
 
 export const metadata = {
-  title: 'Getting Started | Login & Register',
-  description: 'Real Estate Listings Login/Register Page',
+  title: "Getting Started | Login & Register",
+  description: "Real Estate Listings Login/Register Page",
 };
 export default async function GettingStartedPage({
   searchParams,
 }: {
-  searchParams: { type: 'login' | 'register' };
+  searchParams: { type: "login" | "register" };
 }) {
   const formContent =
-    searchParams.type === 'login' ? <LoginForm /> : <RegisterForm />;
+    searchParams.type === "login" ? <LoginForm /> : <RegisterForm />;
 
   return (
     <main className="flex items-center justify-center h-screen w-screen bg-whiteDark">

@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction } from "react";
 export type Filters = {
   location: string;
   duration: { startDate: Date | undefined; endDate: Date | undefined };
-  guests: { adults: number; children: number; pets: number };
+  guests: { adults: number; children: number };
 };
 export enum Steps {
   Location = 1,
