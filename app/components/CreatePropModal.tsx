@@ -19,6 +19,7 @@ const CreatePropModal = () => {
     register,
     setValue,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<ICreatePropInputs>({
     defaultValues: {
@@ -53,8 +54,10 @@ const CreatePropModal = () => {
     };
 
     axios.post("/api/homes", newData).then((res: any) => {
+      console.log(res);
       close();
-      router.push(`/properties/${res.home.id}`);
+      router.push(`/properties/${res.data.home.id}`);
+      reset();
     });
   };
 

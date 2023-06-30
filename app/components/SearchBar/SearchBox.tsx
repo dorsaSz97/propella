@@ -17,12 +17,15 @@ import { HiOutlineLocationMarker } from "react-icons/hi";
 import { BsCalendar2Date } from "react-icons/bs";
 import { RxPerson } from "react-icons/rx";
 import { RiSearchLine } from "react-icons/ri";
+import { Property } from "@prisma/client";
 
 const SearchBox = ({
   setChosenFilters,
   chosenFilters,
+  properties,
 }: {
   chosenFilters: Filters | null;
+  properties: Property[];
   setChosenFilters: Dispatch<SetStateAction<Filters | null>>;
 }) => {
   const [filters, setFilters] = useState<Filters>(
@@ -40,7 +43,13 @@ const SearchBox = ({
   useEffect(() => {
     switch (step) {
       case Steps.Location:
-        setPopupEl(<Location setFilters={setFilters} setStep={setStep} />);
+        setPopupEl(
+          <Location
+            setFilters={setFilters}
+            setStep={setStep}
+            properties={properties}
+          />
+        );
         break;
       case Steps.Duration:
         setPopupEl(<Calender setFilters={setFilters} setStep={setStep} />);

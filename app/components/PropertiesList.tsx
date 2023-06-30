@@ -5,7 +5,7 @@ const PropertiesList = ({
   properties,
   currentUser,
 }: {
-  currentUser: User;
+  currentUser: User | null;
   properties: Property[];
 }) => {
   return (

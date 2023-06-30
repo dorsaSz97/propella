@@ -1,9 +1,11 @@
 import { Dispatch, ReactElement, SetStateAction } from "react";
 import { Filters, Steps } from "@/app/types";
+import { Property } from "@prisma/client";
 
 export type PopupProps = {
   setFilters: Dispatch<SetStateAction<Filters>>;
   setStep: Dispatch<SetStateAction<Steps | null>>;
+  properties?: Property[];
 };
 
 const Popup = ({ children }: { children: ReactElement }) => {

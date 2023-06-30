@@ -10,12 +10,14 @@ import { BsAirplane } from "react-icons/bs";
 import { IconType } from "react-icons";
 import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
-import { addDays } from "date-fns";
 import { ReactNode, useEffect, useState } from "react";
 import { DateRangePicker, Range } from "react-date-range";
 import { Property, User } from "@prisma/client";
 import axios from "axios";
 import FavButton from "./FavButton";
+import { toast, Toaster } from "react-hot-toast";
+
+const successNotify = () => toast.success("Reservation complete");
 
 enum Gallery {
   Kitchen,
@@ -68,6 +70,7 @@ const PropertyDetails = ({
 
   return (
     <main className="px-28 py-12 pb-0">
+      <Toaster position="bottom-right" />
       {/* Gallery */}
       <section id="gallery" className="my-12">
         <div className="grid grid-cols-5 grid-rows-[150px_150px_150px] gap-4 w-full h-full">
@@ -156,7 +159,7 @@ const PropertyDetails = ({
             <ul className="grid grid-cols-2 gap-6">
               {selectedProperty.options.map((op) => {
                 return (
-                  <li className="flex gap-4 items-center">
+                  <li className="flex gap-4 items-center" key={op}>
                     {op === "wifi" && (
                       <>
                         <IoGlobeOutline size={18} />
@@ -258,111 +261,114 @@ const PropertyDetails = ({
             </div>
           </section>
           {/* Available Datess */}
-          <section id="dates" className="my-12">
-            <h3 className="mb-6 text-head3 font-semibold">Choose Your Dates</h3>
-            <div className="available-dates__calender">
-              <DateRangePicker
-                minDate={new Date()}
-                months={2}
-                direction="horizontal"
-                ranges={dateRange}
-                onChange={(ranges) => {
-                  setDateRange([ranges.selectedRange]);
-                }}
-              />
-            </div>
-          </section>
+          {selectedProperty.hostId !== currentUser?.id && (
+            <section id="dates" className="my-12">
+              <h3 className="mb-6 text-head3 font-semibold">
+                Choose Your Dates
+              </h3>
+              <div className="available-dates__calender">
+                <DateRangePicker
+                  minDate={new Date()}
+                  months={2}
+                  direction="horizontal"
+                  ranges={dateRange}
+                  onChange={(ranges) => {
+                    setDateRange([ranges.selectedRange]);
+                  }}
+                />
+              </div>
+            </section>
+          )}
         </div>
 
         <div className="flex-[40%] sticky top-[2rem] h-fit z-50">
           {/* Reservation Modal */}
-          <div className="flex flex-col py-32 px-12 rounded-[2rem] bg-whiteDark">
-            <div className="flex gap-[1.3rem] mb-[0.5rem]">
-              <div className="bg-whiteLight rounded-[1.5rem] p-6  flex flex-col justify-between flex-1">
-                <GrHomeRounded size={30} />
-                <p className="font-semibold text-body-lg mt-[1.5rem] mb-[0.5rem]">
-                  Arrival
-                </p>
-                <p className="text-body-sm">
-                  {dateRange[0]?.startDate?.toDateString()}
-                </p>
+          {selectedProperty.hostId !== currentUser?.id && (
+            <div className="flex flex-col py-32 px-12 rounded-[2rem] bg-whiteDark">
+              <div className="flex gap-[1.3rem] mb-[0.5rem]">
+                <div className="bg-whiteLight rounded-[1.5rem] p-6  flex flex-col justify-between flex-1">
+                  <GrHomeRounded size={30} />
+                  <p className="font-semibold text-body-lg mt-[1.5rem] mb-[0.5rem]">
+                    Arrival
+                  </p>
+                  <p className="text-body-sm">
+                    {dateRange[0]?.startDate?.toDateString()}
+                  </p>
+                </div>
+                <div className="bg-whiteLight rounded-[1.5rem] p-6 flex flex-col justify-between flex-1">
+                  <BsAirplane size={30} />
+                  <p className="font-semibold text-body-lg mt-[1.5rem] mb-[0.5rem]">
+                    Departure
+                  </p>
+                  <p className="text-body-sm">
+                    {dateRange[0]?.endDate?.toDateString()}
+                  </p>
+                </div>
               </div>
-              <div className="bg-whiteLight rounded-[1.5rem] p-6 flex flex-col justify-between flex-1">
-                <BsAirplane size={30} />
-                <p className="font-semibold text-body-lg mt-[1.5rem] mb-[0.5rem]">
-                  Departure
-                </p>
-                <p className="text-body-sm">
-                  {dateRange[0]?.endDate?.toDateString()}
-                </p>
+              <div className="bg-whiteLight rounded-[1.5rem] flex justify-between items-center py-3 px-6">
+                <p className="font-semibold">Guests</p>
+                <div className="flex items-center justify-center gap-4">
+                  <button
+                    onClick={() =>
+                      //  guests >= 2 && setGuests(guests-1)
+                      setGuests((prev) => (prev >= 2 ? prev - 1 : prev))
+                    }
+                  >
+                    -
+                  </button>
+                  <span>{guests}</span>
+                  <button
+                    onClick={() => {
+                      guests <= selectedProperty.allowedGuests &&
+                        setGuests(guests + 1);
+                    }}
+                  >
+                    +
+                  </button>
+                </div>
               </div>
-            </div>
-            <div className="bg-whiteLight rounded-[1.5rem] flex justify-between items-center py-3 px-6">
-              <p className="font-semibold">Guests</p>
-              <div className="flex items-center justify-center gap-4">
-                <button
-                  onClick={() =>
-                    //  guests >= 2 && setGuests(guests-1)
-                    setGuests((prev) => (prev >= 2 ? prev - 1 : prev))
-                  }
-                >
-                  -
-                </button>
-                <span>{guests}</span>
-                <button
-                  onClick={() => {
-                    guests <= selectedProperty.allowedGuests &&
-                      setGuests(guests + 1);
-                  }}
-                >
-                  +
-                </button>
-              </div>
-            </div>
-            <button
-              className="bg-grassGreen text-white flex items-center justify-center px-16 py-[1rem] font-semibold rounded-3xl my-[1rem]"
-              onClick={() => {
-                console.log({
-                  peopleStaying: guests,
-                  endDate: dateRange[0]?.endDate,
-                  startDate: dateRange[0]?.startDate,
-                  propertyId: selectedProperty.id,
-                });
-
-                if (dateRange[0]?.endDate && dateRange[0]?.startDate)
-                  axios.post("/api/reservations", {
-                    peopleStaying: guests,
-                    endDate: dateRange[0].endDate,
-                    startDate: dateRange[0].startDate,
-                    propertyId: selectedProperty.id,
-                  });
-              }}
-            >
-              Book apartment
-            </button>
-            <ul className="bg-whiteLight rounded-[1.5rem] flex flex-col gap-3 py-3 px-6">
-              <li className="flex items-center justify-between">
-                <p className="font-semibold">Per night</p>
-                <span>${selectedProperty.price}</span>
-              </li>
-              {/* <li className="flex items-center justify-between">
+              <button
+                className="bg-grassGreen text-white flex items-center justify-center px-16 py-[1rem] font-semibold rounded-3xl my-[1rem]"
+                onClick={() => {
+                  if (dateRange[0]?.endDate && dateRange[0]?.startDate)
+                    axios.post("/api/reservations", {
+                      peopleStaying: guests,
+                      endDate: dateRange[0].endDate,
+                      startDate: dateRange[0].startDate,
+                      propertyId: selectedProperty.id,
+                    });
+                }}
+              >
+                Book apartment
+              </button>
+              <ul className="bg-whiteLight rounded-[1.5rem] flex flex-col gap-3 py-3 px-6">
+                <li className="flex items-center justify-between">
+                  <p className="font-semibold">Per night</p>
+                  <span>${selectedProperty.price}</span>
+                </li>
+                {/* <li className="flex items-center justify-between">
                 <p className="font-semibold">Discount</p>
                 <span>-10%</span>
               </li> */}
-              <li className="flex items-center justify-between">
-                <p className="font-semibold">in total</p>
-                {dateRange[0]?.endDate && dateRange[0]?.startDate && (
-                  <span>
-                    $
-                    {(dateRange[0].endDate.getDate() -
-                      dateRange[0].startDate.getDate() +
-                      1) *
-                      selectedProperty.price}
-                  </span>
-                )}
-              </li>
-            </ul>
-          </div>
+                <li className="flex items-center justify-between">
+                  <p className="font-semibold">in total</p>
+                  {dateRange[0]?.endDate && dateRange[0]?.startDate && (
+                    <span>
+                      $
+                      {((dateRange[0].endDate.getTime() -
+                        dateRange[0].startDate.getTime()) /
+                        1000 /
+                        60 /
+                        60 /
+                        24 +
+                        1) *
+                        selectedProperty.price}
+                    </span>
+                  )}
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </main>

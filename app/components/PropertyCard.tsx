@@ -11,12 +11,12 @@ const PropertyCard = ({
   currentUser,
 }: {
   property: Property;
-  currentUser: User;
+  currentUser: User | null;
 }) => {
   const router = useRouter();
 
   const [isFavorited, setIsFavorited] = useState(
-    currentUser.favoriteIds.includes(property.id)
+    currentUser?.favoriteIds.includes(property.id) ?? false
   );
 
   return (
@@ -34,13 +34,15 @@ const PropertyCard = ({
           height={700}
           className={`rounded-[20%] object-cover w-full h-full`}
         />
-        <FavButton
-          isFilled={isFavorited}
-          relPropId={property.id}
-          setIsFavorited={setIsFavorited}
-        />
+        {property.hostId !== currentUser?.id && (
+          <FavButton
+            isFilled={isFavorited}
+            relPropId={property.id}
+            setIsFavorited={setIsFavorited}
+          />
+        )}
       </div>
-      <div className="flex justify-between items-center text-body-sm capitalize font-bold">
+      <div className="flex justify-between gap-11 text-body-sm capitalize font-bold">
         <h3>{property.title}</h3>
         <span>${property.price}</span>
       </div>

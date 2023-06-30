@@ -5,9 +5,10 @@ import { ChangeEvent, useState } from "react";
 import { Steps } from "@/app/types";
 import { PopupProps } from "./Popup";
 
-const Location = ({ setFilters, setStep }: PopupProps) => {
+const Location = ({ properties, setFilters, setStep }: PopupProps) => {
   const [locationValue, setLocationValue] = useState("");
-
+  console.log(properties);
+  // console.log(country.name.common.toLowerCase());
   return (
     <div className="flex flex-col gap-4 text-body-sm">
       <div className="flex items-center gap-1 px-4 py-1 rounded-3xl bg-whiteDarker">
@@ -45,7 +46,16 @@ const Location = ({ setFilters, setStep }: PopupProps) => {
                   }}
                 >
                   {country.name.common}
-                  <span className="font-normal">3</span>
+                  <span className="font-normal">
+                    {
+                      properties!.filter((prop) => {
+                        return (
+                          prop.country.toLowerCase() ===
+                          country.name.common.toLowerCase()
+                        );
+                      }).length
+                    }
+                  </span>
                 </li>
               );
             })}

@@ -10,7 +10,7 @@ import SearchBox from "../components/SearchBar/SearchBox";
 import { getCurrentUser } from "../libs";
 
 type PropertiesClientProps = {
-  currentUser: User;
+  currentUser: User | null;
   properties: Property[];
 };
 
@@ -42,6 +42,7 @@ const PropertiesClient = ({
         <SearchBox
           setChosenFilters={setChosenFilters}
           chosenFilters={chosenFilters}
+          properties={properties}
         />
 
         {/* Filters list */}

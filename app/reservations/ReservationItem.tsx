@@ -8,7 +8,10 @@ const ReservationItem = async ({ item }: { item: Reservation }) => {
   if (!selectedProperty) return null;
 
   return (
-    <li className="grid grid-cols-resList items-center justify-between gap-x-6 h-[180px] font-semibold text-body-sm text-center">
+    <li
+      className="grid grid-cols-resList items-center justify-between gap-x-6 h-[180px] font-semibold text-body-sm text-center"
+      key={item.id}
+    >
       <Image
         src={selectedProperty.images[0]}
         alt="property"
