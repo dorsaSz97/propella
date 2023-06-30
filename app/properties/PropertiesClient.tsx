@@ -26,8 +26,10 @@ const PropertiesClient = ({
     // changing the properties
     const filteredProps = properties?.filter((prop) => {
       if (
-        chosenFilters?.location === prop.country ||
-        chosenFilters?.guests?.adults === prop.allowedGuests
+        chosenFilters?.location === prop.country &&
+        chosenFilters?.guests?.adults &&
+        chosenFilters.guests.children + chosenFilters.guests.adults <=
+          prop.allowedGuests
       ) {
         return prop;
       }

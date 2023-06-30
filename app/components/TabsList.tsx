@@ -29,9 +29,8 @@ const TabsList = ({
                   filters.guests.adults > 1 ? "s" : ""
                 }`
               : null}{" "}
-            +
             {filters.guests.children !== 0
-              ? `${filters.guests.children} ${
+              ? `+ ${filters.guests.children} ${
                   filters.guests.children > 1 ? "children" : "child"
                 }`
               : null}{" "}

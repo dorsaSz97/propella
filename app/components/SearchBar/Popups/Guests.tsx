@@ -20,11 +20,6 @@ const Guests = ({ setFilters, setStep }: PopupProps) => {
           setFn={setChildrenNumber}
           inputValue={childrenNumber}
         />
-        <GuestsInput
-          label={"pets"}
-          setFn={setPetsNumber}
-          inputValue={petsNumber}
-        />
       </ul>
 
       <button

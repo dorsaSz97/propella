@@ -18,7 +18,7 @@ export default async function GettingStartedPage({
     searchParams.type === "login" ? <LoginForm /> : <RegisterForm />;
 
   return (
-    <main className="flex items-center justify-center h-screen w-screen bg-whiteDark">
+    <main className="flex items-center justify-center h-full w-full bg-whiteDark">
       <section className="flex h-[90%] w-[80%] p-4 bg-whiteLight rounded-2xl shadow-xl shadow-silverGrey">
         {/* left side: form */}
         <div className="flex-1 flex flex-col px-16 py-2">
