@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import Image from 'next/image';
+import React, { useEffect, useState } from 'react';
 
-import { Property } from "@prisma/client";
-import { Gallery } from "../PropertyDetailsClient";
+import { Property } from '@prisma/client';
+import { Gallery } from '../PropertyDetailsClient';
 
 const ImageGallery = ({ selectedProperty }: { selectedProperty: Property }) => {
   const [galleryOption, setGalleryOption] = useState<Gallery>(Gallery.Outside);
@@ -37,7 +37,6 @@ const ImageGallery = ({ selectedProperty }: { selectedProperty: Property }) => {
         src={bgUrl}
         alt="apartment room"
         fill={true}
-        sizes="700"
         className="absolute top-0 right-0 z-[1] brightness-[65%]"
       />
 

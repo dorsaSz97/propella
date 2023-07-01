@@ -1,6 +1,6 @@
-import { Reservation } from "@prisma/client";
-import ReservationItem from "./ReservationItem";
-import ReservationHeading from "./ReservationHeading";
+import { Reservation } from '@prisma/client';
+import ReservationHeading from './ReservationHeading';
+import ReservationItem from './ReservationItem';
 
 const ReservationsList = ({
   reservations,
@@ -10,7 +10,7 @@ const ReservationsList = ({
   return (
     <ul className="flex flex-col gap-6 mt-7">
       <ReservationHeading />
-      {reservations.map((res) => {
+      {reservations.map(res => {
         return <ReservationItem key={res.id} item={res} />;
       })}
     </ul>
