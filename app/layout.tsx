@@ -1,33 +1,27 @@
-import Provider from "./components/Provider";
-import { Poppins } from "next/font/google";
-import "./globals.css";
-import CreatePropModal from "./components/CreatePropModal";
+import { Poppins } from 'next/font/google';
+import NextAuthProvider from '@/app/components/NextAuthProvider';
+import CreatePropModal from '@/app/components/CreatePropModal';
+import './globals.css';
 
 const poppins = Poppins({
-  weight: ["400", "600", "700", "800", "900"], // regular, bold, semibold
-  style: "normal",
-  subsets: ["latin"],
-  variable: "--font-poppins",
+  weight: ['400', '600', '700'], // regular, semibold, bold
+  style: 'normal',
+  subsets: ['latin'],
+  variable: '--font-poppins', // the css variable gets declared and allows us to access the font (--font-poppins)
 });
 
-export const metadata = {
-  title: "Propella",
-  description: "Real Estate Listings",
-};
-
-export default async function RootLayout({
-  children,
-}: {
+type Props = {
   children: React.ReactNode;
-}) {
+};
+export default async function RootLayout({ children }: Props) {
   return (
-    <html lang="en" className={`${poppins.variable} scroll-smooth relative`}>
+    <html lang="en" className={`relative ${poppins.variable}`}>
       <CreatePropModal />
-      <Provider>
-        <body className={`font-poppins p-8 bg-whiteDark relative`}>
+      <NextAuthProvider>
+        <body className={`p-body scroll-smooth font-poppins bg-whiteDark`}>
           {children}
         </body>
-      </Provider>
+      </NextAuthProvider>
     </html>
   );
 }

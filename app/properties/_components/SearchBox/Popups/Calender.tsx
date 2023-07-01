@@ -1,18 +1,19 @@
-"use client";
-import { useState } from "react";
-import { Steps } from "@/app/types";
-import { PopupProps } from "./Popup";
-import { DateRangePicker, Range } from "react-date-range";
-import "react-date-range/dist/styles.css"; // main style file
-import "react-date-range/dist/theme/default.css"; // theme css file
+'use client';
+
+import { useState } from 'react';
+import { DateRangePicker, Range } from 'react-date-range';
+import { Steps } from '@/app/properties/PropertiesClient';
+import { PopupProps } from './Popup';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
 const Calender = ({ setFilters, setStep }: PopupProps) => {
   const [dateRange, setDateRange] = useState<Range[]>([
     {
       startDate: new Date(),
       endDate: new Date(),
-      key: "selectedRange",
-      color: "#3b6552",
+      key: 'selectedRange',
+      color: '#3b6552',
     },
   ]);
 
@@ -23,14 +24,14 @@ const Calender = ({ setFilters, setStep }: PopupProps) => {
         months={2}
         direction="horizontal"
         ranges={dateRange}
-        onChange={(ranges) => {
+        onChange={ranges => {
           setDateRange([ranges.selectedRange]);
         }}
       />
       <button
         className="self-end p-2 underline text-grassGreen text-sm font-bold"
         onClick={() => {
-          setFilters((prev) => {
+          setFilters(prev => {
             return {
               ...prev,
               duration: {

@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import { getCurrentUser } from '@/app/libs';
 import prisma from '@/app/libs/client';
+import { getCurrentUser } from '@/app/libs';
 
 export async function DELETE(
   _: Request,
@@ -14,9 +14,10 @@ export async function DELETE(
       where: { id: params.id, guestId: currentUser.id },
     });
 
-    return NextResponse.json({ data: canceledReservation });
+    return NextResponse.json({ response: canceledReservation });
   } catch (error: any) {
     console.log('error is:' + error);
-    return NextResponse.error();
+
+    return NextResponse.json({ error: error.message });
   }
 }

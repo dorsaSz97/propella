@@ -5,7 +5,6 @@ type ModalType = {
   open: () => void;
   close: () => void;
 };
-
 export const useCreateProperty = create<ModalType>(set => ({
   isOpen: false,
   open: () => set({ isOpen: true }),

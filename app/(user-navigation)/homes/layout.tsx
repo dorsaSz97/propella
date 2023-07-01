@@ -1,11 +1,11 @@
-import Navbar from "../components/Navbar";
+import Navbar from '../../components/Navbar';
 
 export const metadata = {
-  title: "Favorites | Propella",
-  description: "Properties Listing Site",
+  title: 'Your Homes | Propella',
+  description: 'Properties Listing Site',
 };
 
-export default function FavoritesLayout({
+export default function YourHomesLayout({
   children,
 }: {
   children: React.ReactNode;

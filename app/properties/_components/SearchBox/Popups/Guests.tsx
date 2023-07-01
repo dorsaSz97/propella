@@ -1,22 +1,22 @@
-"use client";
-import { Dispatch, SetStateAction, useState } from "react";
-import { PopupProps } from "./Popup";
+'use client';
+
+import { Dispatch, SetStateAction, useState } from 'react';
+import { PopupProps } from './Popup';
 
 const Guests = ({ setFilters, setStep }: PopupProps) => {
   const [adultsNumber, setAdultsNumber] = useState(0);
   const [childrenNumber, setChildrenNumber] = useState(0);
-  const [petsNumber, setPetsNumber] = useState(0);
 
   return (
     <div className="flex flex-col gap-6">
       <ul className="flex flex-col gap-8 text-body-sm">
         <GuestsInput
-          label={"adults"}
+          label={'adults'}
           setFn={setAdultsNumber}
           inputValue={adultsNumber}
         />
         <GuestsInput
-          label={"children"}
+          label={'children'}
           setFn={setChildrenNumber}
           inputValue={childrenNumber}
         />
@@ -25,7 +25,7 @@ const Guests = ({ setFilters, setStep }: PopupProps) => {
       <button
         className="self-center p-2 underline text-grassGreen text-sm font-bold"
         onClick={() => {
-          setFilters((prev) => {
+          setFilters(prev => {
             return {
               ...prev,
               guests: {
@@ -34,7 +34,6 @@ const Guests = ({ setFilters, setStep }: PopupProps) => {
               },
             };
           });
-
           setStep(null);
         }}
       >
@@ -47,19 +46,19 @@ const Guests = ({ setFilters, setStep }: PopupProps) => {
 export default Guests;
 
 const GuestsInput = ({
-  setFn,
   label,
+  setFn,
   inputValue,
 }: {
-  setFn: Dispatch<SetStateAction<number>>;
   label: string;
+  setFn: Dispatch<SetStateAction<number>>;
   inputValue: number;
 }) => {
   const increase = (state: Dispatch<SetStateAction<number>>) => {
-    state((prev) => prev + 1);
+    state(prev => prev + 1);
   };
   const decrease = (state: Dispatch<SetStateAction<number>>) => {
-    state((prev) => {
+    state(prev => {
       if (prev !== 0) {
         return prev - 1;
       } else {
@@ -81,8 +80,8 @@ const GuestsInput = ({
           -
         </button>
         <input
-          type="text"
           id={label}
+          type="text"
           className="inline-block w-[30px] text-center font-bold bg-transparent"
           value={inputValue}
           readOnly

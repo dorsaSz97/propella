@@ -1,17 +1,35 @@
-"use client";
-import React, { ChangeEvent, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { ICreatePropInputs, ImageGallery } from "../types";
-import axios from "axios";
-import { IoMdClose } from "react-icons/io";
-import { useCreateProperty } from "../store/useStore";
-import countries from "world-countries";
-import { useRouter } from "next/navigation";
-import ImageUploader, { ImageStep } from "./ImageUploader";
+'use client';
+import React, { ChangeEvent, useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+interface ICreatePropInputs {
+  title: string;
+  description: string;
+  price: number | null;
+  country: string;
+  address: string;
+  allowedGuests: number;
+  availableDates: Date[];
+  options: string[];
+  images: string[];
+}
+export type ImageGallery = {
+  main: string;
+  kitchen: string;
+  bathroom: string;
+  bedroom: string;
+};
+
+import axios from 'axios';
+import { IoMdClose } from 'react-icons/io';
+import { useCreateProperty } from '../store/useStore';
+import countries from 'world-countries';
+import { useRouter } from 'next/navigation';
+import ImageUploader, { ImageStep } from './ImageUploader';
+import { Property } from '@prisma/client';
 
 const CreatePropModal = () => {
   const router = useRouter();
-  const { close, isOpen } = useCreateProperty((state) => state);
+  const { close, isOpen } = useCreateProperty(state => state);
   const [imgUrls, setImgUrls] = useState<ImageGallery | null>(null);
   const [imgStep, setImgStep] = useState<ImageStep | null>(ImageStep.Main);
 
@@ -23,19 +41,19 @@ const CreatePropModal = () => {
     formState: { errors },
   } = useForm<ICreatePropInputs>({
     defaultValues: {
-      title: "",
-      description: "",
-      country: "",
+      title: '',
+      description: '',
+      country: '',
       images: [],
       options: [],
-      address: "",
+      address: '',
       availableDates: [],
       allowedGuests: 1,
       price: null,
     },
   });
 
-  const formSubmitHandler: SubmitHandler<ICreatePropInputs> = (values) => {
+  const formSubmitHandler: SubmitHandler<ICreatePropInputs> = values => {
     const newData: ICreatePropInputs = {
       images: [
         imgUrls!.main,
@@ -53,12 +71,14 @@ const CreatePropModal = () => {
       availableDates: [],
     };
 
-    axios.post("/api/homes", newData).then((res: any) => {
-      console.log(res);
-      close();
-      router.push(`/properties/${res.data.home.id}`);
-      reset();
-    });
+    axios
+      .post('/api/homes', newData)
+      .then((res: { data: { newProperty: Property } }) => {
+        console.log(res);
+        close();
+        router.push(`/properties/${res.data.newProperty.id}`);
+        reset();
+      });
   };
 
   if (!isOpen) return null;
@@ -82,7 +102,7 @@ const CreatePropModal = () => {
             <div className="flex items-center gap-3">
               <label htmlFor="title">Title:</label>
               <input
-                {...register("title")}
+                {...register('title')}
                 id="title"
                 className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
               />
@@ -91,7 +111,7 @@ const CreatePropModal = () => {
             <div className="flex items-center gap-3">
               <label htmlFor="description">Description:</label>
               <input
-                {...register("description")}
+                {...register('description')}
                 id="description"
                 className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
               />
@@ -108,7 +128,7 @@ const CreatePropModal = () => {
                     type="checkbox"
                     id="wifi"
                     value="wifi"
-                    {...register("options")}
+                    {...register('options')}
                   />
                 </li>
                 <li className="flex items-center gap-1 capitalize">
@@ -117,7 +137,7 @@ const CreatePropModal = () => {
                     type="checkbox"
                     id="breakfast"
                     value="breakfast"
-                    {...register("options")}
+                    {...register('options')}
                   />
                 </li>
                 <li className="flex items-center gap-1 capitalize">
@@ -126,7 +146,7 @@ const CreatePropModal = () => {
                     type="checkbox"
                     id="beach"
                     value="beach"
-                    {...register("options")}
+                    {...register('options')}
                   />
                 </li>
                 <li className="flex items-center gap-1 capitalize">
@@ -135,7 +155,7 @@ const CreatePropModal = () => {
                     type="checkbox"
                     id="pool"
                     value="pool"
-                    {...register("options")}
+                    {...register('options')}
                   />
                 </li>
                 <li className="flex items-center gap-1 capitalize">
@@ -144,7 +164,7 @@ const CreatePropModal = () => {
                     type="checkbox"
                     id="parking"
                     value="parking"
-                    {...register("options")}
+                    {...register('options')}
                   />
                 </li>
               </ul>
@@ -161,7 +181,7 @@ const CreatePropModal = () => {
               <input
                 required
                 id="price"
-                {...register("price")}
+                {...register('price')}
                 className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
               />
               <span> euros/night</span>
@@ -171,7 +191,7 @@ const CreatePropModal = () => {
               <label htmlFor="allowedGuests">Allowed Guests:</label>
               <input
                 id="allowedGuests"
-                {...register("allowedGuests")}
+                {...register('allowedGuests')}
                 className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
               />
             </div>
@@ -180,7 +200,7 @@ const CreatePropModal = () => {
               <label htmlFor="address">Address:</label>
               <input
                 id="address"
-                {...register("address")}
+                {...register('address')}
                 className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
               />
             </div>
@@ -191,15 +211,15 @@ const CreatePropModal = () => {
               </h3>
 
               <select
-                {...register("country")}
+                {...register('country')}
                 name="country"
                 id="country"
                 onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                  setValue("country", e.target.value);
+                  setValue('country', e.target.value);
                 }}
                 className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
               >
-                {countries.map((country) => {
+                {countries.map(country => {
                   return (
                     <option value={country.name.common} key={country.cca2}>
                       {country.name.common}

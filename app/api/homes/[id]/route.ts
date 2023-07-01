@@ -14,9 +14,10 @@ export async function DELETE(
       where: { id: params.id, hostId: currentUser.id },
     });
 
-    return NextResponse.json({ data: deletedProperty });
+    return NextResponse.json({ response: deletedProperty });
   } catch (error: any) {
     console.log('error is:' + error);
-    return NextResponse.error();
+
+    return NextResponse.json({ error: error.message });
   }
 }

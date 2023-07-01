@@ -13,35 +13,36 @@ export async function POST(req: Request) {
     });
 
     const {
+      images,
+      title,
+      country,
+      description,
       options,
       allowedGuests,
-      images,
-      country,
       price,
-      title,
       address,
       availableDates,
-      description,
     } = body;
 
     const newProperty = await prisma.property.create({
       data: {
         hostId: currentUser.id,
-        title,
-        description,
-        price,
-        country,
-        address,
-        allowedGuests,
         images,
-        availableDates,
+        title,
+        country,
+        description,
         options,
+        allowedGuests,
+        price,
+        address,
+        availableDates,
       },
     });
 
-    return NextResponse.json({ home: newProperty });
+    return NextResponse.json({ newProperty });
   } catch (error: any) {
     console.log('error is:' + error);
-    return NextResponse.error();
+
+    return NextResponse.json({ error: error.message });
   }
 }

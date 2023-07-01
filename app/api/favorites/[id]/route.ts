@@ -8,7 +8,6 @@ export async function POST(_: Request, { params }: { params: { id: string } }) {
     if (!currentUser) throw new Error('Couldnt get the current user');
 
     const updatedFavoriteIds = [...(currentUser.favoriteIds || [])];
-
     updatedFavoriteIds.push(params.id);
 
     const updatedUser = await prisma.user.update({
@@ -20,12 +19,11 @@ export async function POST(_: Request, { params }: { params: { id: string } }) {
       },
     });
 
-    return NextResponse.json({ data: updatedUser });
+    return NextResponse.json({ updatedUser });
   } catch (error: any) {
     console.log('error is:' + error);
 
-    // creates a Response object ({ok: , status: , type: , ....}) associated with the network error (ex. the type prop would be 'error')
-    return NextResponse.error();
+    return NextResponse.json({ error: error.message });
   }
 }
 
@@ -56,9 +54,10 @@ export async function DELETE(
       },
     });
 
-    return NextResponse.json({ data: updatedUser });
+    return NextResponse.json({ response: updatedUser });
   } catch (error: any) {
     console.log('error is:' + error);
-    return NextResponse.error();
+
+    return NextResponse.json({ error: error.message });
   }
 }

@@ -87,7 +87,7 @@ export const authOptions: AuthOptions = {
   },
 
   // an important security measure to protect user authentication and session-related information
-  // for signing and encrypting session cookies and other sensitive data so that the Nextauth generated tokens and session cookies be more secure against attacks
+  // for signing and encrypting session cookies and other sensitive data, so that the Nextauth generated tokens and session cookies be more secure against attacks
   secret: process.env.NEXTAUTH_SECRET,
 };
 
