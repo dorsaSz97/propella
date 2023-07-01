@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { Property, User } from '@prisma/client';
-import PropertiesList from '@/app/components/PropertiesList';
-import SearchBox from './_components/SearchBox/SearchBox';
-import TabsList from './_components/TabsList';
+import { useEffect, useState } from "react";
+import { Property, User } from "@prisma/client";
+import PropertiesList from "@/app/components/PropertiesList";
+import SearchBox from "./_components/SearchBox/SearchBox";
+import TabsList from "./_components/TabsList";
 export type Filters = {
   location: string;
   duration: { startDate: Date | undefined; endDate: Date | undefined };
@@ -31,7 +31,7 @@ const PropertiesClient = ({
   const [filters, setFilters] = useState<Filters>(
     chosenFilters === null
       ? {
-          location: '',
+          location: "",
           duration: { startDate: undefined, endDate: undefined },
           guests: { children: 0, adults: 0 },
         }
@@ -42,18 +42,28 @@ const PropertiesClient = ({
     let filteredProps: Property[];
 
     if (chosenFilters) {
-      filteredProps = properties.filter(prop => {
+      filteredProps = properties.filter((prop) => {
         if (chosenFilters.location && chosenFilters.guests.adults) {
-          chosenFilters.location === prop.country &&
-            chosenFilters.guests.adults === prop.allowedGuests;
+          if (
+            chosenFilters.location === prop.country &&
+            chosenFilters.guests.adults === prop.allowedGuests
+          )
+            return prop;
         } else if (chosenFilters.location) {
-          chosenFilters.location === prop.country;
+          if (chosenFilters.location === prop.country) return prop;
         } else if (chosenFilters.guests.adults) {
-          chosenFilters.guests.adults === prop.allowedGuests;
+          if (chosenFilters.guests.adults <= prop.allowedGuests) return prop;
         }
       });
 
       setFilteredProperties(filteredProps);
+    } else {
+      setFilteredProperties(properties);
+      setFilters({
+        location: "",
+        duration: { startDate: undefined, endDate: undefined },
+        guests: { children: 0, adults: 0 },
+      });
     }
   }, [chosenFilters]);
 

@@ -1,15 +1,15 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Property, User } from '@prisma/client';
-import { Range } from 'react-date-range';
-import ImageGallery from './ImageGallery';
-import PropertyHeader from './PropertyHeader';
-import GalleryHeader from './GalleryHeader';
-import DetailNav from './DetailNav';
-import Amenities from './Amenities';
-import AvailableCalender from './AvailableCalender';
-import ReservationModal from './ReservationModal';
+import { useState } from "react";
+import { Property, User } from "@prisma/client";
+import { Range } from "react-date-range";
+import DetailNav from "./_components/DetailNav";
+import PropertyHeader from "./_components/PropertyHeader";
+import GalleryHeader from "./_components/GalleryHeader";
+import ImageGallery from "./_components/ImageGallery";
+import Amenities from "./_components/Amenities";
+import AvailableCalender from "./_components/AvailableCalender";
+import ReservationModal from "./_components/ReservationModal";
 
 export enum Gallery {
   Kitchen,
@@ -30,8 +30,8 @@ const PropertyDetails = ({
     {
       startDate: new Date(),
       endDate: new Date(),
-      key: 'selectedRange',
-      color: '#3b6552',
+      key: "selectedRange",
+      color: "#3b6552",
     },
   ]);
 
@@ -47,7 +47,7 @@ const PropertyDetails = ({
       />
 
       {/* Navigation */}
-      <DetailNav sameUser={selectedProperty.hostId !== currentUser?.id} />
+      <DetailNav sameUser={selectedProperty.hostId === currentUser?.id} />
 
       <div className="flex gap-6">
         <div className="flex-[60%]">
@@ -70,15 +70,17 @@ const PropertyDetails = ({
         </div>
 
         {/* Reservation Modal */}
-        {selectedProperty.hostId !== currentUser?.id && (
-          <ReservationModal
-            endDate={dateRange[0].endDate}
-            startDate={dateRange[0].startDate}
-            guests={guests}
-            setGuests={setGuests}
-            selectedProperty={selectedProperty}
-          />
-        )}
+        <div className="flex-[40%] sticky top-[2rem] h-fit z-50">
+          {selectedProperty.hostId !== currentUser?.id && (
+            <ReservationModal
+              endDate={dateRange[0].endDate}
+              startDate={dateRange[0].startDate}
+              guests={guests}
+              setGuests={setGuests}
+              selectedProperty={selectedProperty}
+            />
+          )}
+        </div>
       </div>
     </main>
   );

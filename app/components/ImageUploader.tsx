@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CldUploadWidget } from "next-cloudinary";
-import { ImageGallery } from "../types";
+import { ImageGallery } from "./CreatePropModal";
 
 export enum ImageStep {
   Main = "main",
