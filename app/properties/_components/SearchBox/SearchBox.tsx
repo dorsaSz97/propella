@@ -82,7 +82,7 @@ const SearchBox = ({
           icon={<RxPerson size={18} color="#222" />}
         />
         {/* search button */}
-        <div className="flex justify-center items-center h-[4.5rem] w-[4.5rem] rounded-full bg-whiteDarker">
+        <div className="flex justify-center items-center h-[4.5rem] w-[4.5rem] rounded-full bg-whiteDarker btn--filter">
           <button
             className="flex justify-center items-center h-[80%] w-[80%] rounded-full bg-grassGreen"
             onClick={() => {

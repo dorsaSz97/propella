@@ -6,7 +6,7 @@ module.exports = {
   theme: {
     extend: {
       padding: {
-        'p-body': '2rem',
+        body: '2rem',
       },
       gridTemplateColumns: {
         resList: '20% 10% 15% 15% 8% 8%',

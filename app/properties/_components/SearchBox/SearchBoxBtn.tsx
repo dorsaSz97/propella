@@ -1,7 +1,7 @@
 'use client';
 
 import { Dispatch, useEffect, useState } from 'react';
-import { Steps } from './SearchBox';
+import { Steps } from '../../PropertiesClient';
 
 const SearchBoxBtn = ({
   icon,
