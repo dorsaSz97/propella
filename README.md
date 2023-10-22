@@ -13,7 +13,5 @@ password: 123ABCabc⚡️⚡️
 - NextJS 13
 - Prisma and MongoDB
 
-## Not Working + To Do
-
-- Google/Github/Facebook sign-ins aren't working
+## To Do
 - The calendar doesn't have a purpose in searching
