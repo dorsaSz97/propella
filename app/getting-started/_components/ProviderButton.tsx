@@ -1,5 +1,5 @@
-'use client';
-import { signIn } from 'next-auth/react';
+"use client";
+import { signIn } from "next-auth/react";
 
 type ButtonProps = {
   btnIcon: React.ReactElement;
@@ -11,7 +11,7 @@ const ProviderButton = ({ btnIcon, providerName }: ButtonProps) => {
       className="flex justify-center items-center h-[75px] w-[75px] rounded-full  bg-silverGrey btn--search"
       onClick={() =>
         signIn(providerName, {
-          callbackUrl: 'http://localhost:3000/properties',
+          callbackUrl: "http://localhost:3000/properties",
         })
       }
     >

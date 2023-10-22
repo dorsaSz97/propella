@@ -19,7 +19,7 @@ export default async function RootLayout({ children }: Props) {
       <CreatePropModal />
       <NextAuthProvider>
         <body
-          className={`relative p-body h-screen scroll-smooth font-poppins bg-whiteDark`}
+          className={`relative p-4 md:p-body h-screen scroll-smooth font-poppins bg-whiteDark`}
         >
           {children}
         </body>
