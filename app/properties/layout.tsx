@@ -11,7 +11,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col min-h-full w-full px-16 py-8 rounded-2xl shadow-xl shadow-silverGrey bg-whiteLight">
+    <div className="flex flex-col max-w-[1650px] mx-auto min-h-full w-full p-4 md:px-16 md:py-8 rounded-2xl shadow-xl shadow-silverGrey bg-whiteLight">
       <Navbar />
 
       <>{children}</>

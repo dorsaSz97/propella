@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
   Dispatch,
@@ -6,18 +6,18 @@ import {
   SetStateAction,
   useEffect,
   useState,
-} from 'react';
-import { Property } from '@prisma/client';
-import Popup from './Popups/Popup';
-import Location from './Popups/Location';
-import Calender from './Popups/Calender';
-import Guests from './Popups/Guests';
-import SearchBoxBtn from './SearchBoxBtn';
-import { HiOutlineLocationMarker } from 'react-icons/hi';
-import { BsCalendar2Date } from 'react-icons/bs';
-import { RxPerson } from 'react-icons/rx';
-import { RiSearchLine } from 'react-icons/ri';
-import { Filters, Steps } from '../../PropertiesClient';
+} from "react";
+import { Property } from "@prisma/client";
+import Popup from "./Popups/Popup";
+import Location from "./Popups/Location";
+import Calender from "./Popups/Calender";
+import Guests from "./Popups/Guests";
+import SearchBoxBtn from "./SearchBoxBtn";
+import { HiOutlineLocationMarker } from "react-icons/hi";
+import { BsCalendar2Date } from "react-icons/bs";
+import { RxPerson } from "react-icons/rx";
+import { RiSearchLine } from "react-icons/ri";
+import { Filters, Steps } from "../../PropertiesClient";
 
 const SearchBox = ({
   setChosenFilters,
@@ -59,7 +59,7 @@ const SearchBox = ({
   }, [currentStep]);
 
   return (
-    <div className="flex justify-center items-center mb-12 -mt-5">
+    <div className="flex justify-center items-center lg:mb-12 lg:-mt-5 my-4">
       <div className="flex relative">
         {popupEl && <Popup>{popupEl}</Popup>}
 

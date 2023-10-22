@@ -23,7 +23,7 @@ const Navbar = ({ hasExtra }: { hasExtra?: true }) => {
         {session ? (
           <>
             <button
-              className="underline underline-offset-2 hover:no-underline"
+              className="md:block hidden underline underline-offset-2 hover:no-underline"
               onClick={open}
             >
               Airbnb your house
@@ -41,6 +41,14 @@ const Navbar = ({ hasExtra }: { hasExtra?: true }) => {
                     <li onClick={() => router.push("/reservations")}>
                       reservations
                     </li>
+
+                    <li
+                      className="md:hidden underline underline-offset-2 hover:no-underline"
+                      onClick={open}
+                    >
+                      Airbnb your house
+                    </li>
+
                     <li>
                       <button
                         onClick={() => {
@@ -66,7 +74,7 @@ const Navbar = ({ hasExtra }: { hasExtra?: true }) => {
               Login
             </Link>
             <Link
-              className="border-grassGreen border-[1px] rounded-full px-6 py-1 text-body-lg bg-grassGreen text-white"
+              className="hidden md:inline border-grassGreen border-[1px] rounded-full px-6 py-1 text-body-lg bg-grassGreen text-white"
               href={"/getting-started?type=register"}
             >
               Register

@@ -26,7 +26,7 @@ const PropertyCard = ({
         router.push(`/properties/${property.id}`);
       }}
     >
-      <div className="relative mb-[1rem] h-[250px]">
+      <div className="relative mb-[1rem] h-auto min-h-[250px] aspect-square mx-auto">
         <Image
           src={property.images[0]}
           alt="property"

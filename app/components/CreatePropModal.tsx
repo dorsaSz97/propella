@@ -1,6 +1,6 @@
-'use client';
-import React, { ChangeEvent, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+"use client";
+import React, { ChangeEvent, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 interface ICreatePropInputs {
   title: string;
   description: string;
@@ -19,17 +19,17 @@ export type ImageGallery = {
   bedroom: string;
 };
 
-import axios from 'axios';
-import { IoMdClose } from 'react-icons/io';
-import { useCreateProperty } from '../store/useStore';
-import countries from 'world-countries';
-import { useRouter } from 'next/navigation';
-import ImageUploader, { ImageStep } from './ImageUploader';
-import { Property } from '@prisma/client';
+import axios from "axios";
+import { IoMdClose } from "react-icons/io";
+import { useCreateProperty } from "../store/useStore";
+import countries from "world-countries";
+import { useRouter } from "next/navigation";
+import ImageUploader, { ImageStep } from "./ImageUploader";
+import { Property } from "@prisma/client";
 
 const CreatePropModal = () => {
   const router = useRouter();
-  const { close, isOpen } = useCreateProperty(state => state);
+  const { close, isOpen } = useCreateProperty((state) => state);
   const [imgUrls, setImgUrls] = useState<ImageGallery | null>(null);
   const [imgStep, setImgStep] = useState<ImageStep | null>(ImageStep.Main);
 
@@ -41,19 +41,19 @@ const CreatePropModal = () => {
     formState: { errors },
   } = useForm<ICreatePropInputs>({
     defaultValues: {
-      title: '',
-      description: '',
-      country: '',
+      title: "",
+      description: "",
+      country: "",
       images: [],
       options: [],
-      address: '',
+      address: "",
       availableDates: [],
       allowedGuests: 1,
       price: null,
     },
   });
 
-  const formSubmitHandler: SubmitHandler<ICreatePropInputs> = values => {
+  const formSubmitHandler: SubmitHandler<ICreatePropInputs> = (values) => {
     const newData: ICreatePropInputs = {
       images: [
         imgUrls!.main,
@@ -72,7 +72,7 @@ const CreatePropModal = () => {
     };
 
     axios
-      .post('/api/homes', newData)
+      .post("/api/homes", newData)
       .then((res: { data: { newProperty: Property } }) => {
         console.log(res);
         close();
@@ -84,51 +84,51 @@ const CreatePropModal = () => {
   if (!isOpen) return null;
 
   return (
-    <div className="absolute flex items-center justify-center w-full h-full p-4 z-[100] bg-whiteLight bg-opacity-80">
-      <div className="flex flex-col gap-5 w-[80%] h-[90%] p-6 rounded-2xl shadow-xl shadow-silverGrey bg-whiteDark">
+    <div className=" absolute flex items-center justify-center w-full h-full p-4 z-[100] bg-whiteLight bg-opacity-80">
+      <div className="w-full h-full overflow-y-scroll md:overflow-y-hidden overflow-x-hidden max-w-[1100px] flex flex-col gap-5 p-6 rounded-2xl shadow-xl shadow-silverGrey bg-whiteDark">
         <button onClick={close} className="w-fit">
           <IoMdClose size={20} />
         </button>
 
-        <div>
+        <div className="flex flex-col flex-1">
           <h2 className="mb-5 font-bold text-head2 capitalize">
             Airbnb your house
           </h2>
 
           <form
-            className="flex flex-col gap-5"
+            className="flex flex-col gap-5 flex-1 "
             onSubmit={handleSubmit(formSubmitHandler)}
           >
-            <div className="flex items-center gap-3">
+            <div className="flex gap-3 items-start md:items-center flex-col md:flex-row">
               <label htmlFor="title">Title:</label>
               <input
-                {...register('title')}
+                {...register("title")}
                 id="title"
-                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
+                className="px-2 py-1 rounded-xl shadow-sm max-w-[400px] shadow-silverGrey w-full md:w-auto"
               />
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex gap-3 items-start md:items-center flex-col md:flex-row">
               <label htmlFor="description">Description:</label>
               <input
-                {...register('description')}
+                {...register("description")}
                 id="description"
-                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
+                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey max-w-[400px] w-full md:w-auto"
               />
             </div>
 
-            <div className="w-1/2">
+            <div className="md:w-1/2 w-full">
               <h3 className="mb-2 font-semibold text-body-lg">
                 Choose the available amenities:
               </h3>
-              <ul className="grid grid-cols-3">
+              <ul className="grid grid-cols-optionList  max-w-[400px] w-full ">
                 <li className="flex items-center gap-1 capitalize">
                   <label htmlFor="wifi">wifi</label>
                   <input
                     type="checkbox"
                     id="wifi"
                     value="wifi"
-                    {...register('options')}
+                    {...register("options")}
                   />
                 </li>
                 <li className="flex items-center gap-1 capitalize">
@@ -137,7 +137,7 @@ const CreatePropModal = () => {
                     type="checkbox"
                     id="breakfast"
                     value="breakfast"
-                    {...register('options')}
+                    {...register("options")}
                   />
                 </li>
                 <li className="flex items-center gap-1 capitalize">
@@ -146,7 +146,7 @@ const CreatePropModal = () => {
                     type="checkbox"
                     id="beach"
                     value="beach"
-                    {...register('options')}
+                    {...register("options")}
                   />
                 </li>
                 <li className="flex items-center gap-1 capitalize">
@@ -155,7 +155,7 @@ const CreatePropModal = () => {
                     type="checkbox"
                     id="pool"
                     value="pool"
-                    {...register('options')}
+                    {...register("options")}
                   />
                 </li>
                 <li className="flex items-center gap-1 capitalize">
@@ -164,7 +164,7 @@ const CreatePropModal = () => {
                     type="checkbox"
                     id="parking"
                     value="parking"
-                    {...register('options')}
+                    {...register("options")}
                   />
                 </li>
               </ul>
@@ -176,50 +176,50 @@ const CreatePropModal = () => {
               setImgStep={setImgStep}
             />
 
-            <div className="flex items-center gap-3">
+            <div className="flex md:items-center gap-3 flex-col md:flex-row items-start">
               <label htmlFor="price">Price:</label>
               <input
+                placeholder="euro/night"
                 required
                 id="price"
-                {...register('price')}
-                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
+                {...register("price")}
+                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey max-w-[400px]  w-full md:w-auto"
               />
-              <span> euros/night</span>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex md:items-center gap-3 flex-col md:flex-row items-start">
               <label htmlFor="allowedGuests">Allowed Guests:</label>
               <input
                 id="allowedGuests"
-                {...register('allowedGuests')}
-                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
+                {...register("allowedGuests")}
+                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey max-w-[400px] w-full md:w-auto"
               />
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex md:items-center gap-3 flex-col md:flex-row items-start ">
               <label htmlFor="address">Address:</label>
               <input
                 id="address"
-                {...register('address')}
-                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
+                {...register("address")}
+                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey max-w-[400px] w-full md:w-auto"
               />
             </div>
 
-            <div className="flex items-center gap-3">
-              <h3 className="mb-2 font-semibold text-body-lgù">
+            <div className="flex md:items-center gap-3 flex-col md:flex-row items-start">
+              <h3 className="mb-2 font-semibold text-body-lg">
                 Where is it located?
               </h3>
 
               <select
-                {...register('country')}
+                {...register("country")}
                 name="country"
                 id="country"
                 onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                  setValue('country', e.target.value);
+                  setValue("country", e.target.value);
                 }}
-                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
+                className="w-full px-2 py-1 rounded-xl shadow-sm shadow-silverGrey max-w-[400px]"
               >
-                {countries.map(country => {
+                {countries.map((country) => {
                   return (
                     <option value={country.name.common} key={country.cca2}>
                       {country.name.common}
