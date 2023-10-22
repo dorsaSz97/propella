@@ -45,7 +45,7 @@ export default async function GettingStartedPage({ searchParams }: Props) {
       </div>
 
       {/* right side: image */}
-      <div className="hidden md:contents flex-[2] relative rounded-2xl overflow-hidden">
+      <div className="hidden md:block h-full flex-[2] relative rounded-2xl overflow-hidden">
         <RandomImage />
       </div>
     </>
