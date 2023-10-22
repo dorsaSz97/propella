@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import axios from 'axios';
-import { Property, User } from '@prisma/client';
-import { AiOutlineHeart } from 'react-icons/ai';
+import React, { useState } from "react";
+import axios from "axios";
+import { Property, User } from "@prisma/client";
+import { AiOutlineHeart } from "react-icons/ai";
 
 const PropertyHeader = ({
   selectedProperty,
@@ -23,7 +23,7 @@ const PropertyHeader = ({
         <p>{selectedProperty.country}</p>
         <p>{selectedProperty.address}</p>
       </div>
-      {selectedProperty.hostId !== currentUser?.id && (
+      {currentUser?.id && selectedProperty.hostId !== currentUser?.id && (
         <button
           className="flex justify-center items-center h-[35px] w-[35px] rounded-xl bg-opacity-20 bg-whiteDark"
           onClick={() => {

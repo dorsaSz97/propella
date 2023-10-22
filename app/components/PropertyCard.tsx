@@ -34,7 +34,7 @@ const PropertyCard = ({
           height={700}
           className={`rounded-[20%] object-cover w-full h-full`}
         />
-        {property.hostId !== currentUser?.id && (
+        {currentUser?.id && property.hostId !== currentUser?.id && (
           <FavButton
             isFilled={isFavorited}
             relPropId={property.id}
