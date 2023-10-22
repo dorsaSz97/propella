@@ -9,14 +9,15 @@ const RemoveButton = ({ reservation }: { reservation: Reservation }) => {
   const router = useRouter();
   return (
     <button
-      className="mx-auto w-fit"
+      className="mx-auto w-fit text-red-600"
       onClick={() => {
         axios
           .delete(`/api/reservations/${reservation.id}`)
           .then(() => router.refresh());
       }}
     >
-      <CgClose size={20} color="red" />
+      Delete
+      {/* <CgClose size={20} color="red" /> */}
     </button>
   );
 };

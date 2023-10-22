@@ -29,7 +29,7 @@ module.exports = {
       gridTemplateColumns: {
         propList: "repeat(auto-fill, minmax(250px, 1fr))",
         optionList: "repeat(auto-fill, minmax(100px, 1fr))",
-        resList: "20% 10% 15% 15% 8% 8%",
+        resList: "25% 10% 25% 8% 8%",
       },
       screens: {
         xs: "320px",
