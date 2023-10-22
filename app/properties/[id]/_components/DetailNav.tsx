@@ -1,7 +1,7 @@
 const DetailNav = ({ sameUser }: { sameUser: boolean }) => {
   return (
-    <nav className={`sticky top-[-2rem] py-4 height-[72px] z-40 bg-whiteLight`}>
-      <ul className="flex gap-8 text-body-lg">
+    <nav className={`lg:sticky top-[-2rem] height-[72px] z-40 bg-whiteLight`}>
+      <ul className="flex gap-8 text-body-lg overflow-y-scroll lg:overflow-y-auto py-4">
         <li className="hover:text-grassGreen transition-all">
           <a href="#gallery">Gallery</a>
         </li>

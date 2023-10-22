@@ -59,7 +59,12 @@ h6 {
 }
 
 ul {
+  text-wrap: nowrap;
   list-style: none;
+}
+
+h3 {
+  text-wrap: wrap;
 }
 
 .btn--filter {
@@ -68,7 +73,7 @@ ul {
 }
 
 .btn--filter:not(:last-child)::after {
-  content: '';
+  content: "";
   position: absolute;
   top: 50%;
   left: 100%;
@@ -178,4 +183,19 @@ ul {
 }
 .available-dates__calender .rdrDay {
   background: none;
+}
+
+@media (max-width: 768px) {
+  .rdrMonth:nth-of-type(2) {
+    display: none;
+  }
+  .rdrMonth {
+    width: 100% !important;
+  }
+  .rdrCalendarWrapper {
+    width: 100%;
+  }
+  .rdrMonths {
+    flex-direction: column;
+  }
 }

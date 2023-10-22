@@ -1,7 +1,7 @@
-import { Dispatch } from 'react';
-import { DateRangePicker, Range } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import { Dispatch } from "react";
+import { DateRangePicker, Range } from "react-date-range";
+import "react-date-range/dist/styles.css"; // main style file
+import "react-date-range/dist/theme/default.css"; // theme css file
 
 const AvailableCalender = ({
   dateRange,
@@ -19,9 +19,10 @@ const AvailableCalender = ({
           months={2}
           direction="horizontal"
           ranges={dateRange}
-          onChange={ranges => {
+          onChange={(ranges) => {
             setDateRange([ranges.selectedRange]);
           }}
+          className="w-full lg:justify-center xl:justify-start"
         />
       </div>
     </section>

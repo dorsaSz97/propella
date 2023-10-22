@@ -21,7 +21,7 @@ const PropertyCard = ({
 
   return (
     <li
-      className="cursor-pointer"
+      className="cursor-pointer w-full"
       onClick={() => {
         router.push(`/properties/${property.id}`);
       }}
@@ -42,7 +42,7 @@ const PropertyCard = ({
           />
         )}
       </div>
-      <div className="flex justify-between gap-11 text-body-sm capitalize font-bold">
+      <div className="flex flex-wrap gap-3 justify-between text-body-sm capitalize font-bold">
         <h3>{property.title}</h3>
         <span>${property.price}</span>
       </div>

@@ -36,7 +36,7 @@ const PropertyDetails = ({
   ]);
 
   return (
-    <main className="px-28 py-12 pb-0">
+    <main className="lg:px-16 lg:py-12 pb-0 p-0">
       {/* Gallery */}
       <GalleryHeader selectedProperty={selectedProperty} />
 
@@ -49,8 +49,8 @@ const PropertyDetails = ({
       {/* Navigation */}
       <DetailNav sameUser={selectedProperty.hostId === currentUser?.id} />
 
-      <div className="flex gap-6">
-        <div className="flex-[60%]">
+      <div className="lg:flex xl:flex-nowrap flex-wrap gap-6 w-full">
+        <div className="flex-[60%] w-full">
           {/* Description */}
           <section className="my-12">
             <p>{selectedProperty.description}</p>
@@ -70,7 +70,7 @@ const PropertyDetails = ({
         </div>
 
         {/* Reservation Modal */}
-        <div className="flex-[40%] sticky top-[2rem] h-fit z-50">
+        <div className="lg:flex-[40%] lg:top-[2rem] h-fit z-50">
           {selectedProperty.hostId !== currentUser?.id && (
             <ReservationModal
               endDate={dateRange[0].endDate}

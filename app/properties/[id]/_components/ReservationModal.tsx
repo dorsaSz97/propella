@@ -18,7 +18,7 @@ const ReservationModal = ({
   setGuests: Dispatch<SetStateAction<number>>;
 }) => {
   return (
-    <div className="flex flex-col py-32 px-12 rounded-[2rem] bg-whiteDark">
+    <div className="max-w-[664px] mx-auto flex flex-col lg:py-32 px-12 py-12 rounded-[2rem] bg-whiteDark">
       <div className="flex gap-[1.3rem] mb-[0.5rem]">
         <div className="bg-whiteLight rounded-[1.5rem] p-6  flex flex-col flex-1">
           <GrHomeRounded size={30} />

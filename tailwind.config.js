@@ -8,9 +8,6 @@ module.exports = {
       padding: {
         body: "2rem",
       },
-      gridTemplateColumns: {
-        resList: "20% 10% 15% 15% 8% 8%",
-      },
       fontFamily: {
         poppins: "var(--font-poppins)",
       },
@@ -32,6 +29,7 @@ module.exports = {
       gridTemplateColumns: {
         propList: "repeat(auto-fill, minmax(250px, 1fr))",
         optionList: "repeat(auto-fill, minmax(100px, 1fr))",
+        resList: "20% 10% 15% 15% 8% 8%",
       },
       screens: {
         xs: "320px",

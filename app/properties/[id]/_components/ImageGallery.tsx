@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import Image from "next/image";
+import React, { useEffect, useState } from "react";
 
-import { Property } from '@prisma/client';
-import { Gallery } from '../PropertyDetailsClient';
+import { Property } from "@prisma/client";
+import { Gallery } from "../PropertyDetailsClient";
 
 const ImageGallery = ({ selectedProperty }: { selectedProperty: Property }) => {
   const [galleryOption, setGalleryOption] = useState<Gallery>(Gallery.Outside);
@@ -28,16 +28,17 @@ const ImageGallery = ({ selectedProperty }: { selectedProperty: Property }) => {
         break;
     }
   }, [galleryOption]);
+
   return (
     <section
       id="tour"
-      className="relative rounded-2xl my-12 h-[400px] overflow-hidden"
+      className="relative rounded-2xl my-12 h-[400px] overflow-hidden w-full"
     >
       <Image
         src={bgUrl}
         alt="apartment room"
         fill={true}
-        className="absolute top-0 right-0 z-[1] brightness-[65%]"
+        className="absolute top-0 right-0 z-[1] brightness-[65%] object-cover"
       />
 
       <div
@@ -47,7 +48,7 @@ const ImageGallery = ({ selectedProperty }: { selectedProperty: Property }) => {
           Virtual tour
         </h3>
 
-        <ul className="flex gap-3 self-end">
+        <ul className="flex gap-3 self-end flex-col md:flex-row">
           <li className="rounded-2xl p-3 bg-opacity-40 bg-silverGrey text-white hover:text-black hover:bg-white">
             <button
               className="w-full h-full flex items-center justify-center"
