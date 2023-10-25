@@ -199,3 +199,19 @@ h3 {
     flex-direction: column;
   }
 }
+
+.rmdp-week-day {
+  color: #3b6552 !important;
+}
+
+.rmdp-arrow {
+  border-color: #3b6552;
+}
+.rmdp-arrow-container:hover,
+.rmdp-range,
+.rmdp-day.rmdp-today span {
+  background-color: #3b6552 !important;
+}
+.rmdp-day:not(.rmdp-disabled, .rmdp-day-hidden, .rmdp-selected) span:hover {
+  background-color: #3b6552 !important;
+}
