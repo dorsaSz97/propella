@@ -1,5 +1,5 @@
 "use client";
-import React, { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 interface ICreatePropInputs {
   title: string;
@@ -26,12 +26,20 @@ import countries from "world-countries";
 import { useRouter } from "next/navigation";
 import ImageUploader, { ImageStep } from "./ImageUploader";
 import { Property } from "@prisma/client";
+import type { Value } from "react-multi-date-picker";
+import DatePicker, { Calendar, DateObject } from "react-multi-date-picker";
+import { getDateArray } from "../properties/PropertiesClient";
 
 const CreatePropModal = () => {
   const router = useRouter();
   const { close, isOpen } = useCreateProperty((state) => state);
   const [imgUrls, setImgUrls] = useState<ImageGallery | null>(null);
   const [imgStep, setImgStep] = useState<ImageStep | null>(ImageStep.Main);
+  const [values, setValues] = useState<Date[]>([]);
+
+  useEffect(() => {
+    console.log(values);
+  }, [values]);
 
   const {
     register,
@@ -53,7 +61,7 @@ const CreatePropModal = () => {
     },
   });
 
-  const formSubmitHandler: SubmitHandler<ICreatePropInputs> = (values) => {
+  const formSubmitHandler: SubmitHandler<ICreatePropInputs> = (formValues) => {
     const newData: ICreatePropInputs = {
       images: [
         imgUrls!.main,
@@ -61,14 +69,14 @@ const CreatePropModal = () => {
         imgUrls!.bathroom,
         imgUrls!.bedroom,
       ],
-      title: values.title,
-      description: values.description,
-      allowedGuests: +values.allowedGuests,
-      price: +values.price!,
-      options: values.options.slice(),
-      country: values.country,
-      address: values.address,
-      availableDates: [],
+      title: formValues.title,
+      description: formValues.description,
+      allowedGuests: +formValues.allowedGuests,
+      price: +formValues.price!,
+      options: formValues.options.slice(),
+      country: formValues.country,
+      address: formValues.address,
+      availableDates: values!.map((date) => date),
     };
 
     axios
@@ -85,7 +93,7 @@ const CreatePropModal = () => {
 
   return (
     <div className=" absolute flex items-center justify-center w-full h-full p-4 z-[100] bg-whiteLight bg-opacity-80">
-      <div className="w-full h-full overflow-y-scroll md:overflow-y-hidden overflow-x-hidden max-w-[1100px] flex flex-col gap-5 p-6 rounded-2xl shadow-xl shadow-silverGrey bg-whiteDark">
+      <div className="w-full h-full overflow-y-scroll  overflow-x-hidden max-w-[1100px] flex flex-col gap-5 p-6 rounded-2xl shadow-xl shadow-silverGrey bg-whiteDark">
         <button onClick={close} className="w-fit">
           <IoMdClose size={20} />
         </button>
@@ -202,6 +210,38 @@ const CreatePropModal = () => {
                 id="address"
                 {...register("address")}
                 className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey max-w-[400px] w-full md:w-auto"
+              />
+            </div>
+
+            <div>
+              <h3>Available times</h3>
+
+              <DatePicker
+                // value={vals}
+                onChange={(_, options) => {
+                  const vals: Date[] = [];
+                  options.validatedValue
+                    .toString()
+                    .split(" , ")
+                    .map((range) => {
+                      if (range.split(" ~ ").length > 1) {
+                        vals.push(
+                          ...getDateArray(
+                            new Date(range.split(" ~ ")[0]),
+                            new Date(range.split(" ~ ")[1])
+                          )
+                        );
+                      }
+                      if (range.split(" ~ ").length === 1) {
+                        vals.push(new Date(range.split(" ~ ")[0]));
+                      }
+                    });
+
+                  setValues(vals);
+                }}
+                multiple
+                range
+                minDate={new Date()}
               />
             </div>
 

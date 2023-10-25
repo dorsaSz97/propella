@@ -63,6 +63,7 @@ const PropertyDetails = ({
           {/* Available Dates */}
           {selectedProperty.hostId !== currentUser?.id && (
             <AvailableCalender
+              propertyDates={selectedProperty.availableDates}
               dateRange={dateRange}
               setDateRange={setDateRange}
             />

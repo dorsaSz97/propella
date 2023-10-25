@@ -46,7 +46,11 @@ const SearchBox = ({
         break;
       case Steps.Duration:
         setPopupEl(
-          <Calender setStep={setCurrentStep} setFilters={setFilters} />
+          <Calender
+            setStep={setCurrentStep}
+            setFilters={setFilters}
+            properties={properties}
+          />
         );
         break;
       case Steps.Guests:

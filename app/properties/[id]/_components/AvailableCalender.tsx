@@ -4,12 +4,16 @@ import "react-date-range/dist/styles.css"; // main style file
 import "react-date-range/dist/theme/default.css"; // theme css file
 
 const AvailableCalender = ({
+  propertyDates,
   dateRange,
   setDateRange,
 }: {
+  propertyDates: Date[];
+
   dateRange: Range[];
   setDateRange: Dispatch<React.SetStateAction<Range[]>>;
 }) => {
+  console.log(propertyDates);
   return (
     <section id="dates" className="my-12">
       <h3 className="mb-6 text-head3 font-semibold">Choose Your Dates</h3>
@@ -23,6 +27,11 @@ const AvailableCalender = ({
             setDateRange([ranges.selectedRange]);
           }}
           className="w-full lg:justify-center xl:justify-start"
+          disabledDay={(date) =>
+            !propertyDates
+              .map((d) => d.toLocaleString())
+              .includes(date.toLocaleString())
+          }
         />
       </div>
     </section>
