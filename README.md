@@ -23,5 +23,5 @@ This real estate app is coded using NextJS 13 (app directory) + Prisma and Mongo
 
 ## To Do
 
-- The calendar doesn't have a purpose in searching
-- Better looking modal with steps
+- Better looking modal
+- Image uploader with steps
