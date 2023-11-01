@@ -3,14 +3,14 @@
 import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
-import { useCreateProperty } from "../store/useStore";
+import { usePropertyModal } from "../store/useStore";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 const Navbar = ({ hasExtra }: { hasExtra?: true }) => {
   const router = useRouter();
   const { data: session } = useSession();
-  const { open } = useCreateProperty((state) => state);
+  const { open } = usePropertyModal((state) => state);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (

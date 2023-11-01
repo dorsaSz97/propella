@@ -1,15 +1,16 @@
-import { NextResponse } from 'next/server';
-import { getCurrentUser } from '@/app/libs';
-import prisma from '@/app/libs/client';
+import { NextResponse } from "next/server";
+import { getCurrentUser } from "@/app/libs";
+import prisma from "@/app/libs/client";
+import { FormValues, ImageType } from "@/app/types";
 
 export async function POST(req: Request) {
   try {
     const currentUser = await getCurrentUser();
-    if (!currentUser) throw new Error('Couldnt get the current user');
+    if (!currentUser) throw new Error("Couldnt get the current user");
 
     const body = await req.json();
-    Object.keys(body).forEach(k => {
-      if (!body[k]) throw new Error('Couldnt get the data properly');
+    Object.keys(body).forEach((k) => {
+      if (!body[k]) throw new Error("Couldnt get the data properly");
     });
 
     const {
@@ -22,12 +23,17 @@ export async function POST(req: Request) {
       price,
       address,
       availableDates,
-    } = body;
+    }: FormValues = body;
 
     const newProperty = await prisma.property.create({
       data: {
         hostId: currentUser.id,
-        images,
+        images: [
+          images.find((img) => img.type === ImageType.Main)!.url,
+          images.find((img) => img.type === ImageType.Kitchen)!.url,
+          images.find((img) => img.type === ImageType.Bathroom)!.url,
+          images.find((img) => img.type === ImageType.Bedroom)!.url,
+        ],
         title,
         country,
         description,
@@ -41,7 +47,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ newProperty });
   } catch (error: any) {
-    console.log('error is:' + error);
+    console.log("error is:" + error);
 
     return NextResponse.json({ error: error.message });
   }

@@ -1,88 +1,102 @@
 "use client";
-import React, { ChangeEvent, useEffect, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-interface ICreatePropInputs {
-  title: string;
-  description: string;
-  price: number | null;
-  country: string;
-  address: string;
-  allowedGuests: number;
-  availableDates: Date[];
-  options: string[];
-  images: string[];
-}
-export type ImageGallery = {
-  main: string;
-  kitchen: string;
-  bathroom: string;
-  bedroom: string;
-};
+import { useState } from "react";
+import {
+  Controller,
+  SubmitErrorHandler,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
 
 import axios from "axios";
 import { IoMdClose } from "react-icons/io";
-import { useCreateProperty } from "../store/useStore";
+import { usePropertyModal } from "../store/useStore";
 import countries from "world-countries";
 import { useRouter } from "next/navigation";
-import ImageUploader, { ImageStep } from "./ImageUploader";
+import ImageUploader from "./ImageUploader";
 import { Property } from "@prisma/client";
-import type { Value } from "react-multi-date-picker";
-import DatePicker, { Calendar, DateObject } from "react-multi-date-picker";
+import DatePicker from "react-multi-date-picker";
 import { getDateArray } from "../properties/PropertiesClient";
+import Icon from "react-multi-date-picker/components/icon";
+import { FormValues, ImageType } from "../types";
 
 const CreatePropModal = () => {
   const router = useRouter();
-  const { close, isOpen } = useCreateProperty((state) => state);
-  const [imgUrls, setImgUrls] = useState<ImageGallery | null>(null);
-  const [imgStep, setImgStep] = useState<ImageStep | null>(ImageStep.Main);
-  const [values, setValues] = useState<Date[]>([]);
+  const { close, isOpen } = usePropertyModal((state) => state);
+  const [imgStep, setImgStep] = useState<ImageType | null>(ImageType.Main);
 
-  useEffect(() => {
-    console.log(values);
-  }, [values]);
+  const datePickerHandler = (
+    selectedRanges: string,
+    changeDate: (...event: any[]) => void
+  ) => {
+    const dates: Date[] = [];
+
+    // different ranges are separated by , and start/end by ~
+    selectedRanges.split(" , ").map((range) => {
+      //single day
+      if (range.split(" ~ ").length > 1) {
+        dates.push(
+          ...getDateArray(
+            new Date(range.split(" ~ ")[0]),
+            new Date(range.split(" ~ ")[1])
+          )
+        );
+      }
+      //range of days
+      if (range.split(" ~ ").length === 1) {
+        dates.push(new Date(range.split(" ~ ")[0]));
+      }
+    });
+    changeDate(dates);
+  };
 
   const {
     register,
-    setValue,
     handleSubmit,
     reset,
+    setValue,
+    getValues,
     formState: { errors },
-  } = useForm<ICreatePropInputs>({
+    control,
+  } = useForm<FormValues>({
+    // these values goes into the form the user sees first
     defaultValues: {
       title: "",
       description: "",
-      country: "",
-      images: [],
       options: [],
+      images: [],
+      price: 0,
+      allowedGuests: 1,
       address: "",
       availableDates: [],
-      allowedGuests: 1,
-      price: null,
+      country: "",
     },
   });
 
-  const formSubmitHandler: SubmitHandler<ICreatePropInputs> = (formValues) => {
-    const newData: ICreatePropInputs = {
-      images: [
-        imgUrls!.main,
-        imgUrls!.kitchen,
-        imgUrls!.bathroom,
-        imgUrls!.bedroom,
-      ],
+  const formErrorHandler: SubmitErrorHandler<FormValues> = (errors) => {
+    console.log("this is formerrorhandler");
+    console.log(errors);
+  };
+
+  const formSubmitHandler: SubmitHandler<FormValues> = (formValues) => {
+    console.log("this is formsubmithandler");
+    console.log(getValues("images"));
+
+    const newData: FormValues = {
+      images: formValues.images,
       title: formValues.title,
       description: formValues.description,
-      allowedGuests: +formValues.allowedGuests,
-      price: +formValues.price!,
+      allowedGuests: formValues.allowedGuests,
+      price: formValues.price,
       options: formValues.options.slice(),
       country: formValues.country,
       address: formValues.address,
-      availableDates: values!.map((date) => date),
+      availableDates: formValues.availableDates.slice(),
     };
 
     axios
       .post("/api/homes", newData)
       .then((res: { data: { newProperty: Property } }) => {
-        console.log(res);
+        setImgStep(ImageType.Main);
         close();
         router.push(`/properties/${res.data.newProperty.id}`);
         reset();
@@ -93,43 +107,66 @@ const CreatePropModal = () => {
 
   return (
     <div className=" absolute flex items-center justify-center w-full h-full p-4 z-[100] bg-whiteLight bg-opacity-80">
-      <div className="w-full h-full overflow-y-scroll  overflow-x-hidden max-w-[1100px] flex flex-col gap-5 p-6 rounded-2xl shadow-xl shadow-silverGrey bg-whiteDark">
-        <button onClick={close} className="w-fit">
+      <div className="w-full h-full overflow-y-scroll overflow-x-hidden max-w-[1100px] flex flex-col gap-5 p-6 rounded-2xl shadow-xl shadow-silverGrey bg-whiteDark">
+        <button
+          onClick={() => {
+            close();
+            reset(); //resets errors and form fields
+            setImgStep(ImageType.Main);
+          }}
+          className="w-fit"
+        >
           <IoMdClose size={20} />
         </button>
 
         <div className="flex flex-col flex-1">
           <h2 className="mb-5 font-bold text-head2 capitalize">
-            Airbnb your house
+            Tell us about your house
           </h2>
 
+          {/* handleSubmit fn gets two callbacks (success + error case), revalidates all inputs before invoking the callbacks and receives the form data or the errors obj */}
           <form
             className="flex flex-col gap-5 flex-1 "
-            onSubmit={handleSubmit(formSubmitHandler)}
+            onSubmit={handleSubmit(formSubmitHandler, formErrorHandler)}
           >
             <div className="flex gap-3 items-start md:items-center flex-col md:flex-row">
               <label htmlFor="title">Title:</label>
+              {/* register method allows the registration of an input/select el and
+              applies validation rules to them. invoking it returns an object of
+              methods and props (onchange, onblur, name, ref ) */}
               <input
-                {...register("title")}
+                {...register("title", {
+                  required: "Title is required",
+                })}
                 id="title"
-                className="px-2 py-1 rounded-xl shadow-sm max-w-[400px] shadow-silverGrey w-full md:w-auto"
+                className="px-2 py-1 rounded-xl shadow-sm max-w-[350px] shadow-silverGrey w-full md:w-auto"
               />
+              {errors.title?.message && (
+                <p className="text-red-700 text-sm ">{errors.title.message}</p>
+              )}
             </div>
 
             <div className="flex gap-3 items-start md:items-center flex-col md:flex-row">
               <label htmlFor="description">Description:</label>
               <input
-                {...register("description")}
+                {...register("description", {
+                  required: "Description is required",
+                })}
                 id="description"
-                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey max-w-[400px] w-full md:w-auto"
+                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey max-w-[350px] w-full md:w-auto"
               />
+              {errors.description?.message && (
+                <p className="text-red-700 text-sm ">
+                  {errors.description.message}
+                </p>
+              )}
             </div>
 
             <div className="md:w-1/2 w-full">
               <h3 className="mb-2 font-semibold text-body-lg">
                 Choose the available amenities:
               </h3>
-              <ul className="grid grid-cols-optionList  max-w-[400px] w-full ">
+              <ul className="grid grid-cols-optionList  max-w-[350px] w-full ">
                 <li className="flex items-center gap-1 capitalize">
                   <label htmlFor="wifi">wifi</label>
                   <input
@@ -178,102 +215,164 @@ const CreatePropModal = () => {
               </ul>
             </div>
 
-            <ImageUploader
-              type={imgStep}
-              setImgUrls={setImgUrls}
-              setImgStep={setImgStep}
+            {/* Images Input */}
+            <Controller
+              // connect react-hook-form to custom components (allows validation and access to field values and states)
+              control={control}
+              // should match the key in form values object
+              name="images"
+              // validation rules
+              rules={{
+                validate: (value) =>
+                  value.length !== 4 && "4 images is required",
+              }}
+              // access field and fieldState / renders the custom controlled component
+              render={() => (
+                <ImageUploader
+                  type={imgStep}
+                  setValue={setValue}
+                  getValues={getValues}
+                  errors={errors}
+                  setImgStep={setImgStep}
+                />
+              )}
             />
 
-            <div className="flex md:items-center gap-3 flex-col md:flex-row items-start">
+            <div className="flex flex-wrap md:flex-row items-center gap-3">
               <label htmlFor="price">Price:</label>
               <input
                 placeholder="euro/night"
-                required
                 id="price"
-                {...register("price")}
-                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey max-w-[400px]  w-full md:w-auto"
+                {...register("price", {
+                  required: "Price is required",
+                  valueAsNumber: true,
+                  validate: (value) => {
+                    if (isNaN(value)) return "Should be a number";
+
+                    if (value <= 0) return "Should be a valid number";
+                  },
+                  // validate: {
+                  //   beNumber: (value) => isNaN(value) && "Should be a number",
+                  //   beValid: (value) =>
+                  //     value === 0 && "Should be a valid number",
+                  // },
+                })}
+                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey max-w-[350px]  w-full md:w-auto"
               />
+              {errors.price?.message && (
+                <p className="text-red-700 text-sm ">{errors.price.message}</p>
+              )}
             </div>
 
             <div className="flex md:items-center gap-3 flex-col md:flex-row items-start">
               <label htmlFor="allowedGuests">Allowed Guests:</label>
               <input
                 id="allowedGuests"
-                {...register("allowedGuests")}
-                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey max-w-[400px] w-full md:w-auto"
+                {...register("allowedGuests", {
+                  required: "Guests number is required",
+                  valueAsNumber: true,
+                  validate: (value) => {
+                    if (isNaN(value)) return "Should be a number";
+
+                    if (value <= 0) return "Should be a valid number";
+                  },
+                })}
+                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey max-w-[350px] w-full md:w-auto"
               />
+              {errors.allowedGuests?.message && (
+                <p className="text-red-700 text-sm ">
+                  {errors.allowedGuests.message}
+                </p>
+              )}
             </div>
 
             <div className="flex md:items-center gap-3 flex-col md:flex-row items-start ">
               <label htmlFor="address">Address:</label>
               <input
                 id="address"
-                {...register("address")}
-                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey max-w-[400px] w-full md:w-auto"
+                {...register("address", {
+                  required: "Address is required",
+                })}
+                className="px-2 py-1 rounded-xl shadow-sm shadow-silverGrey max-w-[350px] w-full md:w-auto"
               />
+              {errors.address?.message && (
+                <p className="text-red-700 text-sm ">
+                  {errors.address.message}
+                </p>
+              )}
             </div>
 
-            <div>
-              <h3>Available times</h3>
+            {/* Times Input */}
+            <div className="flex flex-col md:flex-row md:items-center md:gap-3">
+              <label className="mb-2 md:mb-0 font-semibold text-body-lg">
+                Available times
+              </label>
 
-              <DatePicker
-                // value={vals}
-                onChange={(_, options) => {
-                  const vals: Date[] = [];
-                  options.validatedValue
-                    .toString()
-                    .split(" , ")
-                    .map((range) => {
-                      if (range.split(" ~ ").length > 1) {
-                        vals.push(
-                          ...getDateArray(
-                            new Date(range.split(" ~ ")[0]),
-                            new Date(range.split(" ~ ")[1])
-                          )
-                        );
-                      }
-                      if (range.split(" ~ ").length === 1) {
-                        vals.push(new Date(range.split(" ~ ")[0]));
-                      }
-                    });
-
-                  setValues(vals);
+              <Controller
+                control={control}
+                name="availableDates"
+                rules={{
+                  required: "Available times is required",
                 }}
-                multiple
-                range
-                minDate={new Date()}
+                render={({ field: { onChange: changeAvailableDates } }) => (
+                  <>
+                    <DatePicker
+                      multiple
+                      range
+                      minDate={new Date()}
+                      onChange={(_, options) => {
+                        datePickerHandler(
+                          options.validatedValue.toString(),
+                          changeAvailableDates
+                        );
+                      }}
+                      //   @media (min-width: 768px) {
+                      //     .md\:m-0 {
+                      //         margin: 0px;
+                      //     }
+                      //   }
+                      render={<Icon />}
+                    />
+                    {errors.availableDates?.message && (
+                      <span className="mt-1 md:m-0 text-red-700 text-sm">
+                        {errors.availableDates.message}
+                      </span>
+                    )}
+                  </>
+                )}
               />
             </div>
 
-            <div className="flex md:items-center gap-3 flex-col md:flex-row items-start">
-              <h3 className="mb-2 font-semibold text-body-lg">
+            {/* Country Input */}
+            <div className="flex flex-col md:flex-row md:items-center md:gap-3">
+              <label className="mb-2 md:mb-0 font-semibold text-body-lg">
                 Where is it located?
-              </h3>
+              </label>
 
               <select
-                {...register("country")}
-                name="country"
-                id="country"
-                onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                  setValue("country", e.target.value);
-                }}
-                className="w-full px-2 py-1 rounded-xl shadow-sm shadow-silverGrey max-w-[400px]"
-              >
-                {countries.map((country) => {
-                  return (
-                    <option value={country.name.common} key={country.cca2}>
-                      {country.name.common}
-                    </option>
-                  );
+                {...register("country", {
+                  required: "Country is required",
                 })}
+                id="country"
+                className="w-full max-w-[350px] px-2 py-1 rounded-xl shadow-sm shadow-silverGrey"
+              >
+                {countries.map((country) => (
+                  <option key={country.cca2} value={country.name.common}>
+                    {country.name.common}
+                  </option>
+                ))}
               </select>
+
+              {errors.country?.message && (
+                <span className="mt-1 md:m-0 text-red-700 text-sm">
+                  {errors.country.message}
+                </span>
+              )}
             </div>
 
-            {/* getting the latlng by the address or clicking on the map*/}
-            {/* <Map center={latLng} setLatlng={setLatlng} /> */}
             <button
-              className="bg-grassGreen text-white p-3 rounded-md self-end"
               type="submit"
+              className="bg-grassGreen text-white p-3 rounded-md self-end"
             >
               Submit
             </button>

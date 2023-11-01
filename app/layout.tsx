@@ -1,7 +1,7 @@
 import { Poppins } from "next/font/google";
 import NextAuthProvider from "@/app/components/NextAuthProvider";
 import CreatePropModal from "@/app/components/CreatePropModal";
-import "./globals.css";
+import "./globals.scss";
 
 const poppins = Poppins({
   weight: ["400", "600", "700"], // regular, semibold, bold

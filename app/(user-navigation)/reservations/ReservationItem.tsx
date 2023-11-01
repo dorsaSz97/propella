@@ -8,13 +8,13 @@ const ReservationItem = async ({ item }: { item: Reservation }) => {
   if (!selectedProperty) return null;
 
   return (
-    <li className="grid-cols-1 grid lg:grid-cols-resList items-center justify-between gap-x-6 h-[180px] font-semibold text-body-sm text-center">
+    <li className="h-fit grid-cols-1 grid lg:grid-cols-resList items-center justify-between gap-x-6  font-semibold text-body-sm text-center">
       <Image
         src={selectedProperty.images[0]}
         alt="property"
         width={700}
         height={700}
-        className={`h-full w-full rounded-2xl object-cover max-w-[500px] mx-auto`}
+        className={` w-full rounded-2xl object-cover max-w-[500px] aspect-square mx-auto`}
       />
       <p className="hidden lg:block">{item.peopleStaying}</p>
       <p>

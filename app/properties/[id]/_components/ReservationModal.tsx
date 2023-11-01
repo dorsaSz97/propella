@@ -3,6 +3,7 @@ import { BsAirplane } from "react-icons/bs";
 import axios from "axios";
 import { Dispatch, SetStateAction } from "react";
 import { Property } from "@prisma/client";
+import { useRouter } from "next/navigation";
 
 const ReservationModal = ({
   selectedProperty,
@@ -17,6 +18,7 @@ const ReservationModal = ({
   guests: number;
   setGuests: Dispatch<SetStateAction<number>>;
 }) => {
+  const router = useRouter();
   return (
     <div className="max-w-[664px] mx-auto flex flex-col lg:py-32 px-12 py-12 rounded-[2rem] bg-whiteDark">
       <div className="flex gap-[1.3rem] mb-[0.5rem]">
@@ -60,12 +62,14 @@ const ReservationModal = ({
         className="bg-grassGreen text-white flex items-center justify-center px-16 py-[1rem] font-semibold rounded-3xl my-[1rem]"
         onClick={() => {
           if (endDate && startDate)
-            axios.post("/api/reservations", {
-              peopleStaying: guests,
-              endDate: endDate,
-              startDate: startDate,
-              propertyId: selectedProperty.id,
-            });
+            axios
+              .post("/api/reservations", {
+                peopleStaying: guests,
+                endDate: endDate,
+                startDate: startDate,
+                propertyId: selectedProperty.id,
+              })
+              .then(() => router.push("/reservations"));
         }}
       >
         Book apartment
