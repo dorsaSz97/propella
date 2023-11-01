@@ -23,5 +23,11 @@ This real estate app is coded using NextJS 13 (app directory) + Prisma and Mongo
 
 ## To Do
 
-- Better looking modal
-- Image uploader with steps
+- Create a stepped modal
+- Create a better looking image uploader
+- Allowing the user to modify details about their props
+- Show a modal to thank the user for their reservation
+- Have a reserved parts to show the user which of their props has been reserved
+- Have a map for the user to choose the location and have the address
+- Make the date picker responsive
+- Show loading indicator while booking
