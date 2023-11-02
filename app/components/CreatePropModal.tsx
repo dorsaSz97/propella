@@ -1,4 +1,5 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import {
   Controller,
@@ -26,13 +27,14 @@ const CreatePropModal = () => {
   const router = useRouter();
   const { close, isOpen } = usePropertyModal((state: any) => state);
   const [imgStep, setImgStep] = useState<ImageType | null>(ImageType.Main);
-  const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth >= 721);
+  const [isDesktop, setIsDesktop] = useState<boolean>(false);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
       const handleResize = () => {
         setIsDesktop(window.innerWidth >= 721);
       };
+      handleResize();
 
       window.addEventListener("resize", handleResize);
 
