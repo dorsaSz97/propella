@@ -4,28 +4,22 @@ import prisma from "@/app/libs/client";
 
 // cant have these fns in a client side file!
 const getTotalDaysNum = (startDate: Date, endDate: Date) => {
-  return (
-    (new Date(endDate).getTime() - new Date(startDate).getTime()) /
-      1000 /
-      60 /
-      60 /
-      24 +
-    1
-  );
+  return (endDate.getTime() - startDate.getTime()) / 1000 / 60 / 60 / 24 + 1;
 };
 
 const getDatesArr = (startDate: Date, endDate: Date) => {
-  let dates = [];
-  const start = new Date(startDate);
+  const dates = [];
+  const start = new Date(startDate); // dont wanna change anything about the original date param
   const end = new Date(endDate);
 
   while (start <= end) {
-    dates.push(start);
+    dates.push(new Date(start));
     start.setDate(start.getDate() + 1);
   }
 
   return dates;
 };
+
 export async function POST(req: Request) {
   try {
     const currentUser = await getCurrentUser();
@@ -36,7 +30,17 @@ export async function POST(req: Request) {
       if (!body[k]) throw new Error("Couldnt get the data properly");
     });
 
-    const { propertyId, startDate, endDate, peopleStaying } = body;
+    const {
+      propertyId,
+      startDate,
+      endDate,
+      peopleStaying,
+    }: {
+      propertyId: string;
+      startDate: string;
+      endDate: string;
+      peopleStaying: number;
+    } = body; // data passed through req, is mostly string
 
     const selectedProperty = await prisma.property.findUnique({
       where: {
@@ -47,10 +51,11 @@ export async function POST(req: Request) {
       throw new Error("The property you wanna reserve doesnt exist");
 
     const newAvailableDates = selectedProperty.availableDates.filter(
-      (availableDate) =>
-        !getDatesArr(startDate, endDate)
+      (availableDate) => {
+        return !getDatesArr(new Date(startDate), new Date(endDate))
           .map((date) => date.toDateString())
-          .includes(availableDate.toDateString()) // converting to string cause two objects with the same value arent the same
+          .includes(availableDate.toDateString()); // converting to string cause two objects with the same value arent the same
+      }
     );
     await prisma.property.update({
       where: { id: selectedProperty.id },
@@ -67,7 +72,8 @@ export async function POST(req: Request) {
         endDate,
         peopleStaying,
         totalPrice:
-          getTotalDaysNum(startDate, endDate) * selectedProperty.price,
+          getTotalDaysNum(new Date(startDate), new Date(endDate)) *
+          selectedProperty.price,
       },
     });
 
