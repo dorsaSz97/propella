@@ -1,9 +1,11 @@
 import { GrHomeRounded } from "react-icons/gr";
 import { BsAirplane } from "react-icons/bs";
 import axios from "axios";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Property } from "@prisma/client";
 import { useRouter } from "next/navigation";
+
+import { LoadingSpinner } from "@/app/components/LoadingSpinner";
 
 const ReservationModal = ({
   selectedProperty,
@@ -18,6 +20,7 @@ const ReservationModal = ({
   guests: number;
   setGuests: Dispatch<SetStateAction<number>>;
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   return (
     <div className="max-w-[664px] mx-auto flex flex-col lg:py-32 px-12 py-12 rounded-[2rem] bg-whiteDark">
@@ -58,22 +61,31 @@ const ReservationModal = ({
           </button>
         </div>
       </div>
-      <button
-        className="bg-grassGreen text-white flex items-center justify-center px-16 py-[1rem] font-semibold rounded-3xl my-[1rem]"
-        onClick={() => {
-          if (endDate && startDate)
-            axios
-              .post("/api/reservations", {
-                peopleStaying: guests,
-                endDate: endDate,
-                startDate: startDate,
-                propertyId: selectedProperty.id,
-              })
-              .then(() => router.push("/reservations"));
-        }}
-      >
-        Book apartment
-      </button>
+      {isLoading && <LoadingSpinner />}
+      {!isLoading && (
+        <button
+          className="bg-grassGreen text-white flex items-center justify-center px-16 py-[1rem] font-semibold rounded-3xl my-[1rem]"
+          onClick={() => {
+            setIsLoading(true);
+
+            if (endDate && startDate)
+              axios
+                .post("/api/reservations", {
+                  peopleStaying: guests,
+                  endDate: endDate,
+                  startDate: startDate,
+                  propertyId: selectedProperty.id,
+                })
+                .then(() => {
+                  setIsLoading(false);
+                  router.push("/reservations");
+                });
+          }}
+        >
+          Book apartment
+        </button>
+      )}
+
       <ul className="bg-whiteLight rounded-[1.5rem] flex flex-col gap-3 py-3 px-6">
         <li className="flex items-center justify-between">
           <p className="font-semibold">Per night</p>

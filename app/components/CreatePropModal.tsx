@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Controller,
   SubmitErrorHandler,
@@ -19,10 +19,24 @@ import { getDateArray } from "../properties/PropertiesClient";
 import Icon from "react-multi-date-picker/components/icon";
 import { FormValues, ImageType } from "../types";
 
+import "react-multi-date-picker/styles/layouts/prime.css";
+import "react-multi-date-picker/styles/layouts/mobile.css";
+
 const CreatePropModal = () => {
   const router = useRouter();
-  const { close, isOpen } = usePropertyModal((state) => state);
+  const { close, isOpen } = usePropertyModal((state: any) => state);
   const [imgStep, setImgStep] = useState<ImageType | null>(ImageType.Main);
+  const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth >= 721);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 721);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const datePickerHandler = (
     selectedRanges: string,
@@ -332,6 +346,7 @@ const CreatePropModal = () => {
                       //     }
                       //   }
                       render={<Icon />}
+                      className={`${isDesktop ? "rmdp-prime" : "rmdp-mobile"}`}
                     />
                     {errors.availableDates?.message && (
                       <span className="mt-1 md:m-0 text-red-700 text-sm">
