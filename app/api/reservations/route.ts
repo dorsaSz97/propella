@@ -1,8 +1,31 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/app/libs";
 import prisma from "@/app/libs/client";
-import { getDatesArr, getTotalDaysNum } from "@/app/libs/helpers";
 
+// cant have these fns in a client side file!
+const getTotalDaysNum = (startDate: Date, endDate: Date) => {
+  return (
+    (new Date(endDate).getTime() - new Date(startDate).getTime()) /
+      1000 /
+      60 /
+      60 /
+      24 +
+    1
+  );
+};
+
+const getDatesArr = (startDate: Date, endDate: Date) => {
+  let dates = [];
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  while (start <= end) {
+    dates.push(start);
+    start.setDate(start.getDate() + 1);
+  }
+
+  return dates;
+};
 export async function POST(req: Request) {
   try {
     const currentUser = await getCurrentUser();
@@ -50,7 +73,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json({ newReservation });
   } catch (error: any) {
-    console.log("error is:" + error);
+    console.log("error is: " + error);
 
     return NextResponse.json({ error: error.message });
   }

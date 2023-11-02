@@ -1,5 +1,3 @@
-"use client";
-
 export const getTotalDaysNum = (startDate: Date, endDate: Date) => {
   return (endDate.getTime() - startDate.getTime()) / 1000 / 60 / 60 / 24 + 1;
 };
