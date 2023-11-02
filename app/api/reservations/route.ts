@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/app/libs";
 import prisma from "@/app/libs/client";
+import { getDatesArr, getTotalDaysNum } from "@/app/libs/helpers";
 
 export async function POST(req: Request) {
   try {
@@ -22,49 +23,28 @@ export async function POST(req: Request) {
     if (!selectedProperty)
       throw new Error("The property you wanna reserve doesnt exist");
 
-    const getDateArray = function (start: Date, end: Date) {
-      let arr = [];
-      let curr = new Date(start);
-      const endDate = new Date(end);
-
-      while (curr <= endDate) {
-        arr.push(new Date(curr));
-        curr.setDate(curr.getDate() + 1);
-      }
-
-      return arr;
-    };
-
-    const newDates = selectedProperty.availableDates.filter(
-      (date) =>
-        !getDateArray(startDate, endDate)
-          .map((d) => d.toDateString())
-          .includes(date.toDateString())
+    const newAvailableDates = selectedProperty.availableDates.filter(
+      (availableDate) =>
+        !getDatesArr(startDate, endDate)
+          .map((date) => date.toDateString())
+          .includes(availableDate.toDateString()) // converting to string cause two objects with the same value arent the same
     );
-
     await prisma.property.update({
       where: { id: selectedProperty.id },
       data: {
-        availableDates: newDates,
+        availableDates: newAvailableDates,
       },
     });
-
-    const stayingDays =
-      (new Date(endDate).getTime() - new Date(startDate).getTime()) /
-        1000 /
-        60 /
-        60 /
-        24 +
-      1;
 
     const newReservation = await prisma.reservation.create({
       data: {
         propertyId: selectedProperty.id,
         guestId: currentUser.id,
-        startDate: startDate,
-        endDate: endDate,
+        startDate,
+        endDate,
         peopleStaying,
-        totalPrice: stayingDays * selectedProperty.price,
+        totalPrice:
+          getTotalDaysNum(startDate, endDate) * selectedProperty.price,
       },
     });
 
