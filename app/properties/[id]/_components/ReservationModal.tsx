@@ -1,3 +1,5 @@
+"use client";
+
 import { GrHomeRounded } from "react-icons/gr";
 import { BsAirplane } from "react-icons/bs";
 import axios from "axios";
@@ -11,17 +13,15 @@ const ReservationModal = ({
   selectedProperty,
   startDate,
   endDate,
-  setGuests,
-  guests,
 }: {
   selectedProperty: Property;
   startDate: Date | undefined;
   endDate: Date | undefined;
-  guests: number;
-  setGuests: Dispatch<SetStateAction<number>>;
 }) => {
+  const [guests, setGuests] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
+
   return (
     <div className="max-w-[664px] mx-auto flex flex-col lg:py-32 px-12 py-12 rounded-[2rem] bg-whiteDark">
       <div className="flex gap-[1.3rem] mb-[0.5rem]">
@@ -44,10 +44,7 @@ const ReservationModal = ({
         <p className="font-semibold">Guests</p>
         <div className="flex items-center justify-center gap-4">
           <button
-            onClick={() =>
-              //  guests >= 2 && setGuests(guests-1)
-              setGuests((prev) => (prev >= 2 ? prev - 1 : prev))
-            }
+            onClick={() => setGuests((prev) => (prev >= 2 ? prev - 1 : prev))}
           >
             -
           </button>

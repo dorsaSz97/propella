@@ -29,13 +29,15 @@ const CreatePropModal = () => {
   const [isDesktop, setIsDesktop] = useState<boolean>(window.innerWidth >= 721);
 
   useEffect(() => {
-    const handleResize = () => {
-      setIsDesktop(window.innerWidth >= 721);
-    };
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setIsDesktop(window.innerWidth >= 721);
+      };
 
-    window.addEventListener("resize", handleResize);
+      window.addEventListener("resize", handleResize);
 
-    return () => window.removeEventListener("resize", handleResize);
+      return () => window.removeEventListener("resize", handleResize);
+    }
   }, []);
 
   const datePickerHandler = (

@@ -25,7 +25,6 @@ const PropertyDetails = ({
   selectedProperty: Property;
   currentUser: User | null;
 }) => {
-  const [guests, setGuests] = useState(1);
   const [dateRange, setDateRange] = useState<Range[]>([
     {
       startDate: new Date(),
@@ -76,8 +75,6 @@ const PropertyDetails = ({
             <ReservationModal
               endDate={dateRange[0].endDate}
               startDate={dateRange[0].startDate}
-              guests={guests}
-              setGuests={setGuests}
               selectedProperty={selectedProperty}
             />
           )}
